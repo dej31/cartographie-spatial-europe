@@ -2,7 +2,7 @@
 
 Cartographie interactive de l'écosystème spatial européen : observation de la Terre, météorologie, défense et sécurité, télécommunications, navigation, science et exploration, lanceurs.
 
-Pour chacun des 108 programmes : financeur, maître d'ouvrage, maître d'œuvre, plateforme, instruments, application, budget (avec indice de confiance), planning, filiations et convergences.
+Pour chacun des 110 programmes : financeur, maître d'ouvrage, maître d'œuvre, plateforme, instruments, application, budget (avec indice de confiance), planning, filiations et convergences.
 
 ## Les 10 vues
 
@@ -25,6 +25,7 @@ Pour chacun des 108 programmes : financeur, maître d'ouvrage, maître d'œuvre,
 - `src/data2.js` : science, exploration, lanceurs, sécurité et défense spatiales, liaisons optiques, services
 - `src/data3.js` : annuaire des acteurs
 - `src/data4.js` : données financières (contrats, levées, séries)
+- `src/data6.js` : unités de chaque série (143 satellites et vols), NewAthena, Athena-Fidus
 - `src/data5.js` : liens sources par programme (253 liens vérifiés) et pilote visuels + échelle (10 programmes)
 
 Les photos du pilote sont servies depuis Wikimedia Commons (licences libres, crédit et licence sur la page de chaque fichier). Elles s'affichent sur GitHub Pages ; dans un environnement qui bloque les images externes, la fiche propose un lien vers la photo.

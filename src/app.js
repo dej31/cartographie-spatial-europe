@@ -213,7 +213,8 @@
         ${field("Budget", `${esc(p.bud)} <span class="conf" title="Indice de confiance">${p.bc}</span>`, true)}
       </dl>
       <div class="mini-tl">${miniTimeline(p)}
-        <p class="note" style="margin-top:6px">${p.jal.map(([y, t]) => `<span class="mono">${y}</span> ${esc(t)}`).join(" · ") || "Pas de jalon public."}</p></div>
+        <p class="note" style="margin-top:6px">${p.jal.map(([y, t]) => `<span class="mono">${y}</span> ${esc(t)}`).join(" · ") || "Pas de jalon public."}</p>
+        ${unitesHtml(p)}</div>
       ${p.note ? `<p class="callout" style="margin-top:16px">${esc(p.note)}</p>` : ""}
       <div class="rel">
         ${host ? `<div><h4>Embarqué sur</h4><div class="chips">${chip(host.id)}</div></div>` : ""}
@@ -462,6 +463,16 @@
       : (v.masse ? `<div class="vis-sch vis-vide"><p>${esc(v.dimsTxt)}. Masse : ${esc(v.masse)} <span class="conf">${v.bc}</span></p>${v.src ? `<p class="note">Source : <a href="${v.src[1]}" target="_blank" rel="noopener">${esc(v.src[0])}</a></p>` : ""}</div>` : "");
     return `<section class="vis" aria-label="Visuel et échelle">${img}${sch}</section>`;
   }
+
+  function unitesHtml(p) {
+    const U = typeof UNITES !== "undefined" && UNITES[p.id];
+    if (!U || !U.length) return "";
+    const lanceur = p.d === "lnc" || p.d === "lnn";
+    return `<div class="unites"><h4>${lanceur ? "Vols" : "Satellites de la série"} <span class="mono note">${U.length}</span></h4>
+      <div class="u-scroll"><table class="u-table"><thead><tr><th>${lanceur ? "Vol" : "Satellite"}</th><th>Lancement</th><th>${lanceur ? "Version" : "Lanceur"}</th><th>Statut</th><th>${lanceur ? "Mission" : "Instruments et particularités"}</th></tr></thead>
+      <tbody>${U.map(([u, d, l, st, x]) => `<tr><td class="u-n">${esc(u)}</td><td class="mono">${esc(d)}</td><td>${esc(l)}</td><td>${lanceur && st === "fin" ? '<span class="pill st-fin">Effectué</span>' : pill(st)}</td><td>${esc(x)}</td></tr>`).join("")}</tbody></table></div></div>`;
+  }
+
   function liensHtml(p) {
     const L = typeof LIENS !== "undefined" && LIENS[p.id];
     if (!L || !L.length) return "";
