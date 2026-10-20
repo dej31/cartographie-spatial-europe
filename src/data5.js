@@ -1,0 +1,1520 @@
+/* Liens sources vérifiés (octobre 2026) : [type, libellé, url] */
+const LIENS = {
+"s1": [
+[
+"Industriel",
+"Thales Alenia Space – lancement de Sentinel-1D",
+"https://www.thalesaleniaspace.com/en/press-releases/copernicus-sentinel-1d-earth-observation-satellite-successfully-launched"
+],
+[
+"Agence",
+"ESA – Sentinel-1",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1"
+],
+[
+"Instrument",
+"ESA – L'instrument radar C-SAR",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Instrument"
+],
+[
+"Référence",
+"eoPortal – Sentinel-1",
+"https://directory.eoportal.org/web/eoportal/satellite-missions/s/sentinel-1"
+]
+],
+"s2": [
+[
+"Industriel",
+"Airbus – Ce qu'il faut savoir sur Sentinel-2",
+"https://www.airbus.com/en/newsroom/stories/2024-08-what-you-should-know-about-sentinel-2-climate-satellites"
+],
+[
+"Agence",
+"ESA – Sentinel-2",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2"
+],
+[
+"Référence",
+"eoPortal – Sentinel-2",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-2"
+]
+],
+"s3": [
+[
+"Agence",
+"ESA – Sentinel-3",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-3"
+],
+[
+"Référence",
+"eoPortal – Sentinel-3",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-3"
+]
+],
+"s4": [
+[
+"Industriel",
+"Airbus – Lancement de Sentinel-4 sur MTG",
+"https://www.airbus.com/en/newsroom/press-releases/2025-07-successful-launch-of-airbus-built-sentinel-4-onboard-mtg-weather-satellite"
+],
+[
+"Agence",
+"EUMETSAT – Sentinel-4",
+"https://www.eumetsat.int/sentinel-4"
+],
+[
+"Référence",
+"eoPortal – Sentinel-4",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-4"
+]
+],
+"s5p": [
+[
+"Agence",
+"ESA – Sentinel-5P",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P"
+],
+[
+"Instrument",
+"TROPOMI",
+"https://www.tropomi.eu/"
+],
+[
+"Référence",
+"eoPortal – Sentinel-5P",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p"
+]
+],
+"s5": [
+[
+"Agence",
+"ESA – Lancement de MetOp-SG et Sentinel-5",
+"https://www.esa.int/Applications/Observing_the_Earth/Meteorological_missions/MetOp_Second_Generation/First_MetOp-SG_and_Sentinel-5_launched"
+],
+[
+"Agence",
+"EUMETSAT – Sentinel-5",
+"https://www.eumetsat.int/sentinel-5"
+],
+[
+"Référence",
+"eoPortal – Sentinel-5",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-5"
+]
+],
+"s6": [
+[
+"Agence",
+"ESA – Sentinel-6",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-6"
+],
+[
+"Agence",
+"EUMETSAT – Premières images de Sentinel-6B",
+"https://www.eumetsat.int/copernicus-sentinel-6b-delivers-first-altimeter-images-and-reaches-final-orbit"
+],
+[
+"Référence",
+"eoPortal – Sentinel-6",
+"https://www.eoportal.org/satellite-missions/copernicus-sentinel-6-michael-freilich"
+]
+],
+"co2m": [
+[
+"Industriel",
+"OHB – CO2M",
+"https://www.ohb.de/en/magazine-garden/co2m"
+],
+[
+"Industriel",
+"Thales Alenia Space – Charge utile de CO2M",
+"https://www.thalesaleniaspace.com/en/press-releases/thales-alenia-space-develop-payload-third-satellite-copernicus-co2m-mission"
+],
+[
+"Référence",
+"eoPortal – CO2M",
+"https://www.eoportal.org/satellite-missions/co2m"
+]
+],
+"lstm": [
+[
+"Industriel",
+"Airbus – Contrat LSTM",
+"https://www.airbus.com/en/newsroom/press-releases/2020-11-airbus-wins-esas-lstm-temperature-check-mission-for-copernicus-next"
+],
+[
+"Agence",
+"ESA – Missions d'expansion Copernicus",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Copernicus_Sentinel_Expansion_missions"
+]
+],
+"cristal": [
+[
+"Industriel",
+"Airbus – Fabrication de CRISTAL",
+"https://www.airbus.com/en/newsroom/news/2024-10-airbus-starts-manufacturing-for-copernicus-polar-ice-and-snow-survey-mission"
+],
+[
+"Référence",
+"eoPortal – CRISTAL",
+"https://www.eoportal.org/satellite-missions/cristal-copernicus-polar-ice-and-snow-topography-altimeter-"
+]
+],
+"chime": [
+[
+"Industriel",
+"Thales Alenia Space – CHIME",
+"https://www.thalesaleniaspace.com/en/news/chime-copernicus-hyperspectral-mission-enabling-operational-global-imaging-spectroscopy"
+],
+[
+"Agence",
+"ESA – Passer à l'hyperspectral avec CHIME",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Going_hyperspectral_for_CHIME"
+],
+[
+"Référence",
+"eoPortal – CHIME",
+"https://www.eoportal.org/satellite-missions/chime-copernicus"
+]
+],
+"cimr": [
+[
+"Agence",
+"ESA – CIMR",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/CIMR"
+],
+[
+"Référence",
+"eoPortal – CIMR",
+"https://www.eoportal.org/satellite-missions/cimr"
+]
+],
+"rosel": [
+[
+"Industriel",
+"Thales Alenia Space – Contrat ROSE-L",
+"https://www.thalesaleniaspace.com/en/press-releases/thales-alenia-space-signs-contract-esa-build-copernicus-rose-l-satellite"
+],
+[
+"Agence",
+"ESA – ROSE-L",
+"https://sentinel.esa.int/web/sentinel/copernicus/rose-l"
+],
+[
+"Référence",
+"eoPortal – ROSE-L",
+"https://www.eoportal.org/satellite-missions/rose-l"
+]
+],
+"sng": [
+[
+"Agence",
+"ESA – Contrat Sentinel-1 Next Generation",
+"https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/ESA_awards_contract_to_build_Sentinel-1_Next_Generation_satellites"
+],
+[
+"Référence",
+"eoPortal – Programme Copernicus",
+"https://www.eoportal.org/satellite-missions/copernicus"
+]
+],
+"ers": [
+[
+"Agence",
+"ESA – ERS en bref",
+"https://www.esa.int/Applications/Observing_the_Earth/ERS_at_a_glance"
+],
+[
+"Référence",
+"eoPortal – ERS-2",
+"https://www.eoportal.org/satellite-missions/ers-2"
+]
+],
+"envisat": [
+[
+"Agence",
+"ESA – Envisat",
+"https://www.esa.int/Applications/Observing_the_Earth/Envisat"
+],
+[
+"Référence",
+"eoPortal – Envisat",
+"https://www.eoportal.org/satellite-missions/envisat"
+]
+],
+"jason": [
+[
+"Agence",
+"CNES – Jason-3",
+"https://jason-3.cnes.fr/en/JASON3/index.htm"
+],
+[
+"Agence",
+"EUMETSAT – Jason-3",
+"https://www.eumetsat.int/jason-3"
+],
+[
+"Référence",
+"eoPortal – Jason-3",
+"https://www.eoportal.org/satellite-missions/jason-3"
+]
+],
+"goce": [
+[
+"Agence",
+"ESA – GOCE",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/GOCE"
+],
+[
+"Référence",
+"eoPortal – GOCE",
+"https://www.eoportal.org/satellite-missions/goce"
+]
+],
+"smos": [
+[
+"Agence",
+"ESA – SMOS",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/SMOS"
+],
+[
+"Agence",
+"CNES – SMOS",
+"https://cnes.fr/en/projects/smos"
+],
+[
+"Référence",
+"eoPortal – SMOS",
+"https://www.eoportal.org/satellite-missions/smos"
+]
+],
+"cryosat": [
+[
+"Agence",
+"ESA – Lancement de CryoSat-2",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/CryoSat/Successful_launch_for_ESA_s_CryoSat-2_ice_satellite"
+],
+[
+"Référence",
+"eoPortal – CryoSat-2",
+"https://www.eoportal.org/satellite-missions/cryosat-2"
+]
+],
+"swarm": [
+[
+"Agence",
+"ESA – Swarm",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/Swarm"
+],
+[
+"Référence",
+"eoPortal – Swarm",
+"https://directory.eoportal.org/web/eoportal/satellite-missions/s/swarm"
+]
+],
+"aeolus": [
+[
+"Industriel",
+"Airbus – Aeolus",
+"https://www.airbus.com/en/products-services/space/earth-observation/climate-missions/aeolus"
+],
+[
+"Instrument",
+"ESA – Lidar ALADIN",
+"https://earth.esa.int/eogateway/instruments/aladin"
+],
+[
+"Référence",
+"eoPortal – Aeolus",
+"https://www.eoportal.org/satellite-missions/aeolus"
+]
+],
+"earthcare": [
+[
+"Industriel",
+"Airbus – Lancement d'EarthCARE",
+"https://www.airbus.com/en/newsroom/press-releases/2024-05-heaven-sent-earthcare-to-study-clouds-and-climate"
+],
+[
+"Agence",
+"ESA – EarthCARE",
+"https://earth.esa.int/eogateway/missions/earthcare"
+]
+],
+"biomass": [
+[
+"Industriel",
+"Airbus – Lancement de Biomass",
+"https://www.airbus.com/en/newsroom/press-releases/2025-04-airbus-built-forest-monitoring-satellite-biomass-successfully"
+],
+[
+"Agence",
+"ESA – Biomass",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/Biomass"
+],
+[
+"Référence",
+"eoPortal – Biomass",
+"https://www.eoportal.org/satellite-missions/biomass"
+]
+],
+"flex": [
+[
+"Agence",
+"ESA – FLEX",
+"https://earth.esa.int/eogateway/missions/flex"
+],
+[
+"Instrument",
+"ESA – L'instrument FLORIS",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/FLEX/The_instrument"
+],
+[
+"Référence",
+"eoPortal – FLEX",
+"https://www.eoportal.org/satellite-missions/flex"
+]
+],
+"forum": [
+[
+"Agence",
+"ESA – FORUM",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/FORUM"
+],
+[
+"Agence",
+"ESA – Contrat de conception de FORUM",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/FORUM/Contract_secures_design_for_ESA_s_FORUM_satellite"
+],
+[
+"Référence",
+"eoPortal – FORUM",
+"https://www.eoportal.org/satellite-missions/forum"
+]
+],
+"harmony": [
+[
+"Agence",
+"ESA – Sélection de Harmony",
+"https://www.esa.int/Space_in_Member_States/France/L_ESA_selectionne_Harmony_comme_10e_mission_Earth_Explorer"
+]
+],
+"wivern": [
+[
+"Agence",
+"ESA – Sélection de WIVERN",
+"https://www.esa.int/Applications/Observing_the_Earth/FutureEO/ESA_selects_WIVERN_as_11th_Earth_Explorer_mission"
+]
+],
+"mop": [
+[
+"Agence",
+"ESA – Brève histoire de Meteosat",
+"https://www.esa.int/Applications/Observing_the_Earth/Meteorological_missions/Meteosat/A_brief_history_of_Meteosat"
+],
+[
+"Référence",
+"eoPortal – Meteosat 1re génération",
+"https://www.eoportal.org/satellite-missions/meteosat-first-generation"
+]
+],
+"msg": [
+[
+"Agence",
+"EUMETSAT – Instruments de MSG",
+"https://www.eumetsat.int/meteosat-second-gen-instruments"
+],
+[
+"Agence",
+"ESA – MSG en chiffres",
+"https://www.esa.int/Applications/Observing_the_Earth/Meteorological_missions/Meteosat/Meteosat_Second_Generation_Facts_and_Figures"
+],
+[
+"Référence",
+"eoPortal – MSG",
+"https://www.eoportal.org/satellite-missions/meteosat-second-generation"
+]
+],
+"mtg": [
+[
+"Agence",
+"EUMETSAT – MTG",
+"https://www.eumetsat.int/meteosat-third-generation"
+],
+[
+"Agence",
+"ESA – Présentation de MTG",
+"https://www.esa.int/Applications/Observing_the_Earth/Meteorological_missions/meteosat_third_generation/Introducing_MTG"
+],
+[
+"Instrument",
+"EUMETSAT – Instruments de MTG",
+"https://www.eumetsat.int/meteosat-third-generation-instruments"
+]
+],
+"metop": [
+[
+"Agence",
+"ESA – MetOp",
+"https://www.esa.int/Applications/Observing_the_Earth/MetOp_overview"
+],
+[
+"Référence",
+"eoPortal – MetOp",
+"https://www.eoportal.org/satellite-missions/metop"
+]
+],
+"metopsg": [
+[
+"Agence",
+"EUMETSAT – MetOp-SG",
+"https://www.eumetsat.int/metop-sg"
+],
+[
+"Agence",
+"ESA – Les satellites MetOp-SG",
+"https://www.esa.int/Applications/Observing_the_Earth/Meteorological_missions/MetOp_Second_Generation/MetOp-SG_satellites"
+],
+[
+"Référence",
+"eoPortal – MetOp-SG",
+"https://www.eoportal.org/satellite-missions/metop-sg"
+]
+],
+"spot": [
+[
+"Industriel",
+"Airbus – Trente ans de SPOT",
+"https://www.airbus.com/en/newsroom/news/2016-02-earth-observation-satellite-program-spot-celebrates-three-decades-of-success"
+],
+[
+"Agence",
+"CNES – SPOT",
+"https://cnes.fr/en/projects/spot"
+],
+[
+"Référence",
+"eoPortal – SPOT 6 et 7",
+"https://www.eoportal.org/satellite-missions/spot-6-7"
+]
+],
+"pleiades": [
+[
+"Industriel",
+"Airbus – Imagerie Pléiades",
+"https://space-solutions.airbus.com/imagery/our-optical-and-radar-satellite-imagery/pleiades/"
+],
+[
+"Agence",
+"CNES – Pléiades",
+"https://cnes.fr/en/projects/pleiades"
+],
+[
+"Référence",
+"eoPortal – Pléiades",
+"https://www.eoportal.org/satellite-missions/pleiades"
+]
+],
+"pneo": [
+[
+"Industriel",
+"Airbus – Pléiades Neo",
+"https://space-solutions.airbus.com/imagery/our-optical-and-radar-satellite-imagery/pleiades-neo/"
+],
+[
+"Agence",
+"ESA Earth Online – Pléiades Neo",
+"https://earth.esa.int/eogateway/success-story/pleiades-celebrates-10-years-and-extends-satellite-fleet-with-pleiades-neo/pleiades-neo-extends-the-constellation"
+],
+[
+"Référence",
+"eoPortal – Pléiades Neo",
+"https://www.eoportal.org/satellite-missions/pleiades-neo"
+]
+],
+"pneonext": [
+[
+"Industriel",
+"Airbus – Pléiades Neo Next",
+"https://www.airbus.com/en/newsroom/press-releases/2026-01-the-first-airbus-pleiades-neo-next-satellite-will-be-launched-early-2028"
+]
+],
+"co3d": [
+[
+"Industriel",
+"Airbus – CO3D",
+"https://www.airbus.com/en/products-services/space/earth-observation/earth-observation-systems/co3d"
+],
+[
+"Agence",
+"CNES – CO3D",
+"https://cnes.fr/en/projects/co3d"
+]
+],
+"terrasar": [
+[
+"Agence",
+"DLR – TanDEM-X",
+"https://www.dlr.de/en/research-and-transfer/projects-and-missions/tandem-x"
+],
+[
+"Référence",
+"eoPortal – TerraSAR-X",
+"https://www.eoportal.org/satellite-missions/terrasar-x"
+]
+],
+"iceye": [
+[
+"Industriel",
+"ICEYE",
+"https://www.iceye.com/"
+],
+[
+"Référence",
+"eoPortal – Constellation ICEYE",
+"https://www.eoportal.org/satellite-missions/iceye-constellation"
+]
+],
+"helios": [
+[
+"Agence",
+"Ministère des Armées – Fin d'Hélios 1A",
+"https://www.defense.gouv.fr/salle-de-presse/communiques/communiques-du-ministere-des-armees/helios-1a-arrete-definitivement-ses-activites-operationnelles?nav=web"
+],
+[
+"Référence",
+"Wikipédia – Helios",
+"https://fr.wikipedia.org/wiki/Helios_(satellite)"
+]
+],
+"cso": [
+[
+"Industriel",
+"Airbus – Lancement de CSO-3 sur Ariane 6",
+"https://www.airbus.com/en/newsroom/press-releases/2025-03-ariane-6-launches-cso-3-double-success-for-france-and-europe"
+],
+[
+"Agence",
+"CNES – CSO / MUSIS",
+"https://cnes.fr/en/projects/cso"
+],
+[
+"Agence",
+"Ministère des Armées – CSO, capteur de la DRM",
+"https://www.defense.gouv.fr/drm/actualites/serie-capteurs-emblematiques-drm-35-cso"
+]
+],
+"csosuite": [
+[
+"Agence",
+"Commandement de l'Espace – Capacités spatiales",
+"https://www.defense.gouv.fr/en/cde/space-capabilities"
+]
+],
+"sarlupe": [
+[
+"Référence",
+"eoPortal – SAR-Lupe",
+"https://www.eoportal.org/satellite-missions/sar-lupe"
+]
+],
+"sarah": [
+[
+"Industriel",
+"OHB – Mise en service de SARah",
+"https://www.ohb.de/news/bundeswehr-startet-den-operationellen-betrieb-des-satellitengestuetzten-aufklaerungssystems-sarah"
+],
+[
+"Agence",
+"Bundeswehr – Nouveaux satellites SARah",
+"https://www.bundeswehr.de/de/organisation/ausruestung-baainbw/aktuelles/baainbw-beschafft-neue-sarah-satelliten-5445638"
+],
+[
+"Référence",
+"eoPortal – SARah",
+"https://www.eoportal.org/satellite-missions/sarah"
+]
+],
+"csk": [
+[
+"Industriel",
+"Thales Alenia Space – COSMO-SkyMed 2e génération",
+"https://www.thalesaleniaspace.com/en/news/second-generation-maximizes-cosmo-skymed-system-capabilities"
+],
+[
+"Agence",
+"ASI – COSMO-SkyMed",
+"https://www.asi.it/en/earth-science/cosmo-skymed/"
+],
+[
+"Référence",
+"eoPortal – COSMO-SkyMed 2e génération",
+"https://www.eoportal.org/satellite-missions/cosmo-skymed-second-generation"
+]
+],
+"iride": [
+[
+"Agence",
+"ESA – IRIDE",
+"https://www.esa.int/Applications/Observing_the_Earth/IRIDE"
+],
+[
+"Agence",
+"ESA – Première constellation IRIDE",
+"https://www.esa.int/Applications/Observing_the_Earth/IRIDE/Italy_s_IRIDE_programme_marks_major_step_with_first_satellite_constellation"
+]
+],
+"paz": [
+[
+"Agence",
+"Hisdesat – PAZ",
+"https://www.hisdesat.es/en/paz/"
+],
+[
+"Référence",
+"eoPortal – PAZ",
+"https://www.eoportal.org/satellite-missions/paz"
+]
+],
+"syracuse": [
+[
+"Industriel",
+"Airbus – Syracuse IV",
+"https://www.airbus.com/en/products-services/defence/military-space/syracuse-iv"
+],
+[
+"Agence",
+"DGA – Lancement de Syracuse 4B",
+"https://www.defense.gouv.fr/dga/actualites/lancement-reussi-du-satellite-telecommunications-militaires-syracuse-4b"
+],
+[
+"Référence",
+"Wikipédia – Syracuse IV",
+"https://fr.wikipedia.org/wiki/Syracuse_IV"
+]
+],
+"satcombw": [
+[
+"Industriel",
+"Airbus – SATCOMBw",
+"https://www.airbus.com/en/products-services/defence/military-space/satcombw"
+],
+[
+"Industriel",
+"Airbus – Contrat SATCOMBw étape 3",
+"https://www.airbus.com/en/newsroom/press-releases/2024-07-airbus-awarded-german-armed-forces-prime-contract-for-military"
+],
+[
+"Agence",
+"Bundeswehr – Nouveaux satellites de communication",
+"https://www.bundeswehr.de/de/organisation/ausruestung-baainbw/aktuelles/satcom-satelliten-vertrag-baainbw-5812716"
+]
+],
+"sicral": [
+[
+"Industriel",
+"Telespazio – Lancement de SICRAL 2",
+"https://www.telespazio.com/en/press-release-detail/-/detail/260415-successfully-launched-the-sicral-2-satellite"
+],
+[
+"Industriel",
+"Thales Alenia Space – Exploitation de Syracuse 3, Athena-Fidus et SICRAL 2",
+"https://www.thalesaleniaspace.com/fr/press-releases/thales-alenia-space-va-assurer-les-operations-des-satellites-syracuse-3-athena-fidus"
+],
+[
+"Agence",
+"CNES – Athena-Fidus",
+"https://cnes.fr/projets/athena-fidus/en-details"
+]
+],
+"spainsat": [
+[
+"Industriel",
+"Airbus – SpainSat NG",
+"https://www.airbus.com/en/products-services/defence/military-space/spainsat-ng"
+],
+[
+"Industriel",
+"Airbus – Lancement de SpainSat NG-II",
+"https://www.airbus.com/en/newsroom/press-releases/2025-10-airbus-built-spainsat-ng-ii-secure-communications-satellite"
+],
+[
+"Agence",
+"Hisdesat – Choix d'Airbus et Thales Alenia Space",
+"https://www.hisdesat.es/en/nota_prensa/hisdesat-appoints-airbus-and-thales-alenia-space-to-build-two-spainsat-ng-satellites/"
+]
+],
+"eutelsat": [
+[
+"Industriel",
+"Eutelsat – Constellation OneWeb",
+"https://www.eutelsat.com/satellite-network/oneweb-leo-constellation"
+],
+[
+"Industriel",
+"Airbus – Commande de 340 satellites OneWeb",
+"https://www.airbus.com/en/newsroom/press-releases/2026-01-airbus-awarded-eutelsat-contract-for-further-340-low-earth-orbit"
+],
+[
+"Industriel",
+"Airbus – Premiers satellites OneWeb de nouvelle génération livrés",
+"https://www.airbus.com/en/newsroom/press-releases/2026-10-airbus-delivers-first-batch-of-next-generation-satellites-for-eutelsats-oneweb-constellation"
+]
+],
+"ses": [
+[
+"Industriel",
+"SES – Rachat d'Intelsat finalisé",
+"https://www.ses.com/press-release/ses-delivers-solid-h1-2025-results-completes-intelsat-acquisition"
+],
+[
+"Industriel",
+"SES – Derniers satellites O3b mPOWER",
+"https://www.ses.com/news/press-release/sess-final-three-o3b-mpower-satellites-successfully-launched"
+]
+],
+"hispasat": [
+[
+"Industriel",
+"Hispasat – Flotte de satellites",
+"https://www.hispasat.com/en/fleet-and-infrastructure/satellite-fleet"
+]
+],
+"iris2": [
+[
+"Agence",
+"EUSPA – IRIS²",
+"https://www.euspa.europa.eu/eu-space-programme/secure-satcom/iris2"
+],
+[
+"Agence",
+"Commission européenne – Déploiement d'IRIS²",
+"https://defence-industry-space.ec.europa.eu/commission-takes-next-step-deploy-iris2-secure-satellite-system-2024-12-16_en"
+],
+[
+"Agence",
+"ESA – IRIS² renforcé et accéléré",
+"https://www.esa.int/Space_in_Member_States/France/IRIS2_renforce_et_accelere_a_mesure_que_sa_mise_en_aeuvre_progresse"
+]
+],
+"govsatcom": [
+[
+"Agence",
+"EUSPA – GOVSATCOM",
+"https://www.euspa.europa.eu/eu-space-programme/secure-satcom/govsatcom"
+],
+[
+"Agence",
+"Commission européenne – GOVSATCOM",
+"https://defence-industry-space.ec.europa.eu/eu-space/govsatcom-satellite-communications_en"
+]
+],
+"artes": [
+[
+"Agence",
+"ESA – ARTES",
+"https://www.esa.int/Applications/Connectivity_and_Secure_Communications/ARTES/Advanced_Research_in_Telecommunications_Systems_ARTES"
+],
+[
+"Agence",
+"ESA – Projets en partenariat",
+"https://connectivity.esa.int/partnership-projects"
+]
+],
+"hh": [
+[
+"Industriel",
+"OHB – Contrat Heinrich Hertz (310,5 M€)",
+"https://www.ohb.de/en/investor-relations/ir-news/ad-hoc-announcements/ohb-se-ohb-system-ag-signed-a-contract-worth-eur-3105-million-with-the-german-aerospace-center-dlr-for-the-project-heinrich-hertz"
+],
+[
+"Agence",
+"DLR – Mission Heinrich Hertz",
+"https://www.dlr.de/de/ar/themen-missionen/kommunikation-navigation/satellitenkommunikation/heinrich-hertz"
+]
+],
+"egnos": [
+[
+"Agence",
+"EUSPA – EGNOS",
+"https://www.euspa.europa.eu/eu-space-programme/egnos"
+],
+[
+"Agence",
+"ESA – EGNOS nouvelle version",
+"https://www.esa.int/Applications/Satellite_navigation/New_technology_version_of_EGNOS_will_harness_Galileo_for_aviation"
+],
+[
+"Référence",
+"Navipedia – Avenir d'EGNOS",
+"https://gssc.esa.int/navipedia/index.php/EGNOS_Future_and_Evolutions"
+]
+],
+"galg1": [
+[
+"Agence",
+"ESA – Les satellites Galileo",
+"https://www.esa.int/Applications/Satellite_navigation/Galileo/Galileo_satellites"
+],
+[
+"Agence",
+"Centre de services GNSS européen – Système Galileo",
+"https://www.gsc-europa.eu/galileo/system"
+],
+[
+"Référence",
+"Navipedia – Galileo",
+"https://gssc.esa.int/navipedia/index.php?title=GALILEO_General_Introduction"
+]
+],
+"galg2": [
+[
+"Industriel",
+"Airbus – Production des Galileo G2",
+"https://www.airbus.com/en/newsroom/press-releases/2023-12-airbus-starts-galileo-second-generation-satellite-production"
+],
+[
+"Agence",
+"ESA – Contrat Galileo 2e génération",
+"https://www.esa.int/Applications/Satellite_navigation/ESA_signs_contract_for_new_generation_of_Galileo"
+],
+[
+"Agence",
+"ESA – Premiers essais matériels G2",
+"https://www.esa.int/Applications/Satellite_navigation/Galileo/Galileo_Second_Generation_satellite_aces_first_hardware_tests"
+]
+],
+"copsvc": [
+[
+"Agence",
+"Commission européenne – Copernicus",
+"https://defence-industry-space.ec.europa.eu/eu-space/copernicus-earth-observation_en"
+],
+[
+"Agence",
+"Copernicus Data Space – Les services",
+"https://dataspace.copernicus.eu/copernicus-services"
+]
+],
+"destine": [
+[
+"Agence",
+"Destination Earth",
+"https://destination-earth.eu/"
+],
+[
+"Agence",
+"ESA – Destination Earth",
+"https://www.esa.int/Applications/Observing_the_Earth/Destination_Earth"
+],
+[
+"Agence",
+"ECMWF – DestinE",
+"https://destine.ecmwf.int/"
+]
+],
+"rosetta": [
+[
+"Agence",
+"ESA – Rosetta en bref",
+"https://www.esa.int/Science_Exploration/Space_Science/Rosetta_overview"
+],
+[
+"Agence",
+"ESA – Atterrissage de Philae",
+"https://www.esa.int/Science_Exploration/Space_Science/Rosetta/Touchdown!_Rosetta_s_Philae_probe_lands_on_comet"
+]
+],
+"gaia": [
+[
+"Agence",
+"ESA – Gaia",
+"https://www.esa.int/Science_Exploration/Space_Science/Gaia"
+],
+[
+"Agence",
+"ESA – La meilleure carte de la Voie lactée",
+"https://www.esa.int/ESA_Multimedia/Images/2025/01/The_best_Milky_Way_map_by_Gaia"
+]
+],
+"bepi": [
+[
+"Industriel",
+"Airbus – BepiColombo",
+"https://www.airbus.com/en/products-services/space/space-exploration/bepicolombo"
+],
+[
+"Agence",
+"ESA – Fiche BepiColombo",
+"https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/BepiColombo_factsheet"
+]
+],
+"juice": [
+[
+"Industriel",
+"Airbus – Juice",
+"https://www.airbus.com/en/products-services/space/space-exploration/juice"
+],
+[
+"Agence",
+"ESA – Juice",
+"https://www.esa.int/Science_Exploration/Space_Science/Juice"
+],
+[
+"Instrument",
+"ESA Cosmos – Instruments de Juice",
+"https://www.cosmos.esa.int/web/juice/payload"
+]
+],
+"euclid": [
+[
+"Industriel",
+"Airbus – Euclid",
+"https://www.airbus.com/en/newsroom/stories/2023-06-euclid-the-space-telescope-aiming-to-unlock-the-secrets-of-the-universe"
+],
+[
+"Agence",
+"ESA – Euclid en bref",
+"https://www.esa.int/Science_Exploration/Space_Science/Euclid_overview"
+]
+],
+"solo": [
+[
+"Agence",
+"ESA – Solar Orbiter en bref",
+"https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter_overview"
+],
+[
+"Agence",
+"ESA – Fiche Solar Orbiter",
+"https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Solar_Orbiter_factsheet"
+]
+],
+"smile": [
+[
+"Agence",
+"ESA – Lancement de Smile",
+"https://www.esa.int/Newsroom/Press_Releases/Lancement_de_la_mission_Smile_en_quete_de_revelations_sur_le_bouclier_invisible_de_la_Terre_contre_les_vents_solaires"
+],
+[
+"Agence",
+"ESA Science – SMILE",
+"https://sci.esa.int/web/smile"
+]
+],
+"plato": [
+[
+"Agence",
+"ESA Cosmos – PLATO",
+"https://www.cosmos.esa.int/web/plato"
+],
+[
+"Agence",
+"DLR – PLATO",
+"https://www.dlr.de/en/ar/topics-missions/space-research/space-science/planets-moons-and-asteroids/plato"
+],
+[
+"Agence",
+"ESA – Début de la construction de PLATO",
+"https://www.esa.int/Science_Exploration/Space_Science/Construction_of_Europe_s_exoplanet_hunter_Plato_begins"
+]
+],
+"ariel": [
+[
+"Industriel",
+"Airbus – Conception préliminaire d'Ariel validée",
+"https://www.airbus.com/en/newsroom/news/2023-12-esa-validates-preliminary-design-of-ariel-exoplanet-spacecraft-built-by"
+],
+[
+"Agence",
+"ESA – Fiche Ariel",
+"https://www.esa.int/Science_Exploration/Space_Science/Ariel_factsheet"
+]
+],
+"cometint": [
+[
+"Agence",
+"ESA – Comet Interceptor",
+"https://www.esa.int/Science_Exploration/Space_Science/Comet_Interceptor"
+],
+[
+"Agence",
+"ESA – Fiche Comet Interceptor",
+"https://www.esa.int/Science_Exploration/Space_Science/Comet_Interceptor/Comet_Interceptor_factsheet"
+]
+],
+"lisa": [
+[
+"Agence",
+"ESA – Fiche LISA",
+"https://www.esa.int/Science_Exploration/Space_Science/LISA/LISA_factsheet"
+],
+[
+"Agence",
+"ESA – Début de la construction de LISA",
+"https://www.esa.int/Science_Exploration/Space_Science/LISA/Construction_of_ESA_s_ambitious_LISA_mission_begins"
+]
+],
+"iss": [
+[
+"Industriel",
+"Airbus – De l'orbite terrestre à la Lune",
+"https://www.airbus.com/en/newsroom/stories/2020-11-from-earth-orbit-to-the-moonand-beyond"
+],
+[
+"Agence",
+"ESA – La Station spatiale internationale",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/International_Space_Station/About_the_International_Space_Station"
+],
+[
+"Agence",
+"ESA – Lancement de Columbus",
+"https://www.esa.int/Newsroom/Press_Releases/Le_laboratoire_europeen_Columbus_quitte_la_Terre"
+]
+],
+"esm": [
+[
+"Industriel",
+"Airbus – Module de service européen d'Orion",
+"https://www.airbus.com/en/products-services/space/space-exploration/moon-missions/orion-european-service-module"
+],
+[
+"Industriel",
+"Airbus – L'ESM au cœur d'Artemis II",
+"https://www.airbus.com/en/newsroom/press-releases/2026-03-heart-of-the-mission-airbus-built-esm-to-power-historic-artemis-ii-crew-to-the-moon"
+],
+[
+"Agence",
+"ESA – Artemis II",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Orion/Artemis_II"
+]
+],
+"gateway": [
+[
+"Industriel",
+"Thales Alenia Space – Module ESPRIT",
+"https://www.thalesaleniaspace.com/en/press-releases/esprit-module-lunar-gateway-orbital-outpost-set-significant-upgrade"
+],
+[
+"Agence",
+"ESA – Gateway : Lunar View",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Gateway_Lunar_View"
+],
+[
+"Agence",
+"ESA – I-Hab pour Gateway",
+"https://www.esa.int/ESA_Multimedia/Images/2021/01/Lunar_I-Hab_for_Gateway"
+]
+],
+"exomars": [
+[
+"Agence",
+"ESA – Fiche ExoMars",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/ExoMars/ExoMars_Factsheet"
+],
+[
+"Agence",
+"ESA – La « renaissance » de Rosalind Franklin",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/ExoMars/FAQ_The_rebirth_of_ESA_s_ExoMars_Rosalind_Franklin_mission"
+],
+[
+"Instrument",
+"ESA – Les instruments du rover",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/ExoMars/All_instruments_onboard_Rosalind_Franklin_rover"
+]
+],
+"argonaut": [
+[
+"Agence",
+"ESA – Argonaut, programme d'atterrisseur lunaire",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/Argonaut_Europe_s_lunar_lander_programme"
+],
+[
+"Agence",
+"ESA – Argonaut confié à Thales Alenia Space",
+"https://www.esa.int/Newsroom/Press_Releases/ESA_s_first_lunar_lander_to_be_built_by_Thales_Alenia_Space-led_consortium"
+]
+],
+"cargo": [
+[
+"Industriel",
+"The Exploration Company – Nyx",
+"https://www.exploration.space/nyx"
+],
+[
+"Agence",
+"ESA – Contrats pour le retour de cargo",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/ESA_signs_contracts_for_commercial_space_cargo_return_service"
+]
+],
+"moonlight": [
+[
+"Agence",
+"ESA – Programme Moonlight",
+"https://www.esa.int/Applications/Connectivity_and_Secure_Communications/ESA_s_Moonlight_programme_Pioneering_the_path_for_lunar_exploration"
+],
+[
+"Agence",
+"ESA – Lunar Pathfinder",
+"https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Lunar_Pathfinder_Europe_s_first_step_towards_a_connected_Moon"
+]
+],
+"ariane5": [
+[
+"Industriel",
+"ArianeGroup – Ariane 5, la légende",
+"https://www.ariane.group/en/folders/ariane-5-the-legend/"
+],
+[
+"Agence",
+"ESA – Ariane 5",
+"https://www.esa.int/Enabling_Support/Space_Transportation/Launch_vehicles/Ariane_5"
+],
+[
+"Agence",
+"CNES – Ariane 5",
+"https://cnes.fr/en/projects/ariane-5"
+]
+],
+"ariane6": [
+[
+"Industriel",
+"ArianeGroup – Ariane 6",
+"https://www.ariane.group/en/space-transportation/ariane-6/"
+],
+[
+"Industriel",
+"Arianespace – Ariane 6",
+"https://www.arianespace.com/ariane-6/"
+],
+[
+"Agence",
+"CNES – Ariane 6",
+"https://cnes.fr/en/projects/ariane-6"
+]
+],
+"vega": [
+[
+"Industriel",
+"Avio – Vega-C",
+"https://www.avio.com/vega-c"
+],
+[
+"Agence",
+"ESA – Vol inaugural de Vega-C",
+"https://www.esa.int/Enabling_Support/Space_Transportation/Vega/Vega-C_successfully_completes_inaugural_flight"
+]
+],
+"themis": [
+[
+"Industriel",
+"ArianeGroup – Themis arrive à Esrange",
+"https://www.ariane.group/en/news/themis-reusable-rocket-prototype-arrived-at-esrange-space-center-in-sweden/"
+],
+[
+"Agence",
+"ESA – Répétition générale de Themis",
+"https://www.esa.int/Enabling_Support/Space_Transportation/Future_space_transportation/Major_rehearsal_takes_Themis_one_step_closer_to_flight"
+]
+],
+"maiaspace": [
+[
+"Industriel",
+"ArianeGroup – Maia",
+"https://www.ariane.group/en/space-transportation/maia/"
+],
+[
+"Industriel",
+"MaiaSpace – Présélection au European Launcher Challenge",
+"https://www.maia-space.com/news/318/"
+]
+],
+"isar": [
+[
+"Industriel",
+"Isar Aerospace",
+"https://isaraerospace.com/"
+],
+[
+"Industriel",
+"Isar Aerospace – Suivi des missions",
+"https://isaraerospace.com/mission-updates-overview"
+]
+],
+"rfa": [
+[
+"Industriel",
+"RFA – Le lanceur RFA One",
+"https://www.rfa.space/rfa-one-the-most-comprehensive-guide-to-our-launch-vehicle/"
+],
+[
+"Industriel",
+"OHB – RFA signe avec l'ESA (European Launcher Challenge)",
+"https://www.ohb.de/en/news/rocket-factory-augsburg-signs-esa-contract-under-the-european-launcher-challenge"
+]
+],
+"pld": [
+[
+"Industriel",
+"PLD Space – Miura 5",
+"https://www.pldspace.com/en/miura-5.html"
+],
+[
+"Industriel",
+"PLD Space – Avancement de Miura 5 (juillet 2026)",
+"https://www.pldspace.com/en/miura-5-progress-update-july-2026"
+]
+],
+"orbex": [
+[
+"Industriel",
+"Orbex",
+"https://orbex.space/"
+],
+[
+"Industriel",
+"Orbex – Présentation du lanceur Prime",
+"https://orbex.space/news/orbex-unveils-prime-rocket-at-new-facility-in-scotland"
+]
+],
+"csg": [
+[
+"Agence",
+"CNES – Centre spatial guyanais",
+"https://centrespatialguyanais.cnes.fr/en/les-enjeux"
+],
+[
+"Agence",
+"ESA – Le port spatial de l'Europe",
+"https://www.esa.int/Enabling_Support/Space_Transportation/Europe_s_Spaceport/Europe_s_Spaceport2"
+]
+],
+"andoya": [
+[
+"Agence",
+"Andøya Space – Inauguration du port spatial",
+"https://andoyaspace.no/news-articles/andoya-spaceport-officially-opened/"
+]
+],
+"saxavord": [
+[
+"Agence",
+"SaxaVord – Lancement",
+"https://saxavord.com/launch/"
+]
+],
+"esrange": [
+[
+"Agence",
+"SSC – Esrange",
+"https://sscspace.com/esrange/"
+]
+],
+"hera": [
+[
+"Agence",
+"ESA – Hera",
+"https://www.esa.int/Space_Safety/Hera"
+],
+[
+"Agence",
+"ESA – Première vue de Didymos par Hera",
+"https://www.esa.int/ESA_Multimedia/Images/2026/10/Destination_sighted_Hera_s_first_glimpse_of_Didymos"
+]
+],
+"ramses": [
+[
+"Industriel",
+"OHB Italia – Ramses avec le Japon",
+"https://www.ohb-italia.it/europe-and-japan-expand-their-joint-commitment-to-space-safety-with-the-ramses-mission-to-asteroid-apophis/"
+],
+[
+"Agence",
+"ESA – Ramses, mission vers Apophis",
+"https://www.esa.int/Space_in_Member_States/France/Presentation_de_Ramses_la_mission_de_l_ESA_vers_l_asteroide_Apophis"
+],
+[
+"Agence",
+"ESA – Contrats de Ramses",
+"https://www.esa.int/Space_Safety/Planetary_Defence/ESA_awards_contracts_for_Ramses_mission_to_Apophis"
+]
+],
+"vigil": [
+[
+"Industriel",
+"Airbus – Contrat Vigil",
+"https://www.airbus.com/en/newsroom/press-releases/2024-05-airbus-awarded-space-weather-spacecraft-mission-vigil"
+],
+[
+"Agence",
+"ESA – Airbus construira Vigil",
+"https://www.esa.int/Space_in_Member_States/France/Airbus_construira_la_mission_de_meteorologie_spatiale_Vigil_de_l_ESA"
+],
+[
+"Instrument",
+"ESA – Les instruments de Vigil",
+"https://www.esa.int/Space_Safety/Vigil/Vigil_s_tools_as_a_space_weather_reporter"
+]
+],
+"eusst": [
+[
+"Agence",
+"EU SST",
+"https://www.eusst.eu/about-us"
+],
+[
+"Agence",
+"Commission européenne – EU SST",
+"https://defence-industry-space.ec.europa.eu/eu-space/ssa-europes-eyes-space/eu-space-surveillance-and-tracking_en"
+]
+],
+"clearspace": [
+[
+"Industriel",
+"ClearSpace – ClearSpace-1",
+"https://clearspace.today/missions/clearspace-1"
+],
+[
+"Agence",
+"ESA – ClearSpace-1",
+"https://www.esa.int/Space_Safety/ClearSpace-1"
+]
+],
+"ares": [
+[
+"Agence",
+"Ministère des Armées – ARES",
+"https://www.defense.gouv.fr/comment-france-se-prepare-conflit-spatial/ares-dga-prepare-notre-maitrise-lespace"
+],
+[
+"Agence",
+"Commandement de l'Espace – Opérations spatiales militaires",
+"https://www.defense.gouv.fr/en/cde/our-military-space-operations"
+]
+],
+"ceres": [
+[
+"Industriel",
+"Airbus – Lancement de CERES",
+"https://www.airbus.com/en/newsroom/press-releases/2021-11-ceres-reconnaissance-space-system-designed-by-airbus-and-thales"
+],
+[
+"Agence",
+"DGA – Programme CERES",
+"https://www.defense.gouv.fr/dga/programme-ceres-capacite-renseignement-electromagnetique-spatiale"
+],
+[
+"Agence",
+"CNES – CERES",
+"https://ceres.cnes.fr/en/ceres-2"
+]
+],
+"edrs": [
+[
+"Industriel",
+"Airbus – SpaceDataHighway",
+"https://www.airbus.com/en/products-services/defence/military-space/space-data-highway"
+],
+[
+"Agence",
+"ESA – EDRS",
+"https://www.esa.int/Applications/Connectivity_and_Secure_Communications/EDRS/Overview"
+]
+],
+"euroqci": [
+[
+"Agence",
+"ESA – Le chiffrement quantique pour l'autonomie européenne",
+"https://www.esa.int/Applications/Connectivity_and_Secure_Communications/Quantum_encryption_to_boost_European_autonomy"
+],
+[
+"Agence",
+"ESA – EuroQCI",
+"https://resilience.esa.int/artes-4-0-programme-overview/optical-quantum-communications-scylight/european-quantum-communication-infrastructure-euroqci"
+]
+],
+"skynet": [
+[
+"Industriel",
+"Airbus – Étape clé de Skynet 6A",
+"https://www.airbus.com/en/newsroom/press-releases/2025-05-airbus-next-generation-skynet-satellite-reaches-major-milestone"
+],
+[
+"Agence",
+"Gouvernement britannique – Skynet 6",
+"https://www.gov.uk/guidance/skynet-6"
+]
+],
+"kineis": [
+[
+"Industriel",
+"Kinéis – Déploiement de la constellation",
+"https://kineis.com/en/deployment-of-the-kineis-iot-constellation/"
+],
+[
+"Industriel",
+"Kinéis – Technologie",
+"https://kineis.com/en/technology-kineis-iot/"
+]
+],
+"spock": [
+[
+"Industriel",
+"ICEYE – Contrat avec Rheinmetall",
+"https://www.iceye.com/newsroom/press-releases/iceye-and-rheinmetall-win-major-contract-worth-billions-for-space-reconnaissance"
+],
+[
+"Industriel",
+"Rheinmetall – Contrat de reconnaissance spatiale (déc. 2025)",
+"https://www.rheinmetall.com/en/media/news-watch/news/2025/12/2025-12-18-rheinmetall-and-iceye-win-billion-euro-contract-for-space-reconnaissance"
+]
+],
+"polsaris": [
+[
+"Industriel",
+"ICEYE – Livraison à l'armée polonaise en moins de 12 mois",
+"https://www.iceye.com/newsroom/press-releases/iceye-delivers-mikrosar-system-to-polish-armed-forces-in-under-12-months"
+],
+[
+"Agence",
+"POLSA – Les satellites de l'armée polonaise en orbite",
+"https://polsa.gov.pl/wydarzenia/satelitarne-oczy-polskiego-wojska-juz-na-orbicie/"
+]
+]
+};
+
+/* ---- Pilote visuels et échelle (10 programmes) ----
+   img : nom du fichier sur Wikimedia Commons (licence libre, auteur et licence sur la page du fichier)
+   corps : [largeur, hauteur] dessinés, en m · dimsTxt : dimensions telles que publiées
+   env : envergure totale déployée (m) · extras : longueurs d'éléments déployés · lanceur : silhouette de fusée */
+const VISUELS = {
+  s1: { img: "Sentinel_1-IMG_5874-white.jpg", leg: "Maquette de Sentinel-1", esa: false,
+    corps: [2.8, 4.0], dimsTxt: "Corps : 2,8 × 2,5 × 4 m", extras: [["Antenne radar", 12], ["Chaque panneau solaire", 10]],
+    masse: "2 300 kg", bc: "A", src: ["ESA – Sentinel-1 en chiffres", "https://esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Facts_and_figures"] },
+  s2: { img: "Sentinel-2A_satellite_-_Kourou's_control_room.jpg", leg: "Sentinel-2A, photo prise à Kourou", esa: false,
+    corps: [3.4, 2.35], dimsTxt: "Corps : 3,4 × 1,8 × 2,35 m", extras: [],
+    masse: "1 140 kg", bc: "B", src: ["Wikipedia – Sentinel-2", "https://en.wikipedia.org/wiki/Sentinel-2"] },
+  mtg: { img: "Meteosat_Third_Generation_ESA418057.jpg", leg: "Meteosat Troisième Génération", esa: true,
+    corps: [2.76, 5.17], replie: true, dimsTxt: "MTG-S replié sous la coiffe : 2,28 × 2,76 × 5,17 m", extras: [],
+    masse: "3 600 kg (MTG-S1) ; 3 760 kg (MTG-I1)", bc: "A", src: ["Copernicus – Description de MTG-S et Sentinel-4", "https://sentinels.copernicus.eu/missions/sentinel-4/satellite-description"] },
+  pneo: { img: null, leg: "", corps: null, dimsTxt: "Dimensions non publiées", extras: [],
+    masse: "920 kg", bc: "A", src: ["ESA Earth Online – Pléiades Neo", "https://earth.esa.int/eogateway/missions/pleiades-neo/description"],
+    vide: "Pas de visuel libre de droits trouvé ; Airbus ne publie pas les dimensions." },
+  galg1: { img: "Galileo_satellite_model.jpg", leg: "Maquette d'un satellite Galileo", esa: false,
+    corps: [2.5, 1.1], env: 14.67, dimsTxt: "Corps (satellite FOC) : 2,5 × 1,2 × 1,1 m ; envergure 14,67 m", extras: [],
+    masse: "733 kg", bc: "B", src: ["Spaceflight101 – Satellites Galileo", "https://spaceflight101.com/spacecraft/?p=965"] },
+  ariane6: { img: "Ariane_6_ESA-CC.jpg", leg: "Ariane 6", esa: true,
+    corps: [5.4, 63], lanceur: true, dimsTxt: "Hauteur jusqu'à 63 m, diamètre 5,4 m", extras: [],
+    masse: "≈ 530 t (Ariane 62) ; ≈ 860 t (Ariane 64) au décollage", bc: "B", src: ["Wikipedia – Ariane 6", "https://en.wikipedia.org/wiki/Ariane_6"] },
+  juice: { img: "JUICE_spacecraft_model_2.png", leg: "Modèle de la sonde JUICE", esa: false,
+    corps: null, dimsTxt: "Panneaux solaires de 85 m² ; dimensions du corps non retenues", extras: [["Antenne radar RIME", 16], ["Mât du magnétomètre", 10.6]],
+    masse: "≈ 6 t au lancement", bc: "B", src: ["ESA Cosmos – Charge utile et vaisseau JUICE", "https://www.cosmos.esa.int/web/juice/payload"] },
+  esm: { img: "Illustration_of_Orion_and_the_European_Service_Module_(32007138711).jpg", leg: "Orion et son module de service européen (illustration)", esa: false,
+    corps: [4.1, 4.0], env: 19, dimsTxt: "Diamètre 4,1 m, hauteur 4 m ; envergure des panneaux 19 m", extras: [],
+    masse: "13,5 à 15,5 t selon les sources", bc: "B", src: ["Wikipedia – European Service Module", "https://en.wikipedia.org/wiki/European_Service_Module"] },
+  hera: { img: "Hera_in_orbit.jpg", leg: "Hera en orbite (vue d'artiste)", esa: false,
+    corps: [1.6, 1.7], env: 11.4, dimsTxt: "Corps : 1,6 × 1,6 × 1,7 m ; 11,4 m panneaux déployés", extras: [],
+    masse: "≈ 1,1 à 1,2 t selon les sources", bc: "B", src: ["Wikipedia – Hera", "https://en.wikipedia.org/wiki/Hera_(space_mission)"] },
+  iris2: { img: null, leg: "", corps: null, dimsTxt: "", extras: [], masse: "", bc: "",
+    vide: "Pas encore de visuel : la conception des satellites d'IRIS² n'est pas publique." }
+};

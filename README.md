@@ -25,6 +25,9 @@ Pour chacun des 108 programmes : financeur, maître d'ouvrage, maître d'œuvre,
 - `src/data2.js` : science, exploration, lanceurs, sécurité et défense spatiales, liaisons optiques, services
 - `src/data3.js` : annuaire des acteurs
 - `src/data4.js` : données financières (contrats, levées, séries)
+- `src/data5.js` : liens sources par programme (253 liens vérifiés) et pilote visuels + échelle (10 programmes)
+
+Les photos du pilote sont servies depuis Wikimedia Commons (licences libres, crédit et licence sur la page de chaque fichier). Elles s'affichent sur GitHub Pages ; dans un environnement qui bloque les images externes, la fiche propose un lien vers la photo.
 
 ## Consulter
 

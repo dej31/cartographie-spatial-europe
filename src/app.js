@@ -144,7 +144,7 @@
     const fch = [["all", "Tous", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
       .map(([k, l, c]) => `<button class="fchip" type="button" data-fam="${k}" aria-pressed="${state.fam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
     return `<div class="view-head"><h2>Fiches programmes</h2>
-      <p>Même grille pour chaque programme. Les chiffres portent un indice de confiance : A vérifié en octobre 2026, B publié mais non revérifié, C estimation ou donnée non publique.</p></div>
+      <p>Même grille pour chaque programme, avec des liens vers les pages de l'industriel et de l'agence. Les chiffres portent un indice de confiance : A vérifié en octobre 2026, B publié mais non revérifié, C estimation ou donnée non publique. Le symbole ◧ signale les dix fiches pilotes avec visuel et schéma à l'échelle.</p></div>
       <div class="fiches">
         <div>
           <div class="filters">
@@ -164,7 +164,7 @@
     el.innerHTML = list.length ? list.map(p => `
       <button class="pitem" type="button" data-sel="${p.id}" aria-current="${p.id === state.sel}">
         <span class="bar" style="background:${col(famOf(p))}"></span>
-        <span style="min-width:0"><span class="t">${esc(p.n)}</span><span class="s">${esc(DOMAINES[p.d].nom)} · ${esc(p.moe)}</span></span>
+        <span style="min-width:0"><span class="t">${esc(p.n)}${typeof VISUELS !== "undefined" && VISUELS[p.id] ? ' <span class="vis-dot" title="Visuel et échelle disponibles">◧</span>' : ""}</span><span class="s">${esc(DOMAINES[p.d].nom)} · ${esc(p.moe)}</span></span>
         ${pill(p.st)}
       </button>`).join("") : `<p class="note" style="padding:14px">Aucun programme ne correspond. Essayez un autre mot ou la famille « Tous ».</p>`;
   }
@@ -202,6 +202,7 @@
         <h3>${esc(p.n)}</h3>
         <p class="sub">${esc(p.sub)}</p>
       </div>
+      ${visuelHtml(p)}
       <dl class="grid-fields" style="margin:0">
         ${field("Application", esc(p.app), true)}
         ${field("Financeur", esc(p.fin))}
@@ -219,6 +220,7 @@
         <div><h4>Découle de</h4><div class="chips">${preds.length ? preds.map(chip).join("") : `<span class="note">Programme sans prédécesseur direct dans l'atlas.</span>`}</div></div>
         <div><h4>A donné naissance à</h4><div class="chips">${succs.concat(usedBy.map(q => q.id)).length ? succs.concat(usedBy.map(q => q.id)).map(chip).join("") : `<span class="note">Pas de successeur identifié à ce jour.</span>`}</div></div>
         ${convs.length ? `<div><h4>Convergences</h4>${convs.map(c => `<p class="conv-line"><b>${esc(c.titre)}</b> · ${esc(c.type)}. ${esc(c.txt)}</p>`).join("")}</div>` : ""}
+        ${liensHtml(p)}
       </div>
     </article>`;
   }
@@ -395,6 +397,76 @@
         <div class="panel"><h3 class="ch-t">Contributions nationales à l'ESA en 2024</h3>${barsH(CONTRIB.map(c => [c.p, c.m, "var(--accent)", null]))}
         <p class="note">Au CM25 (2026-2028), l'Allemagne passe à plus de 5 Md€ (23 % du total) et le Royaume-Uni recule à 1,7 Md€.</p></div>
       </div>`;
+  }
+
+
+  /* ================= VISUEL, ÉCHELLE, LIENS ================= */
+  const commonsImg = f => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=900";
+  const commonsPage = f => "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.replace(/ /g, "_"));
+  const nf = v => v.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+  function humanPath(x, yb, s) {
+    const h = 1.8 * s, hr = h * 0.075, cx = x + h * 0.13;
+    const sh = yb - h * 0.82, hip = yb - h * 0.47;
+    return `<g fill="var(--ink)" opacity=".8"><circle cx="${cx}" cy="${yb - h + hr}" r="${hr}"></circle>
+      <path d="M${cx - h * 0.09},${sh} h${h * 0.18} l${h * 0.03},${h * 0.33} h-${h * 0.05} l-${h * 0.02},-${h * 0.2} v${h * 0.55} h-${h * 0.05} v-${h * 0.3} h-${h * 0.02} v${h * 0.3} h-${h * 0.05} v-${h * 0.55} l-${h * 0.02},${h * 0.2} h-${h * 0.05} Z"></path></g>`;
+  }
+  function echelleSvg(v, c) {
+    const W = 560, PAD = 14, gap = 1.2;
+    const bw = v.corps ? v.corps[0] : 0, bh = v.corps ? v.corps[1] : 0;
+    const objW = Math.max(bw, v.env || 0, 0.01);
+    const ext = v.extras || [];
+    const extMax = ext.length ? Math.max(...ext.map(e => e[1])) : 0;
+    const totalH = Math.max(1.8, bh);
+    const s = Math.min((W - 2 * PAD - 60 - 48) / Math.max(objW, extMax), (v.lanceur ? 320 : 230) / totalH);
+    const extH = ext.length * 26;
+    const top = PAD + 14;
+    const H = top + totalH * s + 26 + extH + 6;
+    const yb = top + totalH * s;
+    const x0 = PAD + Math.max((0.5 + gap) * s, 48);
+    let g = `<line x1="${PAD - 4}" x2="${W - PAD}" y1="${yb}" y2="${yb}" stroke="var(--line)"></line>`;
+    g += humanPath(PAD, yb, s) + `<text x="${PAD}" y="${yb - 1.8 * s - 5}" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">1,8 m</text>`;
+    if (v.corps) {
+      const cx = x0 + objW * s / 2, bx = cx - bw * s / 2, by = yb - bh * s;
+      if (v.env) g += `<rect x="${cx - v.env * s / 2}" y="${by + bh * s / 2 - Math.max(2, 0.12 * s)}" width="${v.env * s}" height="${Math.max(4, 0.24 * s)}" rx="1.5" fill="${c}" opacity=".45"></rect>`;
+      if (v.lanceur) {
+        const nose = Math.min(bh * 0.14, 9) * s;
+        g += `<path d="M${bx},${yb} V${by + nose} Q${bx},${by} ${cx},${by} Q${bx + bw * s},${by} ${bx + bw * s},${by + nose} V${yb} Z" fill="${c}" fill-opacity=".22" stroke="${c}" stroke-width="1.5"></path>`;
+      } else {
+        g += `<rect x="${bx}" y="${by}" width="${bw * s}" height="${bh * s}" rx="2" fill="${c}" fill-opacity=".22" stroke="${c}" stroke-width="1.5"></rect>`;
+      }
+      g += `<text x="${cx}" y="${yb + 14}" font-size="10.5" text-anchor="middle" fill="var(--muted)" font-family="var(--font-mono)">${nf(bw)} m</text>`;
+      g += `<line x1="${bx + bw * s + 6}" x2="${bx + bw * s + 6}" y1="${by}" y2="${yb}" stroke="var(--muted)" stroke-dasharray="2 2"></line><text x="${bx + bw * s + 10}" y="${by + 11}" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">${nf(bh)} m</text>`;
+      if (v.env) g += `<text x="${cx - v.env * s / 2}" y="${by + bh * s / 2 - Math.max(6, 0.14 * s)}" font-size="10.5" fill="var(--ink)" font-family="var(--font-mono)">envergure ${nf(v.env)} m</text>`;
+    } else {
+      g += `<text x="${x0}" y="${yb - 10}" font-size="12" fill="var(--muted)">Corps : dimensions non retenues</text>`;
+    }
+    ext.forEach((e, i) => {
+      const y = yb + 26 + i * 26;
+      g += `<rect x="${x0}" y="${y - 7}" width="${e[1] * s}" height="6" rx="2" fill="${c}"></rect><text x="${x0}" y="${y + 11}" font-size="11" fill="var(--ink)">${esc(e[0])} : <tspan font-family="var(--font-mono)">${nf(e[1])} m</tspan></text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" class="scale-svg" role="img" aria-label="Schéma à l'échelle avec un humain de 1,80 m">${g}</svg>`;
+  }
+  function visuelHtml(p) {
+    const v = typeof VISUELS !== "undefined" && VISUELS[p.id];
+    if (!v) return "";
+    const c = col(famOf(p));
+    const img = v.img ? `<figure class="vis-img">
+        <a href="${commonsPage(v.img)}" target="_blank" rel="noopener" class="vis-frame">
+          <img src="${commonsImg(v.img)}" alt="${esc(v.leg)}" loading="lazy" onerror="this.closest('.vis-frame').classList.add('ko')">
+          <span class="vis-ko">Photo hébergée sur Wikimedia Commons : ouvrir l'image ↗</span>
+        </a>
+        <figcaption>${esc(v.leg)} · ${v.esa ? "ESA, " : ""}via Wikimedia Commons, licence libre (auteur et licence sur la page du fichier)</figcaption>
+      </figure>` : `<div class="vis-img vis-vide"><p>${esc(v.vide || "Pas de visuel libre de droits.")}</p></div>`;
+    const sch = (v.corps || (v.extras && v.extras.length)) ? `<figure class="vis-sch">${echelleSvg(v, c)}
+        <figcaption>Silhouette simplifiée, à la même échelle que l'humain de 1,80 m. ${esc(v.dimsTxt)}${v.masse ? ` · Masse : ${esc(v.masse)}` : ""} <span class="conf">${v.bc}</span><br>Source : <a href="${v.src[1]}" target="_blank" rel="noopener">${esc(v.src[0])}</a></figcaption></figure>`
+      : (v.masse ? `<div class="vis-sch vis-vide"><p>${esc(v.dimsTxt)}. Masse : ${esc(v.masse)} <span class="conf">${v.bc}</span></p>${v.src ? `<p class="note">Source : <a href="${v.src[1]}" target="_blank" rel="noopener">${esc(v.src[0])}</a></p>` : ""}</div>` : "");
+    return `<section class="vis" aria-label="Visuel et échelle">${img}${sch}</section>`;
+  }
+  function liensHtml(p) {
+    const L = typeof LIENS !== "undefined" && LIENS[p.id];
+    if (!L || !L.length) return "";
+    return `<div><h4>Pour aller plus loin</h4><ul class="liens">${L.map(([t, l, u]) =>
+      `<li><span class="lt lt-${t === "Industriel" ? "ind" : t === "Référence" ? "ref" : t === "Instrument" ? "ins" : "ag"}">${esc(t)}</span><a href="${esc(u)}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>`;
   }
 
   /* ================= VUE 3 : FRISE ================= */

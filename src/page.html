@@ -309,6 +309,28 @@ button.lnk { border: 0; background: none; padding: 0; color: var(--accent); curs
 @media (max-width: 900px) { .fin-charts { grid-template-columns: minmax(0, 1fr); } .fin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .hb { grid-template-columns: minmax(0, 110px) minmax(0, 1fr) 70px; } }
 
+
+/* ---------- Visuel, échelle, liens ---------- */
+.vis { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); border-bottom: 1px solid var(--line); }
+.vis figure { margin: 0; padding: 14px 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.vis figcaption { font-size: 12px; color: var(--muted); }
+.vis-img { border-right: 1px solid var(--line); }
+.vis-frame { display: block; position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: var(--sunk); border-radius: 4px; overflow: hidden; text-decoration: none; }
+.vis-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.vis-ko { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; color: var(--accent); }
+.vis-frame.ko img { display: none; }
+.vis-frame.ko .vis-ko { display: flex; }
+.vis-vide { padding: 14px 20px; display: grid; align-content: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.vis-vide.vis-img { background: var(--paper); }
+.scale-svg { width: 100%; height: auto; display: block; }
+.vis-dot { color: var(--accent); font-size: 12px; }
+ul.liens { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+ul.liens li { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 13.5px; }
+ul.liens a { overflow-wrap: anywhere; }
+.lt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; background: var(--sunk); color: var(--muted); text-align: center; }
+.lt-ind { color: var(--accent); }
+@media (max-width: 700px) { .vis { grid-template-columns: minmax(0, 1fr); } .vis-img { border-right: 0; border-bottom: 1px solid var(--line); } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
   .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -379,6 +401,7 @@ button.lnk { border: 0; background: none; padding: 0; color: var(--accent); curs
 /*__DATA2__*/
 /*__DATA3__*/
 /*__DATA4__*/
+/*__DATA5__*/
 </script>
 <script>
 /*__APP__*/

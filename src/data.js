@@ -185,7 +185,7 @@ const PROGRAMMES = [
 
   { id: "sng", n: "Sentinel nouvelle génération (1NG, 2NG, 3NG)", d: "cop", sub: "Renouvellement des trois familles phares",
     fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
-    moe: "Non attribué publiquement à ce stade", g: [], plat: "—",
+    moe: "Sentinel-1NG : Thales Alenia Space Italie, radars Airbus DS Allemagne (contrat de juin 2026) ; 2NG et 3NG non attribués", g: ["tas"], plat: "—",
     instr: "Radar (1NG), optique (2NG), topographie et optique séparées (3NG)",
     app: "Prendre le relais de Sentinel-1, -2 et -3 avec de meilleures performances.",
     bud: "Non publié", bc: "C",
@@ -535,13 +535,12 @@ const PROGRAMMES = [
 
   { id: "spainsat", n: "SpainSat NG", d: "dtl", sub: "Télécoms militaires espagnoles",
     fin: "Défense espagnole", moa: "Hisdesat",
-    moe: "Airbus DS (Espagne et France)", g: ["airbus"], plat: "Eurostar Neo (Airbus)",
+    moe: "Airbus DS et Thales Alenia Space", g: ["airbus", "tas"], plat: "Eurostar Neo (Airbus)",
     instr: "Charges utiles bandes X, Ka militaire et UHF",
     app: "Communications sécurisées des forces espagnoles et alliées.",
     bud: "Non retenu ici", bc: "C",
-    y0: 2025, y1: 2040, jal: [[2025, "SpainSat NG I (janv.)"]],
-    st: "op", pred: [], succ: [],
-    note: "Statut de SpainSat NG II à vérifier." },
+    y0: 2025, y1: 2040, jal: [[2025, "SpainSat NG I (janv.) et NG II (oct.)"]],
+    st: "op", pred: [], succ: [] },
 
   /* ---------------- TÉLÉCOMS COMMERCIALES ---------------- */
   { id: "eutelsat", n: "Eutelsat (avec OneWeb)", d: "tcm", sub: "Opérateur franco-britannique : flotte géostationnaire et constellation LEO",
@@ -552,7 +551,7 @@ const PROGRAMMES = [
     bud: "Augmentation de capital ≈ 1,5 Md€ achevée fin 2025", bc: "A",
     y0: 1977, y1: 2045, jal: [[1977, "Création intergouvernementale"], [2001, "Privatisation"], [2023, "Fusion avec OneWeb"], [2025, "Recapitalisation"]],
     st: "op", pred: [], succ: [],
-    note: "OneWeb compte environ 640 satellites. Eutelsat est membre du consortium SpaceRISE d'IRIS²." },
+    note: "OneWeb compte environ 640 satellites. En 2026, Eutelsat a commandé 340 puis 229 satellites OneWeb de nouvelle génération à Airbus, dont les premiers ont été livrés en octobre. Eutelsat est membre du consortium SpaceRISE d'IRIS²." },
 
   { id: "ses", n: "SES", d: "tcm", sub: "Opérateur luxembourgeois multi-orbites",
     fin: "Capitaux privés (l'État luxembourgeois est actionnaire)", moa: "SES",
