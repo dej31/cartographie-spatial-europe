@@ -24,6 +24,8 @@
   --f-def: #B03F2E;
   --f-tel: #B67D0B;
   --f-nav: #6A4BC4;
+  --f-exp: #A8327A;
+  --f-lan: #4F7A1F;
   --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(18,32,47,.14) 4px 6px);
   --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -34,7 +36,7 @@
   :root:not([data-theme="light"]) {
     --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
     --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
-    --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2;
+    --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2; --f-exp: #E07AB8; --f-lan: #93C25A;
     --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
     color-scheme: dark;
   }
@@ -42,7 +44,7 @@
 :root[data-theme="dark"] {
   --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
   --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
-  --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2;
+  --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2; --f-exp: #E07AB8; --f-lan: #93C25A;
   --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
   color-scheme: dark;
 }
@@ -106,7 +108,7 @@ main .wrap { padding-block: 30px 60px; }
 .stage h3 { font-size: 15px; font-stretch: 105%; margin: 4px 0 8px; }
 .stage ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
 .stage:not(:last-child)::after { content: ""; position: absolute; right: -7px; top: 22px; width: 12px; height: 12px; background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line); transform: rotate(45deg); z-index: 1; }
-.circuits { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.circuits { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); }
 .circuit { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 10px; align-content: start; }
 .circuit h3 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
 .circuit ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; counter-reset: c; }
@@ -270,7 +272,7 @@ footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted);
     <div>
       <div class="eyebrow">Marché spatial européen · état au 20 octobre 2026</div>
       <h1>Atlas du spatial européen</h1>
-      <p class="lead">Qui finance, qui commande, qui construit, à quoi ça sert, combien ça coûte, quand ça vole. Et comment les programmes s'engendrent et se croisent les uns les autres.</p>
+      <p class="lead">Satellites, science, exploration, lanceurs : qui finance, qui commande, qui construit, à quoi ça sert, combien ça coûte, quand ça vole. Et comment les programmes s'engendrent et se croisent les uns les autres.</p>
     </div>
     <div>
       <div class="legend-fam" id="legendFam"></div>
@@ -305,6 +307,7 @@ footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted);
 
 <script>
 /*__DATA__*/
+/*__DATA2__*/
 </script>
 <script>
 /*__APP__*/

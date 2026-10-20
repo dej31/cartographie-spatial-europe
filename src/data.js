@@ -10,9 +10,11 @@
 const FAMILLES = {
   obs: { nom: "Observation civile", court: "Observation" },
   met: { nom: "Météorologie", court: "Météo" },
-  def: { nom: "Défense & dual", court: "Défense" },
+  def: { nom: "Défense & sécurité", court: "Défense" },
   tel: { nom: "Télécommunications", court: "Télécoms" },
-  nav: { nom: "Navigation", court: "Navigation" }
+  nav: { nom: "Navigation", court: "Navigation" },
+  exp: { nom: "Science & exploration", court: "Science" },
+  lan: { nom: "Lanceurs & accès à l'espace", court: "Lanceurs" }
 };
 
 const DOMAINES = {
@@ -24,7 +26,16 @@ const DOMAINES = {
   dtl: { fam: "def", nom: "Télécoms militaires", resume: "Liaisons sécurisées des armées, en orbite géostationnaire, souvent en partenariat entre pays." },
   tcm: { fam: "tel", nom: "Opérateurs commerciaux", resume: "Opérateurs privés qui achètent des satellites aux industriels et vendent de la capacité." },
   tin: { fam: "tel", nom: "Programmes UE & R&D ESA", resume: "Programmes publics de connectivité sécurisée et financement de la R&D télécoms." },
-  nav: { fam: "nav", nom: "Galileo & EGNOS", resume: "Positionnement et datation. Programme phare de l'UE, avec un service chiffré gouvernemental (PRS)." }
+  nav: { fam: "nav", nom: "Galileo & EGNOS", resume: "Positionnement et datation. Programme phare de l'UE, avec un service chiffré gouvernemental (PRS)." },
+  svc: { fam: "obs", nom: "Services & données", resume: "Ce qui transforme les mesures en informations utiles. La plus grosse part du marché en valeur, loin devant les satellites." },
+  sec: { fam: "def", nom: "Sécurité spatiale", resume: "Protéger la Terre et les satellites : astéroïdes, météo spatiale, débris. Programme Space Safety de l'ESA et service SST de l'UE." },
+  dsp: { fam: "def", nom: "Défense spatiale", resume: "Surveiller, protéger et agir dans l'espace. Domaine en forte croissance depuis la création du Commandement de l'Espace (2019)." },
+  opt: { fam: "tel", nom: "Liaisons optiques & quantiques", resume: "Relais laser de données et distribution quantique de clés : la couche de communication sécurisée de demain." },
+  esc: { fam: "exp", nom: "Science spatiale ESA", resume: "Le programme obligatoire de l'ESA : astronomie, physique fondamentale, système solaire. Missions classées S, M et L selon leur taille." },
+  exh: { fam: "exp", nom: "Exploration humaine & robotique", resume: "Station spatiale, Lune, Mars. L'Europe y contribue souvent en nature (modules, véhicules) en échange de places pour ses astronautes." },
+  lnc: { fam: "lan", nom: "Lanceurs institutionnels", resume: "Ariane et Vega : la garantie d'un accès autonome à l'espace, financée par les États via l'ESA." },
+  lnn: { fam: "lan", nom: "Micro-lanceurs NewSpace", resume: "Jeunes entreprises de lancement financées par capitaux privés et, depuis 2025, par le European Launcher Challenge." },
+  prt: { fam: "lan", nom: "Ports spatiaux", resume: "Les bases de lancement : Kourou historiquement, et de nouveaux sites en Europe du Nord pour les petits lanceurs." }
 };
 
 const STATUTS = {
@@ -39,6 +50,7 @@ const GROUPES = {
   airbus: "Airbus Defence and Space",
   tas: "Thales Alenia Space",
   ohb: "OHB",
+  lanc: "ArianeGroup / Avio",
   autre: "Autres / nouveaux entrants"
 };
 
@@ -438,13 +450,13 @@ const PROGRAMMES = [
     st: "op", pred: ["helios"], succ: ["csosuite"],
     note: "Accord d'échange avec l'Allemagne : images optiques CSO contre images radar SARah." },
 
-  { id: "csosuite", n: "Successeur de CSO", d: "dob", sub: "Prochaine génération d'optique militaire française",
+  { id: "csosuite", n: "IRIS (successeur de CSO)", d: "dob", sub: "Prochaine génération d'optique militaire française",
     fin: "Ministère des Armées (loi de programmation militaire)", moa: "DGA",
     moe: "Non attribué publiquement", g: [], plat: "—",
     instr: "—", app: "Assurer la suite de CSO au-delà de 2030.",
     bud: "Non publié", bc: "C",
-    y0: 2032, y1: 2045, jal: [], st: "plan", pred: ["cso"], succ: [],
-    note: "Nom et calendrier à vérifier : peu d'informations publiques." },
+    y0: 2030, y1: 2045, jal: [], st: "plan", pred: ["cso"], succ: [],
+    note: "Successeur de CSO à compter de 2030 selon la programmation militaire. Ne pas confondre avec IRIS², la constellation télécoms de l'UE." },
 
   { id: "sarlupe", n: "SAR-Lupe", d: "dob", sub: "Radar militaire allemand, 5 satellites",
     fin: "Bundeswehr", moa: "BAAINBw (agence d'armement allemande)",

@@ -11,7 +11,7 @@
     ["mecanique", "Mécanique du marché"],
     ["domaines", "Carte des domaines"],
     ["fiches", "Fiches programmes"],
-    ["frise", "Frise 1977-2045"],
+    ["frise", "Frise 1965-2045"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
     ["industrie", "Lecture industrielle"],
@@ -47,9 +47,9 @@
       ["Maître d'ouvrage", "Qui commande", ["ESA (pour l'UE ou ses États)", "CNES, DLR, ASI", "DGA, BAAINBw", "EUSPA (exploitation)", "Opérateurs : Eutelsat, SES…"]],
       ["Maître d'œuvre", "Qui intègre le satellite", ["Airbus DS", "Thales Alenia Space", "OHB", "Nouveaux entrants : ICEYE, Aerospacelab…"]],
       ["Équipementiers", "Qui fournit les briques", ["Instruments : Leonardo, Thales, Airbus", "Optique : Safran Reosc", "Senseurs : Sodern, Jena-Optronik", "Charges utiles : SSTL, Thales"]],
-      ["Lancement", "Qui met en orbite", ["Arianespace (Ariane 6, Vega-C avec Avio)", "SpaceX quand l'offre européenne manque"]],
+      ["Lancement", "Qui met en orbite", ["Arianespace (Ariane 6)", "Avio (Vega-C)", "Micro-lanceurs : Isar, RFA, PLD…", "SpaceX quand l'offre européenne manque"]],
       ["Exploitation", "Qui fait voler", ["ESA (ESOC)", "EUMETSAT", "CNES", "Armées", "Opérateurs privés"]],
-      ["Utilisateurs", "Qui se sert des données", ["Services Copernicus", "Météo-France, DWD…", "Armées", "Clients commerciaux"]]
+      ["Utilisateurs", "Qui se sert des données", ["Services Copernicus", "Météo-France, DWD…", "Armées", "Scientifiques", "Clients commerciaux"]]
     ];
     const chain = stages.map(([t, s, items], i) => `
       <div class="stage"><div class="num">${i + 1} · ${esc(s)}</div><h3>${esc(t)}</h3>
@@ -67,7 +67,15 @@
       { f: "tel", t: "Circuit commercial", ex: "Exemple : Pléiades Neo", rows: [
         ["Paie", "Airbus, sur fonds propres"], ["Commande", "Airbus à lui-même"], ["Construit", "Airbus DS"],
         ["Lance", "Arianespace, Vega"], ["Exploite", "Airbus"], ["Données", "Vendues, l'État est un client"]],
-        moral: "L'industriel prend le risque et garde les revenus. Les États sécurisent le modèle par des contrats d'achat de données." }
+        moral: "L'industriel prend le risque et garde les revenus. Les États sécurisent le modèle par des contrats d'achat de données." },
+      { f: "lan", t: "Circuit NewSpace soutenu", ex: "Exemple : Isar Aerospace (Spectrum)", rows: [
+        ["Paie", "Capitaux privés (> 400 M€), puis États via le European Launcher Challenge"], ["Commande", "Isar à lui-même ; l'ESA réserve des missions"], ["Construit", "Isar Aerospace, intégration verticale"],
+        ["Lance", "Depuis Andøya (Norvège)"], ["Exploite", "Isar Aerospace"], ["Clients", "Institutionnels et commerciaux"]],
+        moral: "L'argent privé finance le risque technique ; l'argent public arrive ensuite, conditionné à des vols réussis." },
+      { f: "exp", t: "Circuit coopération et troc", ex: "Exemple : module de service d'Orion", rows: [
+        ["Paie", "États membres de l'ESA (programme exploration)"], ["Commande", "ESA, pour le compte de la NASA"], ["Construit", "Airbus DS à Brême, fournisseurs de 13 pays"],
+        ["Lance", "NASA (SLS)"], ["Exploite", "NASA"], ["Contrepartie", "Places d'astronautes européens"]],
+        moral: "L'Europe paie en nature. Elle garde l'argent et l'emploi chez elle, mais dépend des choix américains." }
     ];
     const circ = circuits.map(c => `
       <div class="circuit">
@@ -97,7 +105,7 @@
       <div class="view-head"><h2>Comment le marché fonctionne</h2>
       <p>Un satellite européen passe par sept mains. La plupart des différences entre programmes viennent de qui occupe les deux premières cases : qui paie, et qui commande.</p></div>
       <div class="chain">${chain}</div>
-      <h3 class="section-title">Trois circuits types</h3>
+      <h3 class="section-title">Cinq circuits types</h3>
       <div class="circuits">${circ}</div>
       <h3 class="section-title">Les grandes enveloppes</h3>
       <p class="note" style="margin-bottom:12px">Enveloppes pluriannuelles de natures différentes, à lire séparément. Barres à la même échelle.</p>
@@ -214,7 +222,7 @@
 
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
-    return `<div class="view-head"><h2>Frise 1977-2045</h2>
+    return `<div class="view-head"><h2>Frise 1965-2045</h2>
       <p>Une ligne par programme, regroupée par domaine. Partie pleine : déjà en orbite. Partie claire : prévu. Les traits verticaux sont les lancements et jalons ; survolez-les pour le détail, cliquez une ligne pour ouvrir la fiche.</p></div>
       <div class="tl-tools">
         <span class="tl-key"><i style="background:var(--ink)"></i>Réalisé</span>
@@ -225,18 +233,18 @@
       <p class="note" style="margin-top:10px">Faites défiler horizontalement sur petit écran.</p>`;
   }
   function timelineSVG() {
-    const Y0 = 1976, Y1 = 2046, L = 240, PX = 13, RH = 22, HH = 30, TOP = 34;
+    const Y0 = 1965, Y1 = 2046, L = 240, PX = 11.5, RH = 22, HH = 30, TOP = 34;
     const W = L + (Y1 - Y0) * PX + 20;
     const x = y => L + (y - Y0) * PX;
     let rows = [], yCur = TOP;
-    Object.entries(DOMAINES).forEach(([dk, d]) => {
+    Object.keys(FAMILLES).flatMap(fk => Object.entries(DOMAINES).filter(([, d]) => d.fam === fk)).forEach(([dk, d]) => {
       const ps = PROGRAMMES.filter(p => p.d === dk).sort((a, b) => a.y0 - b.y0);
       rows.push({ head: d.nom, fam: d.fam, y: yCur }); yCur += HH;
       ps.forEach(p => { rows.push({ p, y: yCur }); yCur += RH; });
     });
     const H = yCur + 10;
     let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Frise chronologique des programmes">`;
-    for (let y = 1980; y <= Y1; y += 5) {
+    for (let y = 1965; y <= Y1; y += 5) {
       s += `<line x1="${x(y)}" x2="${x(y)}" y1="${TOP - 8}" y2="${H}" stroke="var(--line)" stroke-width="${y % 10 ? 0.5 : 1}"></line>`;
       if (y % 10 === 0) s += `<text x="${x(y)}" y="20" font-size="11" text-anchor="middle" fill="var(--muted)" font-family="var(--font-mono)">${y}</text>`;
     }
@@ -308,7 +316,7 @@
 
   /* ================= VUE 6 : INDUSTRIE ================= */
   function vIndustrie() {
-    const groups = ["airbus", "tas", "ohb", "autre"];
+    const groups = Object.keys(GROUPES);
     const counts = groups.map(g => {
       const byFam = {};
       PROGRAMMES.filter(p => p.g.includes(g)).forEach(p => { const f = famOf(p); byFam[f] = (byFam[f] || 0) + 1; });
@@ -329,7 +337,11 @@
       ["Thales Alenia Space", "Rome, Turin, L'Aquila", "Sentinel-1, COSMO-SkyMed, CIMR, ROSE-L, Galileo G2, SICRAL"],
       ["OHB", "Brême", "Galileo FOC, SAR-Lupe, SARah, CO2M, SmallGEO"],
       ["OHB Italia", "Milan", "Instruments et petits satellites (IRIDE)"],
-      ["Leonardo", "Italie", "Instruments (SLSTR, FLORIS, LI), équipements, Telespazio et e-GEOS (services)"]
+      ["Leonardo", "Italie", "Instruments (SLSTR, FLORIS, LI), équipements, Telespazio et e-GEOS (services)"],
+      ["Airbus DS", "Brême", "Module de service d'Orion, Columbus, ATV"],
+      ["ArianeGroup", "Les Mureaux, Vernon, Brême, Kourou", "Ariane 6, moteurs Vulcain et Vinci, Prometheus, Themis ; MaiaSpace à Vernon"],
+      ["Avio", "Colleferro", "Vega-C, moteurs à poudre P120C"],
+      ["Micro-lanceurs", "Ottobrunn, Augsbourg, Elche, Forres", "Isar Aerospace, RFA, PLD Space, Orbex"]
     ].map(([a, b, c]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td><td>${esc(c)}</td></tr>`).join("");
     const trends = [
       ["Consolidation", "Projet Bromo : fusion des activités spatiales d'Airbus, Thales et Leonardo", "Protocole d'accord d'octobre 2025 : Airbus 35 %, Leonardo 32,5 %, Thales 32,5 %. Environ 25 000 salariés et 6,5 Md€ de chiffre d'affaires, siège à Toulouse. Décision de Bruxelles pas avant le second semestre 2027. OHB et Indra s'y opposent ; OHB a levé environ 900 M€ en juin 2026 pour rester indépendant."],
@@ -337,7 +349,8 @@
       ["Constellations", "Du gros satellite unique à la flotte", "IRIS², OneWeb, ICEYE, IRIDE, CO3D : plus de satellites, plus petits, produits en série. Cela change les métiers de l'industrialisation et de l'AIT."],
       ["Budgets", "Un niveau record à l'ESA", "22,3 Md€ votés en novembre 2025 pour 2026-2028, en hausse de 31 % par rapport à 2022, dont 3,5 Md€ pour l'observation de la Terre."],
       ["Modèles économiques", "Du public au privé", "SPOT était public, TerraSAR-X un partenariat, Pléiades Neo est privé. L'État passe de propriétaire à client, ou à concédant (IRIS²)."],
-      ["Accès à l'espace", "Ariane 6 et Vega-C en service", "Depuis 2024-2025, les lancements institutionnels reviennent sur des lanceurs européens : CSO-3, Sentinel-1D, Galileo L14, MTG-I2, Sentinel-3C."],
+      ["Accès à l'espace", "Ariane 6 et Vega-C en service, les privés arrivent", "Les lancements institutionnels reviennent sur des lanceurs européens (CSO-3, Sentinel-1D, Galileo L14, MTG-I2, Sentinel-3C). Ariane 64 vole depuis février 2026, surtout pour Amazon. Isar a atteint l'orbite en septembre 2026, et 902 M€ soutiennent cinq jeunes lanceurs."],
+      ["Exploration", "Dépendance aux choix américains", "Gateway menacé puis refinancé par le Congrès, Rosalind Franklin relancé avec la NASA après la rupture avec la Russie. L'exploration a obtenu 20 % de moins que demandé au CM25, mais l'Europe développe Argonaut et le cargo pour gagner en autonomie."],
       ["Nouveaux entrants", "Un second rang qui grandit", "ICEYE et Aerospacelab en orbite basse, Hemeria (nanosatellites Kinéis), Open Cosmos, Unseenlabs… Ils prennent des parts sur les petites missions et les constellations."]
     ].map(([ty, t, d]) => `<div class="trend"><span class="ty">${esc(ty)}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
     return `<div class="view-head"><h2>Lecture industrielle</h2>
@@ -354,7 +367,7 @@
           <table class="sites"><thead><tr><th>Groupe</th><th>Sites</th><th>Spécialités</th></tr></thead><tbody>${sites}</tbody></table>
         </div>
       </div>
-      <h3 class="section-title">Sept tendances qui structurent le marché</h3>
+      <h3 class="section-title">Huit tendances qui structurent le marché</h3>
       <div class="trends">${trends}</div>`;
   }
 
