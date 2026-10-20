@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Atlas du spatial européen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Cartographie des programmes satellites européens : financeurs, industriels, applications, budgets, planning, filiations et convergences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Concept : un atlas technique, façon dossier de programme. Bandeau d'en-tête sombre type « tableau de bord »,
+   puis des planches claires à onglets. Une couleur par grande famille de marché, toujours la même partout. */
+:root {
+  --paper: #EEF1F4;
+  --surface: #FFFFFF;
+  --sunk: #E4E8ED;
+  --ink: #12202F;
+  --muted: #586678;
+  --faint: #8794A5;
+  --line: #CDD4DD;
+  --band: #0F1B2A;
+  --band-ink: #E8EEF5;
+  --band-muted: #9AA9BC;
+  --accent: #1E56C9;
+  --f-obs: #0E8174;
+  --f-met: #2370B8;
+  --f-def: #B03F2E;
+  --f-tel: #B67D0B;
+  --f-nav: #6A4BC4;
+  --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(18,32,47,.14) 4px 6px);
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
+    --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
+    --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2;
+    --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
+  --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
+  --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2;
+  --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--band); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: var(--accent); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- En-tête ---------- */
+.hero { background: var(--band); color: var(--band-ink); }
+.hero .wrap { padding-block: 34px 26px; display: grid; gap: 22px; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: end; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--band-muted); }
+.hero h1 { font-size: clamp(34px, 5.4vw, 60px); font-weight: 800; font-stretch: 118%; line-height: .98; letter-spacing: -.01em; margin-top: 10px; }
+.hero p.lead { color: var(--band-muted); max-width: 60ch; margin-top: 14px; }
+.legend-fam { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.legend-fam span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--band-ink); }
+.sw { width: 11px; height: 11px; border-radius: 2px; flex: none; display: inline-block; }
+.counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
+.counts div { background: var(--band); padding: 10px 12px; }
+.counts b { font-family: var(--font-display); font-stretch: 115%; font-size: 26px; display: block; line-height: 1.1; }
+.counts small { color: var(--band-muted); font-size: 12px; }
+
+/* ---------- Onglets ---------- */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: thin; }
+.tab { border: 0; background: none; padding: 13px 12px 11px; font-size: 14px; font-weight: 500; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; display: inline-flex; gap: 7px; align-items: baseline; }
+.tab .k { font-family: var(--font-mono); font-size: 11px; color: var(--faint); }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+main .wrap { padding-block: 30px 60px; }
+.view-head { display: grid; gap: 8px; margin-bottom: 24px; max-width: 75ch; }
+.view-head h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 700; font-stretch: 110%; }
+.view-head p { color: var(--muted); }
+.section-title { font-family: var(--font-display); font-stretch: 108%; font-size: 19px; font-weight: 700; margin: 34px 0 12px; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* ---------- Pastilles programme ---------- */
+.chip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px 3px 8px; font-size: 13px; cursor: pointer; line-height: 1.35; text-align: left; }
+.chip:hover { border-color: var(--ink); }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.pill { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; padding: 1px 7px; border-radius: 3px; white-space: nowrap; border: 1px solid currentColor; }
+.st-op { color: var(--f-obs); }
+.st-dev { color: var(--f-tel); }
+.st-plan { color: var(--muted); border-style: dashed; }
+.st-fin { color: var(--faint); }
+.conf { font-family: var(--font-mono); font-size: 11px; padding: 0 6px; border-radius: 3px; background: var(--sunk); color: var(--muted); }
+
+/* ---------- Vue 0 : mécanique ---------- */
+.chain { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.stage { padding: 14px 14px 16px; border-right: 1px solid var(--line); position: relative; min-width: 0; }
+.stage:last-child { border-right: 0; }
+.stage .num { font-family: var(--font-mono); font-size: 11px; color: var(--faint); }
+.stage h3 { font-size: 15px; font-stretch: 105%; margin: 4px 0 8px; }
+.stage ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.stage:not(:last-child)::after { content: ""; position: absolute; right: -7px; top: 22px; width: 12px; height: 12px; background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line); transform: rotate(45deg); z-index: 1; }
+.circuits { display: grid; gap: 14px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.circuit { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 10px; align-content: start; }
+.circuit h3 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.circuit ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; counter-reset: c; }
+.circuit li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px; padding: 7px 0; border-top: 1px dashed var(--line); font-size: 13.5px; }
+.circuit li span:first-child { color: var(--faint); font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; padding-top: 2px; }
+.circuit .moral { font-size: 13.5px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 10px; }
+.budgets { display: grid; gap: 10px; }
+.budget { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 16px; }
+.budget .v { font-family: var(--font-display); font-stretch: 115%; font-weight: 700; font-size: 28px; line-height: 1; }
+.budget .v small { font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 4px; }
+.budget .n { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.budget .bar { height: 10px; background: var(--sunk); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.budget .bar i { display: block; height: 100%; background: var(--ink); opacity: .75; }
+.notions { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.notion { border-top: 3px solid var(--ink); padding-top: 10px; display: grid; gap: 6px; }
+.notion h3 { font-size: 15px; }
+.notion p { font-size: 14px; color: var(--muted); }
+
+/* ---------- Vue 1 : domaines ---------- */
+.fams { display: grid; gap: 18px; }
+.fam { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.fam-head { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; border-bottom: 1px solid var(--line); }
+.fam-head h3 { font-size: 20px; font-stretch: 112%; }
+.fam-head .count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.doms { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.dom { padding: 14px 16px 16px; display: grid; gap: 10px; align-content: start; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; }
+.dom h4 { margin: 0; font-family: var(--font-display); font-size: 15px; font-stretch: 105%; }
+.dom p { font-size: 13px; color: var(--muted); }
+.dom .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- Vue 2 : fiches ---------- */
+.fiches { display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.filters { display: grid; gap: 10px; margin-bottom: 12px; }
+.filters input { width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; }
+.fchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fchip { border: 1px solid var(--line); background: var(--surface); padding: 3px 10px; border-radius: 999px; font-size: 12.5px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.fchip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.plist { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); max-height: 70vh; overflow-y: auto; }
+.pitem { display: grid; grid-template-columns: 4px minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; padding: 9px 12px 9px 0; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; cursor: pointer; }
+.pitem:last-child { border-bottom: 0; }
+.pitem .bar { align-self: stretch; }
+.pitem .t { font-size: 14px; font-weight: 500; }
+.pitem .s { font-size: 12px; color: var(--muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pitem[aria-current="true"] { background: var(--sunk); }
+.pitem:hover { background: var(--sunk); }
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.detail-head { padding: 18px 20px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; position: relative; }
+.detail-head::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--fc); }
+.detail-head .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+.detail-head h3 { font-size: clamp(22px, 2.6vw, 28px); font-stretch: 110%; }
+.detail-head .sub { color: var(--muted); }
+.grid-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.field { padding: 12px 20px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); display: grid; gap: 3px; min-width: 0; }
+.field:nth-child(2n) { border-right: 0; }
+.field.wide { grid-column: 1 / -1; border-right: 0; }
+.field dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); }
+.field dd { margin: 0; font-size: 14px; }
+.mini-tl { padding: 14px 20px 18px; border-bottom: 1px solid var(--line); }
+.mini-tl svg { width: 100%; height: auto; display: block; }
+.rel { padding: 14px 20px 18px; display: grid; gap: 12px; }
+.rel h4 { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+.rel .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rel .conv-line { font-size: 13.5px; color: var(--muted); }
+.rel .conv-line b { color: var(--ink); font-weight: 600; }
+.callout { margin: 0 20px 16px; padding: 10px 12px; background: var(--sunk); border-radius: var(--r); font-size: 13.5px; }
+
+/* ---------- Vue 3 : frise ---------- */
+.tl-tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
+.tl-key { display: inline-flex; align-items: center; gap: 6px; }
+.tl-key i { width: 26px; height: 10px; border-radius: 2px; display: inline-block; }
+.tl-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+.tl-scroll svg { display: block; }
+.tl-row { cursor: pointer; }
+.tl-row:hover .tl-hl { opacity: 1; }
+.tl-hl { opacity: 0; }
+
+/* ---------- Vue 4 : généalogie ---------- */
+.lin-grid { display: grid; gap: 12px; }
+.lin { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 10px; }
+.lin-top { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.lin-top h3 { font-size: 16px; font-stretch: 105%; }
+.lin-top p { font-size: 13px; color: var(--muted); }
+.steps { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; }
+.step { display: inline-grid; gap: 0; border: 1px solid var(--line); border-radius: var(--r); padding: 5px 10px; background: var(--paper); text-align: left; min-width: 0; }
+button.step { cursor: pointer; }
+button.step:hover { border-color: var(--ink); }
+.step .y { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.step .nm { font-size: 13.5px; font-weight: 500; }
+.step.future { background: var(--plan), var(--surface); }
+.arrow { color: var(--faint); font-family: var(--font-mono); font-size: 14px; padding: 0 2px; }
+.branch { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); padding-left: 2px; }
+.branch .arrow { font-size: 13px; }
+.lin-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+
+/* ---------- Vue 5 : convergences ---------- */
+.conv-types { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.conv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.conv { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 10px; align-content: start; }
+.conv .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.conv h3 { font-size: 16px; font-stretch: 104%; }
+.conv p { font-size: 13.5px; color: var(--muted); }
+.link-pair { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.link-pair .plus { font-family: var(--font-mono); color: var(--faint); }
+
+/* ---------- Vue 6 : industrie ---------- */
+.ind-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 12px; }
+.hbar { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 36px; gap: 10px; align-items: center; font-size: 13.5px; }
+.hbar .track { height: 14px; background: var(--sunk); border-radius: 2px; overflow: hidden; display: flex; }
+.hbar .track i { display: block; height: 100%; }
+.hbar .val { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.stack-key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+table.sites { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.sites th, table.sites td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.sites th { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+.trends { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.trend { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.trend .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); }
+.trend h3 { font-size: 16px; }
+.trend p { font-size: 13.5px; color: var(--muted); }
+
+/* ---------- Vue 7 : glossaire ---------- */
+.glo { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); border-top: 1px solid var(--line); }
+.glo dt, .glo dd { margin: 0; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+.glo dt { font-weight: 600; font-family: var(--font-display); font-stretch: 105%; }
+.glo dd { color: var(--muted); }
+.srcs { columns: 2 320px; column-gap: 28px; padding-left: 18px; margin: 0; font-size: 13.5px; }
+.srcs li { break-inside: avoid; margin-bottom: 6px; }
+.conf-key { display: grid; gap: 6px; font-size: 13.5px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: space-between; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stage { border-bottom: 1px solid var(--line); }
+  .stage::after { display: none; }
+  .circuits { grid-template-columns: minmax(0, 1fr); }
+  .fiches { grid-template-columns: minmax(0, 1fr); }
+  .plist { max-height: 300px; }
+  .ind-grid, .lin-cols { grid-template-columns: minmax(0, 1fr); }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .chain { grid-template-columns: minmax(0, 1fr); }
+  .stage { border-right: 0; }
+  .grid-fields { grid-template-columns: minmax(0, 1fr); }
+  .field { border-right: 0; }
+  .budget { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .glo { grid-template-columns: minmax(0, 1fr); }
+  .glo dt { border-bottom: 0; padding-bottom: 0; }
+  .hbar { grid-template-columns: minmax(0, 120px) minmax(0, 1fr) 30px; }
+  .circuit li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Marché spatial européen · état au 20 octobre 2026</div>
+      <h1>Atlas du spatial européen</h1>
+      <p class="lead">Qui finance, qui commande, qui construit, à quoi ça sert, combien ça coûte, quand ça vole. Et comment les programmes s'engendrent et se croisent les uns les autres.</p>
+    </div>
+    <div>
+      <div class="legend-fam" id="legendFam"></div>
+      <div class="counts" id="counts"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Vues de l'atlas">
+  <div class="wrap" role="tablist" id="tabs"></div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <section id="v-mecanique" data-view hidden></section>
+    <section id="v-domaines" data-view hidden></section>
+    <section id="v-fiches" data-view hidden></section>
+    <section id="v-frise" data-view hidden></section>
+    <section id="v-genealogie" data-view hidden></section>
+    <section id="v-convergences" data-view hidden></section>
+    <section id="v-industrie" data-view hidden></section>
+    <section id="v-glossaire" data-view hidden></section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Données compilées en octobre 2026 à partir de sources publiques. Indice de confiance A, B ou C sur chaque chiffre.</span>
+    <span>Les budgets mélangent des natures différentes : ne pas les additionner.</span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Atlas du spatial européen — base de données
+   Indice de confiance (bc) :
+     A = vérifié sur source récente lors de la construction (oct. 2026)
+     B = information publiée, connue, non revérifiée ici
+     C = estimation, ordre de grandeur ou donnée non publique
+   Statut (st) : op = en service · dev = en développement · plan = planifié · fin = terminé
+   ============================================================ */
+
+const FAMILLES = {
+  obs: { nom: "Observation civile", court: "Observation" },
+  met: { nom: "Météorologie", court: "Météo" },
+  def: { nom: "Défense & dual", court: "Défense" },
+  tel: { nom: "Télécommunications", court: "Télécoms" },
+  nav: { nom: "Navigation", court: "Navigation" }
+};
+
+const DOMAINES = {
+  cop: { fam: "obs", nom: "Copernicus / Sentinel", resume: "Le service public européen d'observation de la Terre. Constellations récurrentes, données gratuites, continuité sur des décennies." },
+  sci: { fam: "obs", nom: "Science ESA & précurseurs", resume: "Missions uniques qui testent une mesure ou une technologie. Elles préparent souvent une mission opérationnelle." },
+  thr: { fam: "obs", nom: "Très haute résolution commerciale", resume: "Imagerie fine vendue sur le marché. Modèles public, public-privé ou 100 % privé." },
+  met: { fam: "met", nom: "Météorologie (EUMETSAT)", resume: "Satellites des services météo européens, en orbite géostationnaire et polaire. L'ESA développe, EUMETSAT exploite." },
+  dob: { fam: "def", nom: "Observation militaire", resume: "Capacités nationales souveraines, accès restreint, échanges d'images entre alliés." },
+  dtl: { fam: "def", nom: "Télécoms militaires", resume: "Liaisons sécurisées des armées, en orbite géostationnaire, souvent en partenariat entre pays." },
+  tcm: { fam: "tel", nom: "Opérateurs commerciaux", resume: "Opérateurs privés qui achètent des satellites aux industriels et vendent de la capacité." },
+  tin: { fam: "tel", nom: "Programmes UE & R&D ESA", resume: "Programmes publics de connectivité sécurisée et financement de la R&D télécoms." },
+  nav: { fam: "nav", nom: "Galileo & EGNOS", resume: "Positionnement et datation. Programme phare de l'UE, avec un service chiffré gouvernemental (PRS)." }
+};
+
+const STATUTS = {
+  op: "En service",
+  dev: "En développement",
+  plan: "Planifié",
+  fin: "Terminé"
+};
+
+/* Groupes industriels normalisés pour le comptage (maîtrise d'œuvre) */
+const GROUPES = {
+  airbus: "Airbus Defence and Space",
+  tas: "Thales Alenia Space",
+  ohb: "OHB",
+  autre: "Autres / nouveaux entrants"
+};
+
+const PROGRAMMES = [
+  /* ---------------- COPERNICUS ---------------- */
+  { id: "s1", n: "Sentinel-1", d: "cop", sub: "Radar à synthèse d'ouverture (SAR) bande C",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA (développement et achat), opérations ESA",
+    moe: "Thales Alenia Space Italie", g: ["tas"], plat: "PRIMA (Thales Alenia Space Italie)",
+    instr: "Radar C-SAR : Airbus DS Allemagne",
+    app: "Imagerie radar tout temps, jour et nuit : déformation du sol, glaces de mer, surveillance maritime, cartographie des inondations.",
+    bud: "≈ 400 M€ pour le contrat des unités C et D (2015)", bc: "B",
+    y0: 2014, y1: 2033, jal: [[2014, "1A"], [2016, "1B"], [2021, "Panne de 1B"], [2024, "1C"], [2025, "1D"]],
+    st: "op", pred: ["ers", "envisat"], succ: ["sng"],
+    note: "Famille complète depuis le lancement de 1D le 4 novembre 2025 sur Ariane 6." },
+
+  { id: "s2", n: "Sentinel-2", d: "cop", sub: "Imagerie optique multispectrale (13 bandes, 10 m)",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Airbus DS Allemagne (Friedrichshafen)", g: ["airbus"], plat: "AstroBus-L (Airbus)",
+    instr: "Imageur MSI : Airbus DS France (Toulouse)",
+    app: "Agriculture, forêts, occupation des sols, suivi des catastrophes. La mission la plus utilisée de Copernicus.",
+    bud: "Non publié par satellite (inclus dans l'enveloppe Copernicus)", bc: "C",
+    y0: 2015, y1: 2036, jal: [[2015, "2A"], [2017, "2B"], [2024, "2C"], [2028, "2D prévu"]],
+    st: "op", pred: ["spot"], succ: ["sng"],
+    note: "2D a passé sa revue d'acceptation en vol et attend en stockage." },
+
+  { id: "s3", n: "Sentinel-3", d: "cop", sub: "Océan et terres : couleur, température, altimétrie",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA (développement), EUMETSAT (opérations marines)",
+    moe: "Thales Alenia Space France (Cannes)", g: ["tas"], plat: "Plateforme Thales Alenia Space",
+    instr: "OLCI et altimètre SRAL : Thales Alenia Space France ; radiomètre SLSTR : Leonardo",
+    app: "Couleur et température de surface des océans, hauteur de mer, état de la végétation, feux.",
+    bud: "Non publié par satellite", bc: "C",
+    y0: 2016, y1: 2036, jal: [[2016, "3A"], [2018, "3B"], [2026, "3C (15 sept.)"], [2028, "3D prévu"]],
+    st: "op", pred: ["envisat"], succ: ["sng"],
+    note: "3C a été lancé le 15 septembre 2026 sur Vega-C, avec la mission scientifique FLEX." },
+
+  { id: "s4", n: "Sentinel-4", d: "cop", sub: "Spectromètre UV-visible-proche IR en orbite géostationnaire",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA, opérations EUMETSAT",
+    moe: "Airbus DS Allemagne (instrument)", g: ["airbus"], plat: "Hébergé sur le satellite météo MTG-S",
+    instr: "Spectromètre UVN : Airbus DS Allemagne",
+    app: "Qualité de l'air sur l'Europe, mesure toutes les heures (ozone, dioxyde d'azote, dioxyde de soufre, aérosols).",
+    bud: "Non publié", bc: "C",
+    y0: 2025, y1: 2042, jal: [[2025, "4A sur MTG-S1"], [2035, "4B prévu"]],
+    st: "op", pred: [], succ: [], host: "mtg",
+    note: "Pas un satellite propre : c'est un instrument Copernicus monté sur un satellite météo." },
+
+  { id: "s5p", n: "Sentinel-5P", d: "cop", sub: "Précurseur chimie atmosphérique",
+    fin: "Union européenne, ESA et Pays-Bas (NSO)", moa: "ESA",
+    moe: "Airbus DS Royaume-Uni (satellite)", g: ["airbus"], plat: "AstroBus-L 250 (Airbus)",
+    instr: "TROPOMI : Airbus DS Pays-Bas avec TNO, KNMI et SRON",
+    app: "Cartes mondiales quotidiennes de la pollution (NO₂, méthane, ozone, monoxyde de carbone).",
+    bud: "Non publié", bc: "C",
+    y0: 2017, y1: 2028, jal: [[2017, "Lancement"]],
+    st: "op", pred: ["envisat"], succ: ["s5"],
+    note: "Le « P » signifie précurseur : il comble le trou entre Envisat (2012) et Sentinel-5 (2025)." },
+
+  { id: "s5", n: "Sentinel-5", d: "cop", sub: "Spectromètre UVNS en orbite polaire",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA, opérations EUMETSAT",
+    moe: "Airbus DS Allemagne (instrument)", g: ["airbus"], plat: "Hébergé sur le satellite météo MetOp-SG A",
+    instr: "Spectromètre UVNS : Airbus DS Allemagne",
+    app: "Composition de l'atmosphère à l'échelle mondiale, suite opérationnelle de Sentinel-5P.",
+    bud: "Non publié", bc: "C",
+    y0: 2025, y1: 2046, jal: [[2025, "5A sur MetOp-SG A1"], [2033, "5B prévu"], [2039, "5C prévu"]],
+    st: "op", pred: ["s5p"], succ: [], host: "metopsg",
+    note: "Comme Sentinel-4, c'est un instrument hébergé sur un satellite météo." },
+
+  { id: "s6", n: "Sentinel-6", d: "cop", sub: "Altimétrie océanique de référence",
+    fin: "UE, ESA, EUMETSAT, NASA, NOAA (avec l'expertise du CNES)", moa: "ESA, opérations EUMETSAT",
+    moe: "Airbus DS Allemagne (Friedrichshafen)", g: ["airbus"], plat: "Dérivée de CryoSat-2",
+    instr: "Altimètre Poseidon-4 : Thales Alenia Space France ; radiomètre AMR-C : NASA/JPL",
+    app: "Mesure du niveau moyen des mers au centimètre, suite de la série de référence commencée en 1992.",
+    bud: "Non publié de façon consolidée", bc: "C",
+    y0: 2020, y1: 2037, jal: [[2020, "6A « Michael Freilich »"], [2025, "6B (17 nov., Falcon 9)"], [2030, "6C prévu"]],
+    st: "op", pred: ["jason", "cryosat"], succ: [],
+    note: "Coopération transatlantique : la NASA fournit le lancement, EUMETSAT opère." },
+
+  { id: "co2m", n: "CO2M (Sentinel-7)", d: "cop", sub: "Mission d'expansion : CO₂ d'origine humaine",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "OHB System (Brême)", g: ["ohb"], plat: "Plateforme OHB",
+    instr: "Spectromètre CO2I : Thales Alenia Space France",
+    app: "Mesurer les émissions de CO₂ des villes, centrales et pays, pour vérifier les engagements climatiques.",
+    bud: "Non publié", bc: "C",
+    y0: 2027, y1: 2037, jal: [[2027, "A prévu"], [2028, "B prévu"], [2029, "C prévu"]],
+    st: "dev", pred: ["s5p"], succ: [],
+    note: "Première des six missions d'expansion à partir." },
+
+  { id: "lstm", n: "LSTM (Sentinel-8)", d: "cop", sub: "Mission d'expansion : température de surface",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Airbus DS Espagne", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Imageur infrarouge thermique : Airbus",
+    app: "Température des terres jour et nuit : irrigation, sécheresse, îlots de chaleur.",
+    bud: "389 M€ (contrat de 2020)", bc: "A",
+    y0: 2028, y1: 2038, jal: [[2028, "A prévu"], [2030, "B prévu"]],
+    st: "dev", pred: [], succ: [],
+    note: "Première mission Copernicus confiée à la filiale espagnole d'Airbus." },
+
+  { id: "cristal", n: "CRISTAL (Sentinel-9)", d: "cop", sub: "Mission d'expansion : glaces polaires et neige",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Airbus DS Allemagne", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Altimètre bi-fréquence IRIS : Thales Alenia Space France ; radiomètre micro-ondes",
+    app: "Épaisseur de la banquise et de la neige qui la recouvre, calottes glaciaires.",
+    bud: "Non publié", bc: "C",
+    y0: 2028, y1: 2040, jal: [[2028, "A prévu"], [2034, "B prévu"]],
+    st: "dev", pred: ["cryosat"], succ: [],
+    note: "Suite opérationnelle de la mission scientifique CryoSat." },
+
+  { id: "chime", n: "CHIME (Sentinel-10)", d: "cop", sub: "Mission d'expansion : hyperspectral",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Thales Alenia Space France", g: ["tas"], plat: "Plateforme Thales Alenia Space",
+    instr: "Spectromètre hyperspectral (fournisseur à confirmer)",
+    app: "Sols, minéraux, état des cultures et de la biodiversité, en complément de Sentinel-2.",
+    bud: "Part d'un lot de trois contrats > 1,3 Md€ (LSTM, CIMR, CHIME, 2020)", bc: "A",
+    y0: 2029, y1: 2038, jal: [[2029, "A prévu"], [2031, "B prévu"]],
+    st: "dev", pred: ["s2"], succ: [] },
+
+  { id: "cimr", n: "CIMR (Sentinel-11)", d: "cop", sub: "Mission d'expansion : radiométrie micro-ondes",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Thales Alenia Space Italie", g: ["tas"], plat: "Plateforme Thales Alenia Space",
+    instr: "Radiomètre micro-ondes multi-fréquences à balayage conique",
+    app: "Température de surface de la mer, concentration de la glace de mer dans l'Arctique.",
+    bud: "Part d'un lot de trois contrats > 1,3 Md€ (2020)", bc: "A",
+    y0: 2029, y1: 2042, jal: [[2029, "A prévu"], [2035, "B prévu"]],
+    st: "dev", pred: [], succ: [] },
+
+  { id: "rosel", n: "ROSE-L (Sentinel-12)", d: "cop", sub: "Mission d'expansion : radar bande L",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Thales Alenia Space Italie", g: ["tas"], plat: "Plateforme Thales Alenia Space",
+    instr: "Radar SAR bande L : Airbus DS Allemagne",
+    app: "Radar qui traverse la végétation et la neige : humidité des sols, biomasse, glaciers. Complète Sentinel-1.",
+    bud: "Non publié", bc: "C",
+    y0: 2029, y1: 2040, jal: [[2029, "A prévu"], [2031, "B prévu"]],
+    st: "dev", pred: ["s1"], succ: [] },
+
+  { id: "sng", n: "Sentinel nouvelle génération (1NG, 2NG, 3NG)", d: "cop", sub: "Renouvellement des trois familles phares",
+    fin: "Union européenne (Copernicus) et ESA", moa: "ESA",
+    moe: "Non attribué publiquement à ce stade", g: [], plat: "—",
+    instr: "Radar (1NG), optique (2NG), topographie et optique séparées (3NG)",
+    app: "Prendre le relais de Sentinel-1, -2 et -3 avec de meilleures performances.",
+    bud: "Non publié", bc: "C",
+    y0: 2033, y1: 2045, jal: [[2033, "1NG A et 2NG A"], [2034, "1NG B, 3NG Topo A"], [2035, "2NG B, 3NG Optique A"], [2037, "3NG Optique B"]],
+    st: "plan", pred: ["s1", "s2", "s3"], succ: [] },
+
+  /* ---------------- SCIENCE ESA & PRÉCURSEURS ---------------- */
+  { id: "ers", n: "ERS-1 et ERS-2", d: "sci", sub: "Premiers satellites européens d'observation radar",
+    fin: "ESA (États membres)", moa: "ESA",
+    moe: "Dornier (aujourd'hui Airbus DS Allemagne)", g: ["airbus"], plat: "Dérivée de SPOT",
+    instr: "Radar SAR bande C, altimètre, diffusiomètre",
+    app: "A posé les bases de l'océanographie et de l'interférométrie radar spatiale en Europe.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 1991, y1: 2011, jal: [[1991, "ERS-1"], [1995, "ERS-2"]],
+    st: "fin", pred: [], succ: ["envisat"] },
+
+  { id: "envisat", n: "Envisat", d: "sci", sub: "Grand observatoire environnemental de l'ESA (8 tonnes)",
+    fin: "ESA (États membres)", moa: "ESA",
+    moe: "Astrium (aujourd'hui Airbus DS)", g: ["airbus"], plat: "Plateforme polaire PPF",
+    instr: "Radar ASAR, MERIS, AATSR, altimètre RA-2, SCIAMACHY, GOMOS…",
+    app: "Dix instruments sur un seul satellite. Sa perte en 2012 a montré le risque d'un « gros satellite unique ».",
+    bud: "≈ 2,3 Md€ (coût total souvent cité)", bc: "C",
+    y0: 2002, y1: 2012, jal: [[2002, "Lancement"], [2012, "Perte du contact"]],
+    st: "fin", pred: ["ers"], succ: ["s1", "s3", "s5p"],
+    note: "Copernicus a éclaté sa charge en familles spécialisées : radar (S-1), océan (S-3), atmosphère (S-5P)." },
+
+  { id: "jason", n: "Topex/Poseidon et Jason 1-2-3", d: "sci", sub: "Altimétrie océanique franco-américaine",
+    fin: "CNES et NASA, puis EUMETSAT et NOAA à partir de Jason-2", moa: "CNES et NASA",
+    moe: "Plateforme Proteus (Alcatel Space, aujourd'hui Thales Alenia Space) pour Jason", g: ["tas"], plat: "Proteus",
+    instr: "Altimètres Poseidon (CNES / Thales Alenia Space)",
+    app: "Série de référence du niveau des mers depuis 1992.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 1992, y1: 2025, jal: [[1992, "Topex/Poseidon"], [2001, "Jason-1"], [2008, "Jason-2"], [2016, "Jason-3"]],
+    st: "fin", pred: [], succ: ["s6"] },
+
+  { id: "goce", n: "GOCE", d: "sci", sub: "Earth Explorer : champ de gravité",
+    fin: "ESA – programme FutureEO", moa: "ESA",
+    moe: "Thales Alenia Space Italie", g: ["tas"], plat: "Spécifique (profil aérodynamique, propulsion ionique)",
+    instr: "Gradiomètre", app: "Carte de la gravité terrestre et de la circulation océanique.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2009, y1: 2013, jal: [[2009, "Lancement"], [2013, "Rentrée"]], st: "fin", pred: [], succ: [] },
+
+  { id: "smos", n: "SMOS", d: "sci", sub: "Earth Explorer : humidité des sols et salinité",
+    fin: "ESA – FutureEO, avec le CNES et l'Espagne", moa: "ESA",
+    moe: "Thales Alenia Space France (plateforme Proteus)", g: ["tas"], plat: "Proteus (CNES / Thales Alenia Space)",
+    instr: "Radiomètre interférométrique MIRAS : Airbus DS Espagne (ex-EADS CASA)",
+    app: "Humidité des sols et salinité des océans.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2009, y1: 2027, jal: [[2009, "Lancement"]], st: "op", pred: [], succ: ["cimr"] },
+
+  { id: "cryosat", n: "CryoSat-2", d: "sci", sub: "Earth Explorer : épaisseur des glaces",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Astrium (aujourd'hui Airbus DS Allemagne)", g: ["airbus"], plat: "Spécifique, réutilisée pour Sentinel-6",
+    instr: "Altimètre SIRAL : Thales Alenia Space France",
+    app: "Épaisseur des glaces de mer et des calottes.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2010, y1: 2028, jal: [[2005, "CryoSat-1 perdu au lancement"], [2010, "CryoSat-2"]],
+    st: "op", pred: [], succ: ["cristal", "s6"] },
+
+  { id: "swarm", n: "Swarm", d: "sci", sub: "Earth Explorer : champ magnétique (3 satellites)",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Astrium (aujourd'hui Airbus DS Allemagne)", g: ["airbus"], plat: "Spécifique",
+    instr: "Magnétomètres", app: "Champ magnétique terrestre et environnement ionosphérique.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2013, y1: 2028, jal: [[2013, "Lancement"]], st: "op", pred: [], succ: [] },
+
+  { id: "aeolus", n: "Aeolus", d: "sci", sub: "Earth Explorer : vents par laser",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Airbus DS Royaume-Uni", g: ["airbus"], plat: "Spécifique",
+    instr: "Lidar Doppler ALADIN : Airbus DS France",
+    app: "Premier profil mondial des vents depuis l'espace. Ses données ont été intégrées aux prévisions météo.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2018, y1: 2023, jal: [[2018, "Lancement"], [2023, "Rentrée assistée"]],
+    st: "fin", pred: [], succ: [],
+    note: "Succès tel qu'une version opérationnelle, Aeolus-2, est prévue avec EUMETSAT vers le milieu des années 2030." },
+
+  { id: "earthcare", n: "EarthCARE", d: "sci", sub: "Earth Explorer : nuages, aérosols, rayonnement",
+    fin: "ESA – FutureEO et JAXA", moa: "ESA",
+    moe: "Airbus DS Allemagne", g: ["airbus"], plat: "Spécifique",
+    instr: "Lidar ATLID (Airbus DS France), radar CPR (JAXA), imageur et radiomètre",
+    app: "Rôle des nuages et des aérosols dans le bilan radiatif du climat.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2024, y1: 2028, jal: [[2024, "Lancement (mai)"]], st: "op", pred: [], succ: [] },
+
+  { id: "biomass", n: "Biomass", d: "sci", sub: "Earth Explorer : carbone des forêts",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Airbus DS Royaume-Uni", g: ["airbus"], plat: "Spécifique",
+    instr: "Premier radar spatial en bande P (antenne déployable de 12 m)",
+    app: "Mesurer le carbone stocké dans les forêts tropicales et son évolution.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2025, y1: 2030, jal: [[2025, "Lancement (29 avril)"]], st: "op", pred: [], succ: [] },
+
+  { id: "flex", n: "FLEX", d: "sci", sub: "Earth Explorer : fluorescence de la végétation",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Thales Alenia Space", g: ["tas"], plat: "Spécifique",
+    instr: "Spectromètre FLORIS : Leonardo",
+    app: "Mesurer la photosynthèse des plantes, donc leur état de stress.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2026, y1: 2031, jal: [[2026, "Lancement avec Sentinel-3C"]],
+    st: "op", pred: [], succ: [],
+    note: "Conçu pour voler en tandem avec un Sentinel-3, dont il utilise les mesures en complément." },
+
+  { id: "forum", n: "FORUM", d: "sci", sub: "Earth Explorer : rayonnement infrarouge lointain",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "À vérifier", g: [], plat: "—",
+    instr: "Spectromètre infrarouge lointain",
+    app: "Mesurer l'énergie que la Terre renvoie dans l'infrarouge lointain, jamais mesurée finement depuis l'espace.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2027, y1: 2032, jal: [[2027, "Lancement prévu"]], st: "dev", pred: [], succ: [] },
+
+  { id: "harmony", n: "Harmony", d: "sci", sub: "Earth Explorer : deux satellites radar passifs",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Non retenu ici", g: [], plat: "—",
+    instr: "Deux récepteurs radar qui exploitent les échos de Sentinel-1",
+    app: "Mouvements des océans, glaciers et sols en 3D.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2029, y1: 2034, jal: [[2029, "Lancement prévu"]],
+    st: "dev", pred: ["s1"], succ: [],
+    note: "Vole en formation avec un Sentinel-1 : une mission scientifique bâtie sur une mission opérationnelle." },
+
+  { id: "wivern", n: "WIVERN", d: "sci", sub: "Earth Explorer 11 : vents dans les nuages",
+    fin: "ESA – FutureEO", moa: "ESA",
+    moe: "Non attribué", g: [], plat: "—",
+    instr: "Radar Doppler à balayage conique",
+    app: "Vents à l'intérieur des nuages et précipitations, pour la prévision météo.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2033, y1: 2037, jal: [[2025, "Sélection (sept.)"]], st: "plan", pred: ["aeolus"], succ: [] },
+
+  /* ---------------- MÉTÉOROLOGIE ---------------- */
+  { id: "mop", n: "Meteosat 1re génération", d: "met", sub: "Géostationnaire, image toutes les 30 minutes",
+    fin: "ESA, puis EUMETSAT (créé en 1986)", moa: "ESA puis EUMETSAT",
+    moe: "Aérospatiale (aujourd'hui Thales Alenia Space)", g: ["tas"], plat: "Satellite stabilisé par rotation",
+    instr: "Radiomètre MVIRI", app: "Images nuageuses de l'Europe et de l'Afrique pour la prévision.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 1977, y1: 2017, jal: [[1977, "Meteosat-1"], [1997, "Meteosat-7"]],
+    st: "fin", pred: [], succ: ["msg"],
+    note: "C'est pour exploiter Meteosat que les pays européens ont créé EUMETSAT." },
+
+  { id: "msg", n: "Meteosat Seconde Génération (MSG)", d: "met", sub: "Géostationnaire, 4 satellites",
+    fin: "EUMETSAT et ESA", moa: "ESA (développement), EUMETSAT (exploitation)",
+    moe: "Alcatel Space (aujourd'hui Thales Alenia Space France)", g: ["tas"], plat: "Stabilisé par rotation",
+    instr: "Imageur SEVIRI : Astrium (aujourd'hui Airbus DS France) ; GERB (Royaume-Uni)",
+    app: "Image toutes les 15 minutes en 12 canaux.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2002, y1: 2033, jal: [[2002, "MSG-1"], [2005, "MSG-2"], [2012, "MSG-3"], [2015, "MSG-4"]],
+    st: "op", pred: ["mop"], succ: ["mtg"] },
+
+  { id: "mtg", n: "Meteosat Troisième Génération (MTG)", d: "met", sub: "Géostationnaire : 4 imageurs MTG-I et 2 sondeurs MTG-S",
+    fin: "EUMETSAT (plus des deux tiers) et ESA", moa: "ESA (développement), EUMETSAT (exploitation)",
+    moe: "Thales Alenia Space France, en partenariat avec OHB", g: ["tas"], plat: "SmallGEO (OHB), commune aux six satellites",
+    instr: "Imageur FCI : Thales Alenia Space ; détecteur d'éclairs LI : Leonardo ; sondeur IRS : OHB ; Sentinel-4 sur MTG-S",
+    app: "Image toutes les 10 minutes, détection des éclairs, profils verticaux de température et d'humidité.",
+    bud: "Programme ≈ 2,4 Md€ ; contrat satellites ≈ 1,8 Md$ (2012), alors le plus gros contrat satellite jamais signé", bc: "B",
+    y0: 2022, y1: 2045, jal: [[2022, "MTG-I1"], [2025, "MTG-S1 (+ Sentinel-4)"], [2026, "MTG-I2 (août, Ariane 6)"]],
+    st: "op", pred: ["msg"], succ: [] },
+
+  { id: "metop", n: "MetOp (EPS)", d: "met", sub: "Orbite polaire, 3 satellites",
+    fin: "EUMETSAT et ESA, coopération avec la NOAA", moa: "ESA, EUMETSAT",
+    moe: "Astrium (aujourd'hui Airbus DS France)", g: ["airbus"], plat: "Plateforme polaire (héritage SPOT / Envisat)",
+    instr: "Sondeur IASI (CNES / Thales Alenia Space), instruments NOAA, diffusiomètre ASCAT",
+    app: "Profils atmosphériques mondiaux. Les données ayant le plus d'impact sur la qualité des prévisions.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2006, y1: 2027, jal: [[2006, "MetOp-A"], [2012, "MetOp-B"], [2018, "MetOp-C"]],
+    st: "op", pred: ["envisat"], succ: ["metopsg"] },
+
+  { id: "metopsg", n: "MetOp Seconde Génération (MetOp-SG)", d: "met", sub: "Orbite polaire : séries A (sondage) et B (micro-ondes)",
+    fin: "EUMETSAT et ESA", moa: "ESA, EUMETSAT",
+    moe: "Airbus DS (série A à Toulouse, série B à Friedrichshafen)", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "IASI-NG (CNES / Airbus), METimage (DLR), Sentinel-5 sur la série A ; diffusiomètre, imageurs micro-ondes et Argos-4 sur la série B",
+    app: "Suite de MetOp avec de meilleurs sondeurs, jusqu'aux années 2040.",
+    bud: "Contrat satellites ≈ 1,3 Md€ (2014)", bc: "B",
+    y0: 2025, y1: 2046, jal: [[2025, "A1 (+ Sentinel-5), août"], [2026, "B1 prévu (Ariane 6)"]],
+    st: "op", pred: ["metop"], succ: [] },
+
+  /* ---------------- THR COMMERCIALE & DUALE ---------------- */
+  { id: "spot", n: "SPOT 1 à 7", d: "thr", sub: "Optique haute résolution (1,5 à 10 m)",
+    fin: "CNES (1 à 5), puis Astrium / Airbus sur fonds propres (6 et 7)", moa: "CNES, puis Airbus",
+    moe: "Matra Marconi Space, puis Astrium (aujourd'hui Airbus DS France)", g: ["airbus"], plat: "Plateforme SPOT, puis AstroBus (6 et 7)",
+    instr: "Instruments HRV, HRG, HRS (stéréo) puis NAOMI",
+    app: "Cartographie, agriculture, défense. A créé le marché commercial de l'image satellite en Europe (Spot Image).",
+    bud: "Non retenu ici", bc: "C",
+    y0: 1986, y1: 2023, jal: [[1986, "SPOT 1"], [2002, "SPOT 5"], [2012, "SPOT 6"], [2014, "SPOT 7"]],
+    st: "fin", pred: [], succ: ["pleiades", "s2"],
+    note: "Premier passage du public au privé : SPOT 6 et 7 ont été financés par l'industriel lui-même." },
+
+  { id: "pleiades", n: "Pléiades 1A et 1B", d: "thr", sub: "Optique très haute résolution (70 cm, 50 cm rééchantillonné)",
+    fin: "CNES et ministère des Armées (programme dual)", moa: "CNES",
+    moe: "Astrium (aujourd'hui Airbus DS France)", g: ["airbus"], plat: "Plateforme agile Astrium",
+    instr: "Télescope HiRI : Thales Alenia Space France",
+    app: "Imagerie très haute résolution pour la défense (accès prioritaire) et le marché civil.",
+    bud: "Non publié de façon consolidée", bc: "C",
+    y0: 2011, y1: 2026, jal: [[2011, "1A"], [2012, "1B"]],
+    st: "op", pred: ["spot"], succ: ["pneo", "co3d"],
+    note: "Volet optique du système franco-italien ORFEO, dont le volet radar est COSMO-SkyMed." },
+
+  { id: "pneo", n: "Pléiades Neo", d: "thr", sub: "Optique 30 cm, 100 % privée",
+    fin: "Airbus (fonds propres)", moa: "Airbus Defence and Space",
+    moe: "Airbus DS France", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Instrument optique 30 cm",
+    app: "Imagerie de défense, renseignement, cartographie, vendue via la plateforme OneAtlas.",
+    bud: "Non publié (investissement privé)", bc: "C",
+    y0: 2021, y1: 2032, jal: [[2021, "Neo 3 et 4"], [2022, "Neo 5 et 6 perdus (échec Vega-C)"]],
+    st: "op", pred: ["pleiades"], succ: ["pneonext"],
+    note: "Bascule du modèle : l'industriel finance, possède et vend. L'État devient client." },
+
+  { id: "pneonext", n: "Pléiades Neo Next", d: "thr", sub: "Optique classe 20 cm",
+    fin: "Airbus (fonds propres)", moa: "Airbus Defence and Space",
+    moe: "Airbus DS", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Instrument optique classe 20 cm",
+    app: "Revisite plusieurs fois par jour en combinaison avec Pléiades Neo.",
+    bud: "Non publié (investissement privé)", bc: "A",
+    y0: 2028, y1: 2038, jal: [[2028, "1er satellite prévu début 2028 (Vega-C)"]],
+    st: "dev", pred: ["pneo"], succ: [] },
+
+  { id: "co3d", n: "CO3D", d: "thr", sub: "Constellation de 4 satellites pour la 3D mondiale",
+    fin: "CNES et Airbus (partenariat public-privé), usage défense", moa: "CNES",
+    moe: "Airbus DS", g: ["airbus"], plat: "Petite plateforme Airbus",
+    instr: "Imageurs stéréo 50 cm",
+    app: "Modèle numérique de surface mondial en 3D, pour les armées et le marché.",
+    bud: "Non publié", bc: "C",
+    y0: 2025, y1: 2032, jal: [[2025, "Lancement (juillet, Vega-C, avec MicroCarb)"]],
+    st: "op", pred: ["pleiades"], succ: [] },
+
+  { id: "terrasar", n: "TerraSAR-X et TanDEM-X", d: "thr", sub: "Radar bande X, partenariat public-privé allemand",
+    fin: "DLR et Airbus (PPP)", moa: "DLR",
+    moe: "Astrium (aujourd'hui Airbus DS Allemagne)", g: ["airbus"], plat: "Plateforme Astrium",
+    instr: "Radar SAR bande X",
+    app: "Imagerie radar commerciale et modèle 3D mondial WorldDEM.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2007, y1: 2028, jal: [[2007, "TerraSAR-X"], [2010, "TanDEM-X"]],
+    st: "op", pred: [], succ: ["paz"],
+    note: "Modèle du partenariat public-privé : l'agence finance la science, l'industriel exploite le marché." },
+
+  { id: "iceye", n: "ICEYE", d: "thr", sub: "Constellation commerciale de micro-satellites radar",
+    fin: "Capitaux privés et contrats défense", moa: "ICEYE (Finlande)",
+    moe: "ICEYE (conception et fabrication intégrées)", g: ["autre"], plat: "Micro-satellites ICEYE",
+    instr: "Radar SAR bande X compact",
+    app: "Revisite rapide, suivi de navires, assurance après catastrophes, renseignement.",
+    bud: "Non publié", bc: "C",
+    y0: 2018, y1: 2035, jal: [[2018, "Premier satellite"]],
+    st: "op", pred: [], succ: [],
+    note: "Le NewSpace européen : petits satellites, production en série, intégration verticale." },
+
+  /* ---------------- DÉFENSE : OBSERVATION ---------------- */
+  { id: "helios", n: "Helios I et II", d: "dob", sub: "Optique militaire française",
+    fin: "France, avec l'Italie et l'Espagne (I), puis la Belgique, l'Espagne et la Grèce (II)", moa: "DGA (avec le CNES)",
+    moe: "Matra Marconi Space, puis Astrium (aujourd'hui Airbus DS)", g: ["airbus"], plat: "Plateforme SPOT",
+    instr: "Instruments optiques et infrarouges",
+    app: "Renseignement image souverain.",
+    bud: "Non publié", bc: "C",
+    y0: 1995, y1: 2023, jal: [[1995, "Helios IA"], [1999, "Helios IB"], [2004, "Helios IIA"], [2009, "Helios IIB"]],
+    st: "fin", pred: ["spot"], succ: ["cso"],
+    note: "Même plateforme que SPOT : la filière civile a porté la filière militaire." },
+
+  { id: "cso", n: "CSO (Composante Spatiale Optique)", d: "dob", sub: "Optique militaire française, 3 satellites",
+    fin: "Ministère des Armées, avec l'Allemagne, la Belgique, la Suède et l'Italie (accès)", moa: "DGA, avec le CNES",
+    moe: "Airbus DS France", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Instrument optique : Thales Alenia Space France",
+    app: "Imagerie militaire extrêmement fine, visible et infrarouge.",
+    bud: "Non publié en détail", bc: "C",
+    y0: 2018, y1: 2035, jal: [[2018, "CSO-1"], [2020, "CSO-2"], [2025, "CSO-3 (mars, Ariane 6)"]],
+    st: "op", pred: ["helios"], succ: ["csosuite"],
+    note: "Accord d'échange avec l'Allemagne : images optiques CSO contre images radar SARah." },
+
+  { id: "csosuite", n: "Successeur de CSO", d: "dob", sub: "Prochaine génération d'optique militaire française",
+    fin: "Ministère des Armées (loi de programmation militaire)", moa: "DGA",
+    moe: "Non attribué publiquement", g: [], plat: "—",
+    instr: "—", app: "Assurer la suite de CSO au-delà de 2030.",
+    bud: "Non publié", bc: "C",
+    y0: 2032, y1: 2045, jal: [], st: "plan", pred: ["cso"], succ: [],
+    note: "Nom et calendrier à vérifier : peu d'informations publiques." },
+
+  { id: "sarlupe", n: "SAR-Lupe", d: "dob", sub: "Radar militaire allemand, 5 satellites",
+    fin: "Bundeswehr", moa: "BAAINBw (agence d'armement allemande)",
+    moe: "OHB System", g: ["ohb"], plat: "OHB",
+    instr: "Radar SAR bande X", app: "Renseignement radar souverain.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2006, y1: 2022, jal: [[2006, "SAR-Lupe 1"], [2008, "SAR-Lupe 5"]],
+    st: "fin", pred: [], succ: ["sarah"],
+    note: "C'est ce programme qui a fait d'OHB un maître d'œuvre de premier plan." },
+
+  { id: "sarah", n: "SARah", d: "dob", sub: "Radar militaire allemand, 3 satellites",
+    fin: "Bundeswehr", moa: "BAAINBw",
+    moe: "OHB System (SARah-1 radar à antenne active fourni par Airbus)", g: ["ohb"], plat: "OHB",
+    instr: "Radars SAR : antenne active (Airbus) et réflecteurs (OHB)",
+    app: "Successeur de SAR-Lupe.",
+    bud: "≈ 800 M€ (ordre de grandeur publié)", bc: "C",
+    y0: 2018, y1: 2032, jal: [[2018, "SARah-1"], [2022, "SARah-2 et 3"]],
+    st: "op", pred: ["sarlupe"], succ: [] },
+
+  { id: "csk", n: "COSMO-SkyMed (1re et 2e génération)", d: "dob", sub: "Radar dual italien",
+    fin: "ASI, ministères italiens de la Recherche et de la Défense", moa: "ASI",
+    moe: "Thales Alenia Space Italie", g: ["tas"], plat: "PRIMA",
+    instr: "Radar SAR bande X",
+    app: "Radar dual : défense et marché civil (commercialisé par e-GEOS, filiale de Telespazio et de l'ASI).",
+    bud: "Non publié de façon consolidée", bc: "C",
+    y0: 2007, y1: 2035, jal: [[2007, "CSK-1 et 2"], [2010, "CSK-4"], [2019, "CSG-1"], [2022, "CSG-2"], [2026, "CSG-3 (janv.)"], [2027, "CSG-4 prévu (Vega-C)"]],
+    st: "op", pred: [], succ: ["iride"],
+    note: "Volet radar d'ORFEO, avec Pléiades en volet optique." },
+
+  { id: "iride", n: "IRIDE", d: "dob", sub: "Constellation nationale italienne multi-capteurs",
+    fin: "Italie (plan de relance PNRR)", moa: "Gouvernement italien, mise en œuvre par l'ESA avec l'ASI",
+    moe: "Plusieurs industriels italiens (Argotec, OHB Italia, Apogeo Space, Thales Alenia Space…)", g: ["autre"], plat: "Petits satellites",
+    instr: "Radar, optique, hyperspectral, infrarouge",
+    app: "Services publics italiens : protection civile, cadastre, infrastructures.",
+    bud: "≈ 1,1 Md€ (plan de relance)", bc: "B",
+    y0: 2025, y1: 2035, jal: [[2025, "Premiers déploiements"]],
+    st: "dev", pred: ["csk"], succ: [],
+    note: "Exemple d'un État qui achète une constellation à un tissu de PME plutôt qu'à un seul maître d'œuvre." },
+
+  { id: "paz", n: "PAZ", d: "dob", sub: "Radar dual espagnol",
+    fin: "Espagne (Défense et Industrie)", moa: "Hisdesat (opérateur)",
+    moe: "Airbus DS Espagne", g: ["airbus"], plat: "Dérivée de TerraSAR-X",
+    instr: "Radar SAR bande X", app: "Défense et usages civils.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2018, y1: 2030, jal: [[2018, "Lancement"]], st: "op", pred: ["terrasar"], succ: [] },
+
+  /* ---------------- DÉFENSE : TÉLÉCOMS ---------------- */
+  { id: "syracuse", n: "Syracuse (III, IV)", d: "dtl", sub: "Télécoms militaires françaises, géostationnaire",
+    fin: "Ministère des Armées", moa: "DGA",
+    moe: "Thales Alenia Space, avec Airbus DS (Syracuse IV)", g: ["tas"], plat: "Spacebus Neo (Syracuse IV)",
+    instr: "Charges utiles bandes X et Ka militaire, durcies",
+    app: "Communications protégées des forces françaises sur les théâtres d'opération.",
+    bud: "Non publié en détail", bc: "C",
+    y0: 2005, y1: 2038, jal: [[2005, "Syracuse IIIA"], [2006, "IIIB"], [2021, "IVA"], [2023, "IVB"]],
+    st: "op", pred: [], succ: [],
+    note: "Successeur (Syracuse V) à l'étude." },
+
+  { id: "satcombw", n: "SATCOMBw (étape 3)", d: "dtl", sub: "Télécoms militaires allemandes",
+    fin: "Bundeswehr", moa: "BAAINBw",
+    moe: "Airbus DS", g: ["airbus"], plat: "Plateforme Airbus",
+    instr: "Charges utiles militaires",
+    app: "Remplacer les satellites COMSATBw 1 et 2 (2009-2010) et étendre la couverture.",
+    bud: "2,1 Md€ (contrat Airbus, 2024)", bc: "A",
+    y0: 2009, y1: 2045, jal: [[2009, "COMSATBw-1"], [2010, "COMSATBw-2"], [2024, "Contrat étape 3"]],
+    st: "dev", pred: [], succ: [] },
+
+  { id: "sicral", n: "SICRAL et Athena-Fidus", d: "dtl", sub: "Télécoms militaires italiennes et franco-italiennes",
+    fin: "Défense italienne, avec la France pour SICRAL 2 et Athena-Fidus", moa: "Défense italienne, ASI, DGA, CNES",
+    moe: "Thales Alenia Space", g: ["tas"], plat: "Spacebus (Thales Alenia Space)",
+    instr: "Charges utiles militaires et duales",
+    app: "Communications militaires ; Athena-Fidus offre une capacité large bande duale aux deux pays.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2001, y1: 2036, jal: [[2001, "SICRAL 1"], [2009, "SICRAL 1B"], [2014, "Athena-Fidus"], [2015, "SICRAL 2"]],
+    st: "op", pred: [], succ: [],
+    note: "SICRAL 3 en développement." },
+
+  { id: "spainsat", n: "SpainSat NG", d: "dtl", sub: "Télécoms militaires espagnoles",
+    fin: "Défense espagnole", moa: "Hisdesat",
+    moe: "Airbus DS (Espagne et France)", g: ["airbus"], plat: "Eurostar Neo (Airbus)",
+    instr: "Charges utiles bandes X, Ka militaire et UHF",
+    app: "Communications sécurisées des forces espagnoles et alliées.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2025, y1: 2040, jal: [[2025, "SpainSat NG I (janv.)"]],
+    st: "op", pred: [], succ: [],
+    note: "Statut de SpainSat NG II à vérifier." },
+
+  /* ---------------- TÉLÉCOMS COMMERCIALES ---------------- */
+  { id: "eutelsat", n: "Eutelsat (avec OneWeb)", d: "tcm", sub: "Opérateur franco-britannique : flotte géostationnaire et constellation LEO",
+    fin: "Capitaux privés ; État français premier actionnaire depuis la recapitalisation de 2025", moa: "Eutelsat Group",
+    moe: "Achète à Airbus et Thales Alenia Space ; satellites OneWeb construits par Airbus", g: ["autre"], plat: "Eurostar, Spacebus, OneSat ; plateforme OneWeb",
+    instr: "Charges utiles de télécommunication",
+    app: "Télévision par satellite, connectivité large bande, mobilité, connectivité gouvernementale.",
+    bud: "Augmentation de capital ≈ 1,5 Md€ achevée fin 2025", bc: "A",
+    y0: 1977, y1: 2045, jal: [[1977, "Création intergouvernementale"], [2001, "Privatisation"], [2023, "Fusion avec OneWeb"], [2025, "Recapitalisation"]],
+    st: "op", pred: [], succ: [],
+    note: "OneWeb compte environ 640 satellites. Eutelsat est membre du consortium SpaceRISE d'IRIS²." },
+
+  { id: "ses", n: "SES", d: "tcm", sub: "Opérateur luxembourgeois multi-orbites",
+    fin: "Capitaux privés (l'État luxembourgeois est actionnaire)", moa: "SES",
+    moe: "Achète à Airbus, Thales Alenia Space, Boeing…", g: ["autre"], plat: "Multiples",
+    instr: "—",
+    app: "Vidéo, réseaux, mobilité, gouvernements ; constellation O3b mPOWER en orbite moyenne.",
+    bud: "Rachat d'Intelsat finalisé en juillet 2025", bc: "A",
+    y0: 1985, y1: 2045, jal: [[1988, "Astra 1A"], [2025, "Rachat d'Intelsat"]],
+    st: "op", pred: [], succ: [],
+    note: "Membre de SpaceRISE (IRIS²)." },
+
+  { id: "hispasat", n: "Hispasat", d: "tcm", sub: "Opérateur espagnol",
+    fin: "Capitaux privés, sous contrôle espagnol (Indra)", moa: "Hispasat",
+    moe: "Achète à divers industriels", g: ["autre"], plat: "Multiples, dont SmallGEO (Hispasat 36W-1)",
+    instr: "—",
+    app: "Télécommunications pour l'Espagne et l'Amérique latine.",
+    bud: "Rachat par Indra en 2025", bc: "B",
+    y0: 1989, y1: 2045, jal: [[2017, "Hispasat 36W-1 (1er SmallGEO)"]],
+    st: "op", pred: [], succ: [],
+    note: "Membre de SpaceRISE (IRIS²)." },
+
+  /* ---------------- TÉLÉCOMS : UE & R&D ---------------- */
+  { id: "iris2", n: "IRIS²", d: "tin", sub: "Constellation sécurisée de l'UE, multi-orbites",
+    fin: "UE (≈ 2,4 Md€ sur 2021-2027), ESA, États membres et opérateurs privés", moa: "Commission européenne ; concession de 12 ans à SpaceRISE (SES, Eutelsat, Hispasat)",
+    moe: "Équipe industrielle : Airbus DS, Thales Alenia Space, OHB, Aerospacelab…", g: ["airbus", "tas", "ohb"], plat: "À définir",
+    instr: "Charges utiles de télécommunication sécurisées",
+    app: "Connectivité souveraine pour les gouvernements et les armées, offre commerciale en complément. La réponse européenne à Starlink.",
+    bud: "≈ 10,6 Md€ annoncés en 2024 ; contributions nationales ajoutées en 2026 (Pologne 656 M€, Hongrie 500 M€, Espagne 1,6 à 2 Md€)", bc: "A",
+    y0: 2023, y1: 2042, jal: [[2024, "Concession signée (16 déc.)"], [2026, "Accord de mise en œuvre (7 août)"], [2029, "Premiers lancements visés"]],
+    st: "dev", pred: ["govsatcom"], succ: [],
+    note: "Révision d'août 2026 : environ 350 satellites (orbites basse et moyenne), avec une couche dédiée à la défense." },
+
+  { id: "govsatcom", n: "GOVSATCOM", d: "tin", sub: "Mutualisation des satellites gouvernementaux européens",
+    fin: "UE (≈ 0,44 Md€ avec la surveillance de l'espace, 2021-2027)", moa: "Commission européenne, exploitation EUSPA",
+    moe: "Pas de satellite propre : capacités nationales mises en commun", g: [], plat: "—",
+    instr: "—",
+    app: "Mettre en commun les capacités de Syracuse, SICRAL, SpainSat et d'autres pour les usages gouvernementaux européens.",
+    bud: "0,44 Md€ avec la surveillance de l'espace (2021-2027)", bc: "A",
+    y0: 2025, y1: 2035, jal: [[2025, "Premiers services"]],
+    st: "op", pred: [], succ: ["iris2"] },
+
+  { id: "artes", n: "ARTES (R&D télécoms ESA)", d: "tin", sub: "Financement des plateformes et démonstrateurs",
+    fin: "ESA (États membres, participation à la carte)", moa: "ESA, en partenariat avec les industriels et opérateurs",
+    moe: "Selon les projets : Airbus, Thales Alenia Space, OHB…", g: [], plat: "Alphabus, SmallGEO, Electra, OneSat, Space Inspire",
+    instr: "—",
+    app: "Rendre les industriels européens compétitifs à l'export : nouvelles plateformes, charges reconfigurables, liaisons optiques.",
+    bud: "Variable à chaque conférence ministérielle", bc: "C",
+    y0: 1990, y1: 2040, jal: [[2013, "Alphasat"], [2017, "SmallGEO"], [2021, "Eutelsat Quantum"]],
+    st: "op", pred: [], succ: [],
+    note: "Mécanisme de partenariat : l'ESA co-finance le premier exemplaire, l'industriel vend la suite." },
+
+  { id: "hh", n: "Heinrich Hertz", d: "tin", sub: "Démonstrateur télécoms allemand",
+    fin: "Allemagne (DLR) et Bundeswehr", moa: "DLR",
+    moe: "OHB System", g: ["ohb"], plat: "SmallGEO (OHB)",
+    instr: "Charges utiles expérimentales",
+    app: "Tester en orbite des technologies télécoms, avec une part militaire.",
+    bud: "Non retenu ici", bc: "C",
+    y0: 2023, y1: 2038, jal: [[2023, "Lancement (dernier Ariane 5)"]],
+    st: "op", pred: [], succ: [] },
+
+  /* ---------------- NAVIGATION ---------------- */
+  { id: "egnos", n: "EGNOS", d: "nav", sub: "Correction du GPS pour l'aviation et les usages sûrs",
+    fin: "Union européenne", moa: "ESA (développement), EUSPA (programme), exploitation ESSP",
+    moe: "Thales Alenia Space France (système)", g: ["tas"], plat: "Charges hébergées sur des satellites télécoms",
+    instr: "Transpondeurs hébergés",
+    app: "Approches d'avions guidées par satellite, agriculture de précision, maritime.",
+    bud: "Inclus dans les 9,02 Md€ Galileo + EGNOS (2021-2027)", bc: "A",
+    y0: 2009, y1: 2040, jal: [[2009, "Service ouvert"], [2011, "Service aviation"]],
+    st: "op", pred: [], succ: [],
+    note: "EGNOS V3 (Thales Alenia Space) prépare la génération suivante." },
+
+  { id: "galg1", n: "Galileo 1re génération", d: "nav", sub: "Constellation de navigation en orbite moyenne",
+    fin: "Union européenne (9,02 Md€ avec EGNOS sur 2021-2027)", moa: "ESA (achat technique pour la Commission), EUSPA (exploitation)",
+    moe: "OHB System (satellites FOC), charges utiles SSTL ; Astrium et Thales Alenia Space pour IOV", g: ["ohb"], plat: "OHB (FOC)",
+    instr: "Horloges atomiques, charges de navigation, charge de recherche et sauvetage",
+    app: "Positionnement et datation pour le grand public, service chiffré gouvernemental (PRS), recherche et sauvetage.",
+    bud: "9,02 Md€ avec EGNOS (2021-2027)", bc: "A",
+    y0: 2005, y1: 2036, jal: [[2005, "GIOVE-A"], [2011, "IOV"], [2016, "Services initiaux"], [2025, "L14 sur Ariane 6 (17 déc.)"]],
+    st: "op", pred: [], succ: ["galg2"],
+    note: "Environ 29 satellites actifs après le lancement L14." },
+
+  { id: "galg2", n: "Galileo 2e génération (G2)", d: "nav", sub: "12 satellites, deux lots en parallèle",
+    fin: "Union européenne", moa: "ESA pour la Commission",
+    moe: "Airbus DS Allemagne et Thales Alenia Space Italie (deux lots de 6)", g: ["airbus", "tas"], plat: "Nouvelles plateformes à propulsion électrique",
+    instr: "Charges utiles entièrement numériques, horloges améliorées",
+    app: "Meilleure précision, résistance au brouillage et à l'usurpation.",
+    bud: "≈ 1,47 Md€ pour les deux contrats (2021)", bc: "B",
+    y0: 2026, y1: 2045, jal: [[2021, "Contrats"], [2026, "1ers lancements annoncés (Ariane 6)"]],
+    st: "dev", pred: ["galg1"], succ: [],
+    note: "Date du premier lancement à confirmer." }
+];
+
+/* ---------------- FILIATIONS ---------------- */
+const LIGNEES = [
+  { type: "mission", titre: "Optique haute résolution française", note: "La filière civile du CNES a donné naissance à l'offre commerciale d'Airbus.",
+    etapes: [["SPOT 1", 1986, "spot"], ["SPOT 5", 2002, "spot"], ["Pléiades", 2011, "pleiades"], ["Pléiades Neo", 2021, "pneo"], ["Pléiades Neo Next", 2028, "pneonext"]],
+    branches: [["CO3D", 2025, "co3d"]] },
+  { type: "mission", titre: "Optique militaire française", note: "Helios reprenait la plateforme SPOT.",
+    etapes: [["Helios I", 1995, "helios"], ["Helios II", 2004, "helios"], ["CSO", 2018, "cso"], ["Successeur", 2032, "csosuite"]], branches: [] },
+  { type: "mission", titre: "Radar civil européen", note: "Envisat regroupait tout. Copernicus a réparti ses mesures sur des familles dédiées.",
+    etapes: [["ERS-1", 1991, "ers"], ["ERS-2", 1995, "ers"], ["Envisat", 2002, "envisat"], ["Sentinel-1", 2014, "s1"], ["Sentinel-1NG", 2033, "sng"]],
+    branches: [["ROSE-L (bande L)", 2029, "rosel"], ["Harmony", 2029, "harmony"]] },
+  { type: "mission", titre: "Altimétrie océanique", note: "Plus de 30 ans de mesure continue du niveau des mers.",
+    etapes: [["Topex/Poseidon", 1992, "jason"], ["Jason-1", 2001, "jason"], ["Jason-2", 2008, "jason"], ["Jason-3", 2016, "jason"], ["Sentinel-6", 2020, "s6"]],
+    branches: [["Sentinel-3 (SRAL)", 2016, "s3"]] },
+  { type: "mission", titre: "Glaces polaires", note: "Une mission scientifique devient opérationnelle.",
+    etapes: [["CryoSat-2", 2010, "cryosat"], ["CRISTAL", 2028, "cristal"]], branches: [] },
+  { type: "mission", titre: "Chimie de l'atmosphère", note: "De l'instrument scientifique au service quotidien.",
+    etapes: [["Envisat (SCIAMACHY)", 2002, "envisat"], ["Sentinel-5P", 2017, "s5p"], ["Sentinel-5", 2025, "s5"]],
+    branches: [["Sentinel-4 (géostationnaire)", 2025, "s4"], ["CO2M", 2027, "co2m"]] },
+  { type: "mission", titre: "Météo géostationnaire", note: "Une génération tous les 20 ans environ.",
+    etapes: [["Meteosat-1", 1977, "mop"], ["MSG", 2002, "msg"], ["MTG", 2022, "mtg"]], branches: [] },
+  { type: "mission", titre: "Météo polaire", note: "Les données de sondage les plus utiles à la prévision.",
+    etapes: [["MetOp", 2006, "metop"], ["MetOp-SG", 2025, "metopsg"]], branches: [["Aeolus → Aeolus-2", 2018, "aeolus"]] },
+  { type: "mission", titre: "Radar militaire allemand", note: "",
+    etapes: [["SAR-Lupe", 2006, "sarlupe"], ["SARah", 2018, "sarah"]], branches: [] },
+  { type: "mission", titre: "Radar italien", note: "",
+    etapes: [["COSMO-SkyMed", 2007, "csk"], ["COSMO-SkyMed 2e gén.", 2019, "csk"], ["IRIDE", 2025, "iride"]], branches: [] },
+  { type: "mission", titre: "Radar bande X germano-espagnol", note: "La même plateforme exportée vers un autre pays.",
+    etapes: [["TerraSAR-X", 2007, "terrasar"], ["TanDEM-X", 2010, "terrasar"], ["PAZ", 2018, "paz"]], branches: [] },
+  { type: "mission", titre: "Navigation", note: "",
+    etapes: [["GIOVE", 2005, "galg1"], ["Galileo IOV", 2011, "galg1"], ["Galileo FOC", 2014, "galg1"], ["Galileo G2", 2026, "galg2"]],
+    branches: [["EGNOS → EGNOS V3", 2009, "egnos"]] },
+  { type: "mission", titre: "Connectivité gouvernementale", note: "De la mise en commun à une constellation propre.",
+    etapes: [["Syracuse, SICRAL, SpainSat…", 2005, "syracuse"], ["GOVSATCOM", 2025, "govsatcom"], ["IRIS²", 2029, "iris2"]], branches: [] },
+
+  { type: "plateforme", titre: "Spacebus (Thales Alenia Space)", note: "La plateforme géostationnaire de Cannes.",
+    etapes: [["Spacebus 100 à 4000", 1985, null], ["Spacebus Neo", 2019, "syracuse"], ["Space Inspire", 2024, "artes"]], branches: [["SICRAL, Athena-Fidus", 2014, "sicral"]] },
+  { type: "plateforme", titre: "Eurostar (Airbus)", note: "La plateforme géostationnaire de Toulouse et Stevenage.",
+    etapes: [["Eurostar 2000 / 3000", 1990, null], ["Eurostar Neo", 2021, "spainsat"], ["OneSat", 2025, "artes"]], branches: [] },
+  { type: "plateforme", titre: "SmallGEO (OHB)", note: "Née d'un partenariat ARTES, elle porte toute la flotte MTG.",
+    etapes: [["Hispasat 36W-1", 2017, "hispasat"], ["MTG (6 satellites)", 2022, "mtg"], ["Heinrich Hertz", 2023, "hh"]], branches: [["Electra (avec SES)", 2025, "artes"]] },
+  { type: "plateforme", titre: "Proteus et Myriade (CNES)", note: "Les mini-plateformes françaises en orbite basse.",
+    etapes: [["Proteus : Jason-1", 2001, "jason"], ["Proteus : SMOS", 2009, "smos"], ["Myriade : MicroCarb", 2025, null]], branches: [] },
+  { type: "plateforme", titre: "PRIMA (Thales Alenia Space Italie)", note: "La plateforme radar italienne.",
+    etapes: [["COSMO-SkyMed", 2007, "csk"], ["Sentinel-1", 2014, "s1"]], branches: [] },
+  { type: "plateforme", titre: "AstroBus (Airbus)", note: "La plateforme d'observation en orbite basse d'Airbus.",
+    etapes: [["SPOT 6 / 7", 2012, "spot"], ["Sentinel-2", 2015, "s2"], ["Sentinel-5P", 2017, "s5p"]], branches: [] },
+  { type: "plateforme", titre: "Plateforme CryoSat (Airbus)", note: "Un satellite scientifique devenu base d'une mission opérationnelle.",
+    etapes: [["CryoSat-2", 2010, "cryosat"], ["Sentinel-6", 2020, "s6"]], branches: [] }
+];
+
+/* ---------------- CONVERGENCES ---------------- */
+const CONVERGENCES = [
+  { type: "Charge hébergée", a: "mtg", b: "s4", titre: "Sentinel-4 sur MTG-S", txt: "Un instrument Copernicus (UE) voyage sur un satellite météo (EUMETSAT). Une seule plateforme, deux missions, deux financeurs." },
+  { type: "Charge hébergée", a: "metopsg", b: "s5", titre: "Sentinel-5 sur MetOp-SG A", txt: "Même logique en orbite polaire : la chimie de l'atmosphère profite du satellite météo." },
+  { type: "Charge hébergée", a: "metopsg", b: null, titre: "Argos-4 sur MetOp-SG B", txt: "Le système de collecte de données Argos (CNES, NOAA) est embarqué sur le satellite météo." },
+  { type: "Charge hébergée", a: "eutelsat", b: "egnos", titre: "EGNOS sur des satellites commerciaux", txt: "Les signaux EGNOS sont relayés par des transpondeurs loués sur des satellites d'opérateurs (Eutelsat, SES, Inmarsat)." },
+  { type: "Charge hébergée", a: "galg1", b: null, titre: "Recherche et sauvetage sur Galileo", txt: "Chaque satellite Galileo relaie les balises de détresse du système international Cospas-Sarsat." },
+  { type: "Mission contributrice", a: "pneo", b: "s2", titre: "Données privées achetées par Copernicus", txt: "Copernicus complète les Sentinel en achetant des images très haute résolution : Pléiades, Pléiades Neo, COSMO-SkyMed, TerraSAR-X, PAZ, ICEYE…" },
+  { type: "Échange d'images", a: "pleiades", b: "csk", titre: "ORFEO : optique français, radar italien", txt: "La France et l'Italie partagent l'accès à Pléiades et COSMO-SkyMed plutôt que de construire chacune les deux capacités." },
+  { type: "Échange d'images", a: "cso", b: "sarah", titre: "CSO contre SARah", txt: "La France apporte l'optique, l'Allemagne le radar. Chaque pays accède à la capacité de l'autre." },
+  { type: "Satellite partagé", a: "sicral", b: "syracuse", titre: "SICRAL 2 et Athena-Fidus", txt: "Des satellites télécoms financés à deux, France et Italie, avec des capacités militaires et duales." },
+  { type: "Mutualisation", a: "govsatcom", b: "syracuse", titre: "GOVSATCOM", txt: "L'UE met en commun les capacités nationales (Syracuse, SICRAL, SpainSat…) au service des usages gouvernementaux européens." },
+  { type: "Public-privé", a: "iris2", b: "eutelsat", titre: "IRIS² : concession à des opérateurs privés", txt: "L'UE confie à SES, Eutelsat et Hispasat la conception et l'exploitation d'une infrastructure publique." },
+  { type: "Public-privé", a: "co3d", b: "pneo", titre: "CO3D : CNES et Airbus", txt: "L'État finance une partie et garantit l'usage défense ; l'industriel valorise les données sur le marché." },
+  { type: "Public-privé", a: "terrasar", b: "paz", titre: "TerraSAR-X : DLR et Airbus", txt: "Le premier grand partenariat public-privé en observation radar, dont la plateforme a été reprise pour PAZ." },
+  { type: "Plateforme partagée", a: "cryosat", b: "s6", titre: "La plateforme CryoSat reprise pour Sentinel-6", txt: "Une plateforme développée pour la science est réutilisée pour une mission opérationnelle, ce qui réduit coûts et risques." },
+  { type: "Plateforme partagée", a: "mtg", b: "hh", titre: "SmallGEO : de la météo aux télécoms", txt: "La même plateforme OHB porte les satellites MTG, Heinrich Hertz et Hispasat 36W-1." },
+  { type: "Vol en formation", a: "s3", b: "flex", titre: "FLEX avec Sentinel-3", txt: "Lancés ensemble en septembre 2026, ils volent en tandem : la mission scientifique s'appuie sur la mission opérationnelle." },
+  { type: "Vol en formation", a: "s1", b: "harmony", titre: "Harmony avec Sentinel-1", txt: "Deux satellites récepteurs exploitent les échos radar émis par un Sentinel-1." },
+  { type: "Coopération internationale", a: "s6", b: "jason", titre: "Sentinel-6 avec la NASA et la NOAA", txt: "La série franco-américaine Jason est devenue une mission Copernicus, sans casser la coopération transatlantique." }
+];
+
+/* ---------------- BUDGETS DE RÉFÉRENCE ---------------- */
+const BUDGETS = [
+  { nom: "Programme spatial de l'UE 2021-2027", val: 14.88, txt: "Galileo et EGNOS 9,02 Md€ · Copernicus 5,42 Md€ · surveillance de l'espace et GOVSATCOM 0,44 Md€", src: "heuking", bc: "A" },
+  { nom: "Conférence ministérielle de l'ESA (nov. 2025), budget 2026-2028", val: 22.3, txt: "Record, +31 % par rapport à 2022. Dont 3,5 Md€ pour l'observation de la Terre.", src: "wgiss", bc: "A" },
+  { nom: "IRIS², coût annoncé en 2024", val: 10.6, txt: "Dont ≈ 2,4 Md€ du budget UE 2021-2027 ; le reste vient de l'ESA, des États et des opérateurs privés.", src: "heuking", bc: "B" },
+  { nom: "Proposition UE 2028-2034, volet défense, sécurité et espace", val: 131, txt: "Proposition de juillet 2025, non adoptée. Aucune répartition officielle entre défense et espace.", src: "heuking", bc: "A" }
+];
+
+/* ---------------- SOURCES ---------------- */
+const SOURCES = {
+  esa1d: ["ESA – Sentinel-1D, Thales Alenia Space maître d'œuvre", "https://www.esa.int/Newsroom/Press_Releases/Media_invitation_Online_media_briefings_ahead_of_Sentinel-1D_launch"],
+  esa6b: ["ESA – Lancement de Sentinel-6B", "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-6/Watch_Sentinel-6B_launch_live_broadcast"],
+  wiki3c: ["Wikipedia – Sentinel-3C", "https://en.wikipedia.org/wiki/Sentinel-3C"],
+  sios: ["SIOS – Calendrier des missions Copernicus", "https://www.sios-svalbard.org/CopernicusRelay"],
+  wgiss: ["ESA – Rapport d'agence WGISS-61 (mars 2026)", "https://ceos.org/document_management/Working_Groups/WGISS/Meetings/WGISS-61/2.3_ESA%20Agency%20report.pdf"],
+  tas2020: ["Thales Alenia Space – Missions d'expansion Copernicus (2020)", "https://www.thalesaleniaspace.com/en/press-releases/thales-alenia-space-proposals-copernicus-project-selected-european-space-agency"],
+  linfo: ["L'Info Durable – Contrats LSTM, CIMR et CHIME", "https://www.linfodurable.fr/trois-nouveaux-contrats-pour-les-satellites-europeens-dobservation-de-la-terre-21341"],
+  futureeo: ["Wikipedia – FutureEO et Earth Explorers", "https://en.wikipedia.org/wiki/FutureEO"],
+  flex: ["ESA – Thales Alenia Space construit FLEX", "https://m.esa.int/Our_Activities/Observing_the_Earth/Thales_Alenia_Space_leads_the_build_of_photosynthesis_mission"],
+  mtg: ["Via Satellite – Contrat MTG (2012)", "https://satellitetoday.com/government-military/2012/02/24/thales-alenia-space-inks-record-breaking-1-8-billion-six-satellite-eumetsat-deal"],
+  metopsg: ["Wikipedia – MetOp-SG B1", "https://en.wikipedia.org/wiki/MetOp-SG_B1"],
+  pneonext: ["Airbus – Pléiades Neo Next (janv. 2026)", "https://www.airbus.com/en/newsroom/press-releases/2026-01-the-first-airbus-pleiades-neo-next-satellite-will-be-launched-early-2028"],
+  co3d: ["CNES – Lancement de CO3D et MicroCarb (juillet 2025)", "https://cnes.fr/sites/default/files/2025-07/CP038-2025_-_Succes_VV27_Microcarb__CO3D.pdf"],
+  csk: ["Wikipedia – COSMO-SkyMed", "https://en.wikipedia.org/wiki/COSMO-SkyMed"],
+  satcom: ["Boursorama – SATCOMBw 3, contrat de 2,1 Md€", "https://www.boursorama.com/bourse/actualites/satellites-militaires-satcombw-3-contrat-a-2-1-milliards-entre-airbus-et-l-armee-allemande-f47ccdac2ce854cfd725464c521e7a14"],
+  iris: ["EUSPA – Accélération d'IRIS² (août 2026)", "https://www.euspa.europa.eu/newsroom-events/news/commission-accelerates-iris2-deployment-enhanced-security-and-expanded"],
+  heuking: ["Heuking – Nouveaux budgets européens pour l'espace et la défense", "https://www.heuking.de/en/news-events/newsletter-articles/detail/new-european-budgets-for-space-defence-what-to-prepare-for.html"],
+  galileo: ["ESA – Premier lancement Galileo sur Ariane 6 (L14)", "https://www.esa.int/Applications/Satellite_navigation/Galileo_s_first_Ariane_6_launch_strengthens_European_resilience"],
+  g2: ["Inside GNSS – Ariane 6 et Galileo G2", "https://insidegnss.com/ariane-6-launches-impact-for-galileo/"],
+  ses: ["SES – Rachat d'Intelsat finalisé", "https://www.ses.com/press-release/ses-delivers-solid-h1-2025-results-completes-intelsat-acquisition"],
+  eutelsat: ["Space Intel Report – L'État français premier actionnaire d'Eutelsat", "https://www.spaceintelreport.com/?p=108742"],
+  bromo: ["Großwald – Projet Bromo et opposition d'OHB (juin 2026)", "https://www.grosswald.org/europe-space-merger-project-bromo-airbus-leonardo-thales-ohb-opposition/"],
+  liste: ["Wikipedia – Liste des satellites Sentinel", "https://en.wikipedia.org/wiki/List_of_Sentinel_satellites"]
+};
+
+const GLOSSAIRE = [
+  ["AIT", "Assemblage, intégration et tests : la phase où le satellite est monté et qualifié en salle propre."],
+  ["BAAINBw", "Office fédéral allemand de l'équipement de la Bundeswehr, équivalent de la DGA."],
+  ["CFP (MFF)", "Cadre financier pluriannuel : le budget de l'UE sur sept ans."],
+  ["Conférence ministérielle", "Réunion des ministres des États membres de l'ESA, tous les deux à trois ans, qui fixe les budgets par programme."],
+  ["DGA", "Direction générale de l'armement, maître d'ouvrage des programmes militaires français."],
+  ["Dual", "Système qui sert à la fois des utilisateurs civils et militaires."],
+  ["EUMETSAT", "Organisation intergouvernementale des services météo européens, propriétaire et opérateur des satellites météo."],
+  ["EUSPA", "Agence de l'UE pour le programme spatial : exploite Galileo et EGNOS, gère GOVSATCOM et IRIS²."],
+  ["GEO / MEO / LEO", "Orbites géostationnaire (36 000 km), moyenne (≈ 20 000 km, navigation) et basse (moins de 2 000 km)."],
+  ["Maître d'ouvrage (MOA)", "Celui qui commande et paie : l'ESA, le CNES, la DGA, un opérateur."],
+  ["Maître d'œuvre (MOE)", "L'industriel qui conçoit, intègre et livre le satellite complet, en s'appuyant sur des sous-traitants."],
+  ["Mission contributrice", "Satellite national ou commercial dont Copernicus achète les données."],
+  ["NewSpace", "Nouveaux acteurs privés : petits satellites, production en série, financement par capitaux privés."],
+  ["Charge hébergée", "Instrument ou équipement d'un programme installé sur le satellite d'un autre programme."],
+  ["PPP", "Partenariat public-privé : partage du financement et des revenus entre un acteur public et un industriel."],
+  ["PRS", "Service public réglementé de Galileo : signal chiffré réservé aux gouvernements."],
+  ["Retour géographique", "Règle de l'ESA : chaque pays reçoit des contrats industriels à proportion de sa contribution."],
+  ["SAR", "Radar à synthèse d'ouverture : image radar de haute résolution, de jour comme de nuit, à travers les nuages."],
+  ["THR", "Très haute résolution : imagerie optique de moins d'un mètre."]
+];
+
+</script>
+<script>
+(function () {
+  "use strict";
+
+  const byId = Object.fromEntries(PROGRAMMES.map(p => [p.id, p]));
+  const famOf = p => DOMAINES[p.d].fam;
+  const col = f => `var(--f-${f})`;
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const NOW = 2026.8;
+
+  const VIEWS = [
+    ["mecanique", "Mécanique du marché"],
+    ["domaines", "Carte des domaines"],
+    ["fiches", "Fiches programmes"],
+    ["frise", "Frise 1977-2045"],
+    ["genealogie", "Généalogie"],
+    ["convergences", "Convergences"],
+    ["industrie", "Lecture industrielle"],
+    ["glossaire", "Glossaire & sources"]
+  ];
+
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all" };
+
+  function chip(id) {
+    const p = byId[id];
+    if (!p) return "";
+    return `<button class="chip" data-goto="${p.id}" type="button"><span class="dot" style="background:${col(famOf(p))}"></span>${esc(p.n)}</button>`;
+  }
+  const pill = st => `<span class="pill st-${st}">${STATUTS[st]}</span>`;
+
+  /* ================= EN-TÊTE ================= */
+  function header() {
+    document.getElementById("legendFam").innerHTML = Object.entries(FAMILLES)
+      .map(([k, f]) => `<span><i class="sw" style="background:${col(k)}"></i>${f.nom}</span>`).join("");
+    document.getElementById("counts").innerHTML = [
+      [PROGRAMMES.length, "programmes"],
+      [LIGNEES.length, "filiations"],
+      [CONVERGENCES.length, "convergences"]
+    ].map(([v, l]) => `<div><b>${v}</b><small>${l}</small></div>`).join("");
+    document.getElementById("tabs").innerHTML = VIEWS.map(([k, l], i) =>
+      `<button class="tab" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
+  }
+
+  /* ================= VUE 0 : MÉCANIQUE ================= */
+  function vMecanique() {
+    const stages = [
+      ["Financeurs", "Qui paie", ["Union européenne", "États membres de l'ESA", "États membres d'EUMETSAT", "Agences nationales : CNES, DLR, ASI", "Ministères de la Défense", "Capitaux privés"]],
+      ["Maître d'ouvrage", "Qui commande", ["ESA (pour l'UE ou ses États)", "CNES, DLR, ASI", "DGA, BAAINBw", "EUSPA (exploitation)", "Opérateurs : Eutelsat, SES…"]],
+      ["Maître d'œuvre", "Qui intègre le satellite", ["Airbus DS", "Thales Alenia Space", "OHB", "Nouveaux entrants : ICEYE, Aerospacelab…"]],
+      ["Équipementiers", "Qui fournit les briques", ["Instruments : Leonardo, Thales, Airbus", "Optique : Safran Reosc", "Senseurs : Sodern, Jena-Optronik", "Charges utiles : SSTL, Thales"]],
+      ["Lancement", "Qui met en orbite", ["Arianespace (Ariane 6, Vega-C avec Avio)", "SpaceX quand l'offre européenne manque"]],
+      ["Exploitation", "Qui fait voler", ["ESA (ESOC)", "EUMETSAT", "CNES", "Armées", "Opérateurs privés"]],
+      ["Utilisateurs", "Qui se sert des données", ["Services Copernicus", "Météo-France, DWD…", "Armées", "Clients commerciaux"]]
+    ];
+    const chain = stages.map(([t, s, items], i) => `
+      <div class="stage"><div class="num">${i + 1} · ${esc(s)}</div><h3>${esc(t)}</h3>
+      <ul>${items.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`).join("");
+
+    const circuits = [
+      { f: "obs", t: "Circuit institutionnel civil", ex: "Exemple : Sentinel-1D", rows: [
+        ["Paie", "Union européenne (Copernicus) et ESA"], ["Commande", "ESA"], ["Construit", "Thales Alenia Space Italie, radar Airbus DS"],
+        ["Lance", "Arianespace, Ariane 6 (nov. 2025)"], ["Exploite", "ESA"], ["Données", "Gratuites, pour tous"]],
+        moral: "L'UE est propriétaire, l'ESA est l'architecte technique. Les industriels sont choisis par appel d'offres, en tenant compte du retour géographique." },
+      { f: "def", t: "Circuit défense national", ex: "Exemple : CSO-3", rows: [
+        ["Paie", "Ministère des Armées"], ["Commande", "DGA, avec l'expertise du CNES"], ["Construit", "Airbus DS, instrument Thales Alenia Space"],
+        ["Lance", "Arianespace, Ariane 6 (mars 2025)"], ["Exploite", "Armées et CNES"], ["Données", "Classifiées, échangées avec des alliés"]],
+        moral: "Souveraineté d'abord : pas de concurrence européenne ouverte, coopération par accords d'État à État." },
+      { f: "tel", t: "Circuit commercial", ex: "Exemple : Pléiades Neo", rows: [
+        ["Paie", "Airbus, sur fonds propres"], ["Commande", "Airbus à lui-même"], ["Construit", "Airbus DS"],
+        ["Lance", "Arianespace, Vega"], ["Exploite", "Airbus"], ["Données", "Vendues, l'État est un client"]],
+        moral: "L'industriel prend le risque et garde les revenus. Les États sécurisent le modèle par des contrats d'achat de données." }
+    ];
+    const circ = circuits.map(c => `
+      <div class="circuit">
+        <h3><span class="sw" style="background:${col(c.f)}"></span>${esc(c.t)}</h3>
+        <div class="note">${esc(c.ex)}</div>
+        <ol>${c.rows.map(([a, b]) => `<li><span>${esc(a)}</span><span>${esc(b)}</span></li>`).join("")}</ol>
+        <p class="moral">${esc(c.moral)}</p>
+      </div>`).join("");
+
+    const max = Math.max(...BUDGETS.map(b => b.val));
+    const bud = BUDGETS.map(b => `
+      <div class="budget">
+        <div><div class="v mono">${b.val.toLocaleString("fr-FR")}<small>Md€</small></div><div class="n">${esc(b.nom)} <span class="conf">${b.bc}</span></div></div>
+        <div><div class="bar"><i style="width:${(b.val / max * 100).toFixed(1)}%"></i></div><div class="note">${esc(b.txt)}</div></div>
+      </div>`).join("");
+
+    const notions = [
+      ["Retour géographique", "À l'ESA, chaque pays récupère des contrats industriels en proportion de ce qu'il verse. Cela explique la répartition des maîtrises d'œuvre entre France, Allemagne, Italie, Espagne et Royaume-Uni."],
+      ["UE propriétaire, ESA architecte", "Pour Copernicus et Galileo, l'UE finance et possède. Elle délègue à l'ESA la conception et l'achat, puis à l'EUSPA ou à EUMETSAT l'exploitation."],
+      ["Dual", "Un même satellite sert les civils et les militaires (Pléiades, COSMO-SkyMed, Athena-Fidus). C'est une façon de partager les coûts."],
+      ["Ancre institutionnelle", "Même un programme privé vit souvent grâce à un gros client public : un ministère qui s'engage à acheter des images ou de la capacité."],
+      ["Partenariat public-privé", "L'État finance une partie, l'industriel le reste, et les revenus sont partagés (TerraSAR-X, CO3D, IRIS²)."],
+      ["Accès autonome à l'espace", "Les programmes institutionnels lancent en priorité sur Ariane 6 et Vega-C, même quand un lanceur étranger serait moins cher."]
+    ].map(([t, d]) => `<div class="notion"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
+
+    return `
+      <div class="view-head"><h2>Comment le marché fonctionne</h2>
+      <p>Un satellite européen passe par sept mains. La plupart des différences entre programmes viennent de qui occupe les deux premières cases : qui paie, et qui commande.</p></div>
+      <div class="chain">${chain}</div>
+      <h3 class="section-title">Trois circuits types</h3>
+      <div class="circuits">${circ}</div>
+      <h3 class="section-title">Les grandes enveloppes</h3>
+      <p class="note" style="margin-bottom:12px">Enveloppes pluriannuelles de natures différentes, à lire séparément. Barres à la même échelle.</p>
+      <div class="budgets">${bud}</div>
+      <h3 class="section-title">Six notions pour lire tout le reste</h3>
+      <div class="notions">${notions}</div>`;
+  }
+
+  /* ================= VUE 1 : DOMAINES ================= */
+  function vDomaines() {
+    const fams = Object.entries(FAMILLES).map(([fk, f]) => {
+      const doms = Object.entries(DOMAINES).filter(([, d]) => d.fam === fk);
+      const n = PROGRAMMES.filter(p => famOf(p) === fk).length;
+      return `<div class="fam">
+        <div class="fam-head" style="border-top:4px solid ${col(fk)}"><h3>${esc(f.nom)}</h3><span class="count">${n} programmes</span></div>
+        <div class="doms">${doms.map(([dk, d]) => {
+          const ps = PROGRAMMES.filter(p => p.d === dk).sort((a, b) => a.y0 - b.y0);
+          return `<div class="dom"><h4>${esc(d.nom)}</h4><p>${esc(d.resume)}</p><div class="chips">${ps.map(p => chip(p.id)).join("")}</div></div>`;
+        }).join("")}</div></div>`;
+    }).join("");
+    return `<div class="view-head"><h2>Carte des domaines</h2>
+      <p>Cinq grandes familles, neuf domaines. Les pastilles sont classées par date de début ; un clic ouvre la fiche du programme.</p></div>
+      <div class="fams">${fams}</div>`;
+  }
+
+  /* ================= VUE 2 : FICHES ================= */
+  function filtered() {
+    const q = state.q.trim().toLowerCase();
+    return PROGRAMMES.filter(p => (state.fam === "all" || famOf(p) === state.fam) &&
+      (!q || [p.n, p.sub, p.moe, p.fin, p.app, p.instr].join(" ").toLowerCase().includes(q)));
+  }
+  function vFiches() {
+    const fch = [["all", "Tous", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
+      .map(([k, l, c]) => `<button class="fchip" type="button" data-fam="${k}" aria-pressed="${state.fam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
+    return `<div class="view-head"><h2>Fiches programmes</h2>
+      <p>Même grille pour chaque programme. Les chiffres portent un indice de confiance : A vérifié en octobre 2026, B publié mais non revérifié, C estimation ou donnée non publique.</p></div>
+      <div class="fiches">
+        <div>
+          <div class="filters">
+            <label class="note" for="q">Rechercher un programme, un industriel, une application</label>
+            <input id="q" type="search" placeholder="ex. OHB, radar, Toulouse…" value="${esc(state.q)}">
+            <div class="fchips" id="fchips">${fch}</div>
+          </div>
+          <div class="plist" id="plist"></div>
+        </div>
+        <div id="detail"></div>
+      </div>`;
+  }
+  function renderList() {
+    const list = filtered();
+    const el = document.getElementById("plist");
+    if (!el) return;
+    el.innerHTML = list.length ? list.map(p => `
+      <button class="pitem" type="button" data-sel="${p.id}" aria-current="${p.id === state.sel}">
+        <span class="bar" style="background:${col(famOf(p))}"></span>
+        <span style="min-width:0"><span class="t">${esc(p.n)}</span><span class="s">${esc(DOMAINES[p.d].nom)} · ${esc(p.moe)}</span></span>
+        ${pill(p.st)}
+      </button>`).join("") : `<p class="note" style="padding:14px">Aucun programme ne correspond. Essayez un autre mot ou la famille « Tous ».</p>`;
+  }
+  function miniTimeline(p) {
+    const a = Math.min(p.y0, ...p.jal.map(j => j[0])) - 1, b = Math.max(p.y1, NOW) + 1;
+    const W = 640, H = 70, x = y => 10 + (y - a) / (b - a) * (W - 20);
+    const c = col(famOf(p));
+    const ticks = [];
+    for (let y = Math.ceil(a / 5) * 5; y <= b; y += 5) ticks.push(y);
+    const past = Math.min(p.y1, NOW);
+    let bars = "";
+    if (p.y0 < NOW) bars += `<rect x="${x(p.y0)}" y="28" width="${Math.max(2, x(past) - x(p.y0))}" height="12" rx="2" fill="${c}"></rect>`;
+    if (p.y1 > NOW) { const s = Math.max(p.y0, NOW); bars += `<rect x="${x(s)}" y="28" width="${Math.max(2, x(p.y1) - x(s))}" height="12" rx="2" fill="${c}" opacity=".35"></rect>`; }
+    const jal = p.jal.map(([y, t]) => `<g><line x1="${x(y)}" x2="${x(y)}" y1="22" y2="46" stroke="var(--ink)" stroke-width="1.5"></line><title>${esc(y + " · " + t)}</title></g>`).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Frise de ${esc(p.n)}">
+      ${ticks.map(y => `<line x1="${x(y)}" x2="${x(y)}" y1="16" y2="52" stroke="var(--line)"></line><text x="${x(y)}" y="66" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="var(--font-mono)">${y}</text>`).join("")}
+      ${bars}${jal}
+      <line x1="${x(NOW)}" x2="${x(NOW)}" y1="6" y2="52" stroke="var(--accent)" stroke-dasharray="3 2"></line>
+      <text x="${x(NOW) + 4}" y="12" font-size="10" fill="var(--accent)" font-family="var(--font-mono)">oct. 2026</text>
+    </svg>`;
+  }
+  function renderDetail() {
+    const el = document.getElementById("detail");
+    if (!el) return;
+    const p = byId[state.sel];
+    const f = famOf(p);
+    const convs = CONVERGENCES.filter(c => c.a === p.id || c.b === p.id);
+    const field = (k, v, wide) => `<div class="field${wide ? " wide" : ""}"><dt>${k}</dt><dd>${v}</dd></div>`;
+    const preds = p.pred.filter(id => byId[id]), succs = p.succ.filter(id => byId[id]);
+    const usedBy = PROGRAMMES.filter(q => q.pred.includes(p.id) && !succs.includes(q.id));
+    const host = p.host && byId[p.host];
+    el.innerHTML = `<article class="detail" style="--fc:${col(f)}">
+      <div class="detail-head">
+        <div class="meta"><span>${esc(FAMILLES[f].nom)} · ${esc(DOMAINES[p.d].nom)}</span>${pill(p.st)}</div>
+        <h3>${esc(p.n)}</h3>
+        <p class="sub">${esc(p.sub)}</p>
+      </div>
+      <dl class="grid-fields" style="margin:0">
+        ${field("Application", esc(p.app), true)}
+        ${field("Financeur", esc(p.fin))}
+        ${field("Maître d'ouvrage", esc(p.moa))}
+        ${field("Maître d'œuvre", esc(p.moe))}
+        ${field("Plateforme", esc(p.plat))}
+        ${field("Instruments et partenaires", esc(p.instr), true)}
+        ${field("Budget", `${esc(p.bud)} <span class="conf" title="Indice de confiance">${p.bc}</span>`, true)}
+      </dl>
+      <div class="mini-tl">${miniTimeline(p)}
+        <p class="note" style="margin-top:6px">${p.jal.map(([y, t]) => `<span class="mono">${y}</span> ${esc(t)}`).join(" · ") || "Pas de jalon public."}</p></div>
+      ${p.note ? `<p class="callout" style="margin-top:16px">${esc(p.note)}</p>` : ""}
+      <div class="rel">
+        ${host ? `<div><h4>Embarqué sur</h4><div class="chips">${chip(host.id)}</div></div>` : ""}
+        <div><h4>Découle de</h4><div class="chips">${preds.length ? preds.map(chip).join("") : `<span class="note">Programme sans prédécesseur direct dans l'atlas.</span>`}</div></div>
+        <div><h4>A donné naissance à</h4><div class="chips">${succs.concat(usedBy.map(q => q.id)).length ? succs.concat(usedBy.map(q => q.id)).map(chip).join("") : `<span class="note">Pas de successeur identifié à ce jour.</span>`}</div></div>
+        ${convs.length ? `<div><h4>Convergences</h4>${convs.map(c => `<p class="conv-line"><b>${esc(c.titre)}</b> · ${esc(c.type)}. ${esc(c.txt)}</p>`).join("")}</div>` : ""}
+      </div>
+    </article>`;
+  }
+
+  /* ================= VUE 3 : FRISE ================= */
+  function vFrise() {
+    return `<div class="view-head"><h2>Frise 1977-2045</h2>
+      <p>Une ligne par programme, regroupée par domaine. Partie pleine : déjà en orbite. Partie claire : prévu. Les traits verticaux sont les lancements et jalons ; survolez-les pour le détail, cliquez une ligne pour ouvrir la fiche.</p></div>
+      <div class="tl-tools">
+        <span class="tl-key"><i style="background:var(--ink)"></i>Réalisé</span>
+        <span class="tl-key"><i style="background:var(--ink);opacity:.3"></i>Prévu</span>
+        <span class="tl-key"><i style="border-left:2px dashed var(--accent);width:2px;height:14px"></i>Octobre 2026</span>
+      </div>
+      <div class="tl-scroll" id="tl">${timelineSVG()}</div>
+      <p class="note" style="margin-top:10px">Faites défiler horizontalement sur petit écran.</p>`;
+  }
+  function timelineSVG() {
+    const Y0 = 1976, Y1 = 2046, L = 240, PX = 13, RH = 22, HH = 30, TOP = 34;
+    const W = L + (Y1 - Y0) * PX + 20;
+    const x = y => L + (y - Y0) * PX;
+    let rows = [], yCur = TOP;
+    Object.entries(DOMAINES).forEach(([dk, d]) => {
+      const ps = PROGRAMMES.filter(p => p.d === dk).sort((a, b) => a.y0 - b.y0);
+      rows.push({ head: d.nom, fam: d.fam, y: yCur }); yCur += HH;
+      ps.forEach(p => { rows.push({ p, y: yCur }); yCur += RH; });
+    });
+    const H = yCur + 10;
+    let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Frise chronologique des programmes">`;
+    for (let y = 1980; y <= Y1; y += 5) {
+      s += `<line x1="${x(y)}" x2="${x(y)}" y1="${TOP - 8}" y2="${H}" stroke="var(--line)" stroke-width="${y % 10 ? 0.5 : 1}"></line>`;
+      if (y % 10 === 0) s += `<text x="${x(y)}" y="20" font-size="11" text-anchor="middle" fill="var(--muted)" font-family="var(--font-mono)">${y}</text>`;
+    }
+    rows.forEach(r => {
+      if (r.head) {
+        s += `<rect x="0" y="${r.y}" width="${W}" height="${HH}" fill="var(--sunk)"></rect>
+          <rect x="0" y="${r.y}" width="4" height="${HH}" fill="${col(r.fam)}"></rect>
+          <text x="14" y="${r.y + 19}" font-size="12.5" font-weight="700" fill="var(--ink)" font-family="var(--font-display)">${esc(r.head)}</text>`;
+        return;
+      }
+      const p = r.p, c = col(famOf(p)), cy = r.y + RH / 2;
+      const past = Math.min(p.y1, NOW);
+      s += `<g class="tl-row" data-goto="${p.id}" tabindex="0" role="button" aria-label="Ouvrir la fiche ${esc(p.n)}">
+        <rect class="tl-hl" x="0" y="${r.y}" width="${W}" height="${RH}" fill="var(--sunk)"></rect>
+        <text x="14" y="${cy + 4}" font-size="12" fill="var(--ink)" font-family="var(--font-body)">${esc(p.n.length > 34 ? p.n.slice(0, 33) + "…" : p.n)}</text>`;
+      if (p.y0 < NOW) s += `<rect x="${x(p.y0)}" y="${cy - 5}" width="${Math.max(3, x(past) - x(p.y0))}" height="10" rx="2" fill="${c}"></rect>`;
+      if (p.y1 > NOW) { const st = Math.max(p.y0, NOW); s += `<rect x="${x(st)}" y="${cy - 5}" width="${Math.max(3, x(p.y1) - x(st))}" height="10" rx="2" fill="${c}" opacity=".3"></rect>`; }
+      p.jal.forEach(([y, t]) => { s += `<line x1="${x(y + 0.5)}" x2="${x(y + 0.5)}" y1="${cy - 8}" y2="${cy + 8}" stroke="var(--ink)" stroke-width="1.6"><title>${esc(y + " · " + p.n + " : " + t)}</title></line>`; });
+      s += `<title>${esc(p.n + " (" + p.y0 + "-" + p.y1 + ") · " + p.moe)}</title></g>`;
+    });
+    s += `<line x1="${x(NOW)}" x2="${x(NOW)}" y1="${TOP - 10}" y2="${H}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"></line>
+      <text x="${x(NOW) + 5}" y="${TOP - 2}" font-size="11" fill="var(--accent)" font-family="var(--font-mono)">oct. 2026</text></svg>`;
+    return s;
+  }
+
+  /* ================= VUE 4 : GÉNÉALOGIE ================= */
+  function stepHtml([nm, y, id]) {
+    const fut = y > NOW;
+    const inner = `<span class="y">${y}${fut ? " · prévu" : ""}</span><span class="nm">${esc(nm)}</span>`;
+    return id && byId[id] ? `<button class="step${fut ? " future" : ""}" type="button" data-goto="${id}">${inner}</button>`
+      : `<span class="step${fut ? " future" : ""}">${inner}</span>`;
+  }
+  function linHtml(l) {
+    const fam = l.etapes.map(e => e[2]).filter(id => id && byId[id]).map(id => famOf(byId[id]))[0] || "obs";
+    return `<div class="lin" style="border-left:4px solid ${l.type === "mission" ? col(fam) : "var(--ink)"}">
+      <div class="lin-top"><h3>${esc(l.titre)}</h3>${l.note ? `<p>${esc(l.note)}</p>` : ""}</div>
+      <div class="steps">${l.etapes.map(stepHtml).join(`<span class="arrow" aria-hidden="true">→</span>`)}</div>
+      ${l.branches.length ? `<div class="branch"><span>Branches :</span>${l.branches.map(b => `<span class="arrow" aria-hidden="true">↳</span>${stepHtml(b)}`).join("")}</div>` : ""}
+    </div>`;
+  }
+  function vGenealogie() {
+    const mis = LIGNEES.filter(l => l.type === "mission"), pla = LIGNEES.filter(l => l.type === "plateforme");
+    return `<div class="view-head"><h2>Qui découle de qui</h2>
+      <p>Deux lectures complémentaires. Les filiations de missions montrent comment un besoin se transmet de génération en génération. Les filiations de plateformes montrent comment un produit industriel est réutilisé d'un programme à l'autre, ce qui fait la compétitivité d'un industriel.</p></div>
+      <div class="lin-cols">
+        <div class="lin-grid"><h3 class="section-title" style="margin-top:0">Filiations de missions</h3>${mis.map(linHtml).join("")}</div>
+        <div class="lin-grid"><h3 class="section-title" style="margin-top:0">Filiations de plateformes</h3>${pla.map(linHtml).join("")}
+          <p class="note">Les étapes hachurées sont à venir. Un clic sur une étape ouvre la fiche du programme.</p></div>
+      </div>`;
+  }
+
+  /* ================= VUE 5 : CONVERGENCES ================= */
+  function vConvergences() {
+    const types = [...new Set(CONVERGENCES.map(c => c.type))];
+    return `<div class="view-head"><h2>Convergences</h2>
+      <p>Les programmes ne sont pas des silos. Un satellite météo porte un instrument Copernicus, un opérateur privé relaie un signal de navigation, deux pays s'échangent leurs images. Ces croisements sont là où se jouent les économies et les alliances.</p></div>
+      <div class="conv-types" id="convTypes">${[["all", "Toutes"]].concat(types.map(t => [t, t])).map(([k, l]) =>
+        `<button class="fchip" type="button" data-ctype="${esc(k)}" aria-pressed="${state.convType === k}">${esc(l)} <span class="mono" style="opacity:.6">${k === "all" ? CONVERGENCES.length : CONVERGENCES.filter(c => c.type === k).length}</span></button>`).join("")}</div>
+      <div class="conv-grid" id="convGrid"></div>`;
+  }
+  function renderConv() {
+    const g = document.getElementById("convGrid");
+    if (!g) return;
+    g.innerHTML = CONVERGENCES.filter(c => state.convType === "all" || c.type === state.convType).map(c => `
+      <div class="conv"><span class="ty">${esc(c.type)}</span><h3>${esc(c.titre)}</h3><p>${esc(c.txt)}</p>
+      <div class="link-pair">${chip(c.a)}${c.b ? `<span class="plus">+</span>${chip(c.b)}` : ""}</div></div>`).join("");
+    document.querySelectorAll("#convTypes .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.ctype === state.convType));
+  }
+
+  /* ================= VUE 6 : INDUSTRIE ================= */
+  function vIndustrie() {
+    const groups = ["airbus", "tas", "ohb", "autre"];
+    const counts = groups.map(g => {
+      const byFam = {};
+      PROGRAMMES.filter(p => p.g.includes(g)).forEach(p => { const f = famOf(p); byFam[f] = (byFam[f] || 0) + 1; });
+      return { g, total: Object.values(byFam).reduce((a, b) => a + b, 0), byFam };
+    });
+    const max = Math.max(...counts.map(c => c.total));
+    const bars = counts.map(c => `<div class="hbar"><span>${esc(GROUPES[c.g])}</span>
+      <span class="track" title="${c.total} programmes">${Object.keys(FAMILLES).filter(f => c.byFam[f]).map(f =>
+        `<i style="width:${c.byFam[f] / max * 100}%;background:${col(f)}" title="${FAMILLES[f].nom} : ${c.byFam[f]}"></i>`).join("")}</span>
+      <span class="val">${c.total}</span></div>`).join("");
+    const sites = [
+      ["Airbus DS", "Toulouse", "Optique (Pléiades, CSO, Neo), MSI de Sentinel-2, MetOp-SG A, télécoms Eurostar et OneSat"],
+      ["Airbus DS", "Friedrichshafen, Ottobrunn", "Sentinel-2 et -6, CRISTAL, EarthCARE, Galileo G2, instruments Sentinel-4 et -5, radars"],
+      ["Airbus DS", "Stevenage, Portsmouth", "Sentinel-5P, Aeolus, Biomass, charges utiles télécoms"],
+      ["Airbus DS", "Madrid", "LSTM, PAZ, instrument de SMOS"],
+      ["Thales Alenia Space", "Cannes", "Sentinel-3, MTG, CHIME, Spacebus et Space Inspire, Syracuse"],
+      ["Thales Alenia Space", "Toulouse", "Instruments optiques, altimètres (Poseidon, SRAL, IRIS), charges utiles"],
+      ["Thales Alenia Space", "Rome, Turin, L'Aquila", "Sentinel-1, COSMO-SkyMed, CIMR, ROSE-L, Galileo G2, SICRAL"],
+      ["OHB", "Brême", "Galileo FOC, SAR-Lupe, SARah, CO2M, SmallGEO"],
+      ["OHB Italia", "Milan", "Instruments et petits satellites (IRIDE)"],
+      ["Leonardo", "Italie", "Instruments (SLSTR, FLORIS, LI), équipements, Telespazio et e-GEOS (services)"]
+    ].map(([a, b, c]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td><td>${esc(c)}</td></tr>`).join("");
+    const trends = [
+      ["Consolidation", "Projet Bromo : fusion des activités spatiales d'Airbus, Thales et Leonardo", "Protocole d'accord d'octobre 2025 : Airbus 35 %, Leonardo 32,5 %, Thales 32,5 %. Environ 25 000 salariés et 6,5 Md€ de chiffre d'affaires, siège à Toulouse. Décision de Bruxelles pas avant le second semestre 2027. OHB et Indra s'y opposent ; OHB a levé environ 900 M€ en juin 2026 pour rester indépendant."],
+      ["Souveraineté", "La défense tire le marché", "150 Md€ de prêts SAFE souscrits, une proposition de 131 Md€ pour la défense, la sécurité et l'espace dans le budget UE 2028-2034, et des contrats nationaux comme SATCOMBw (2,1 Md€)."],
+      ["Constellations", "Du gros satellite unique à la flotte", "IRIS², OneWeb, ICEYE, IRIDE, CO3D : plus de satellites, plus petits, produits en série. Cela change les métiers de l'industrialisation et de l'AIT."],
+      ["Budgets", "Un niveau record à l'ESA", "22,3 Md€ votés en novembre 2025 pour 2026-2028, en hausse de 31 % par rapport à 2022, dont 3,5 Md€ pour l'observation de la Terre."],
+      ["Modèles économiques", "Du public au privé", "SPOT était public, TerraSAR-X un partenariat, Pléiades Neo est privé. L'État passe de propriétaire à client, ou à concédant (IRIS²)."],
+      ["Accès à l'espace", "Ariane 6 et Vega-C en service", "Depuis 2024-2025, les lancements institutionnels reviennent sur des lanceurs européens : CSO-3, Sentinel-1D, Galileo L14, MTG-I2, Sentinel-3C."],
+      ["Nouveaux entrants", "Un second rang qui grandit", "ICEYE et Aerospacelab en orbite basse, Hemeria (nanosatellites Kinéis), Open Cosmos, Unseenlabs… Ils prennent des parts sur les petites missions et les constellations."]
+    ].map(([ty, t, d]) => `<div class="trend"><span class="ty">${esc(ty)}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
+    return `<div class="view-head"><h2>Lecture industrielle</h2>
+      <p>Trois maîtres d'œuvre se partagent l'essentiel des grands programmes institutionnels. Le compte ci-dessous porte sur les programmes de cet atlas, pas sur un chiffre d'affaires.</p></div>
+      <div class="ind-grid">
+        <div class="panel">
+          <h3 class="section-title" style="margin:0">Maîtrises d'œuvre dans l'atlas</h3>
+          <div class="stack-key">${Object.entries(FAMILLES).map(([k, f]) => `<span><i class="sw" style="background:${col(k)}"></i> ${f.court}</span>`).join("")}</div>
+          ${bars}
+          <p class="note">Un programme peut compter pour plusieurs groupes (IRIS², Galileo G2). Les opérateurs commerciaux, qui achètent leurs satellites, sont classés dans « Autres ».</p>
+        </div>
+        <div class="panel" style="overflow-x:auto">
+          <h3 class="section-title" style="margin:0">Où se construisent les satellites</h3>
+          <table class="sites"><thead><tr><th>Groupe</th><th>Sites</th><th>Spécialités</th></tr></thead><tbody>${sites}</tbody></table>
+        </div>
+      </div>
+      <h3 class="section-title">Sept tendances qui structurent le marché</h3>
+      <div class="trends">${trends}</div>`;
+  }
+
+  /* ================= VUE 7 : GLOSSAIRE ================= */
+  function vGlossaire() {
+    return `<div class="view-head"><h2>Glossaire & sources</h2><p>Les sigles qui reviennent partout, et d'où viennent les données.</p></div>
+      <dl class="glo">${GLOSSAIRE.map(([t, d]) => `<dt>${esc(t)}</dt><dd>${esc(d)}</dd>`).join("")}</dl>
+      <h3 class="section-title">Indice de confiance</h3>
+      <div class="conf-key">
+        <p><span class="conf">A</span> Vérifié sur une source récente lors de la construction de l'atlas (octobre 2026).</p>
+        <p><span class="conf">B</span> Information publiée et connue, non revérifiée ici. À confirmer avant un usage formel.</p>
+        <p><span class="conf">C</span> Estimation, ordre de grandeur ou donnée non publique.</p>
+      </div>
+      <h3 class="section-title">Sources principales</h3>
+      <ol class="srcs">${Object.values(SOURCES).map(([t, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join("")}</ol>`;
+  }
+
+  /* ================= ROUTAGE ================= */
+  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const rendered = {};
+
+  function show(view, opts) {
+    if (!RENDER[view]) view = "mecanique";
+    state.view = view;
+    document.querySelectorAll("[data-view]").forEach(s => { s.hidden = s.id !== "v-" + view; });
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.tab === view));
+    const sec = document.getElementById("v-" + view);
+    if (!rendered[view]) { sec.innerHTML = RENDER[view](); rendered[view] = true; }
+    if (view === "fiches") { renderList(); renderDetail(); }
+    if (view === "convergences") renderConv();
+
+    try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
+    try { localStorage.setItem("atlas-view", view); } catch (e) {}
+    if (!opts || !opts.keepScroll) {
+      const top = document.querySelector(".tabs").getBoundingClientRect().top + window.scrollY;
+      if (window.scrollY > top) window.scrollTo({ top });
+    }
+  }
+
+  function goto(id) {
+    if (!byId[id]) return;
+    state.sel = id;
+    if (state.fam !== "all" && famOf(byId[id]) !== state.fam) state.fam = "all";
+    if (state.q && !filtered().some(p => p.id === id)) state.q = "";
+    rendered.fiches = false;
+    show("fiches");
+    const item = document.querySelector(`.pitem[data-sel="${id}"]`);
+    if (item) item.scrollIntoView({ block: "nearest" });
+  }
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype]");
+    if (!t) return;
+    if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
+    else if (t.dataset.goto) goto(t.dataset.goto);
+    else if (t.dataset.sel) {
+      state.sel = t.dataset.sel; renderList(); renderDetail();
+      if (window.innerWidth <= 1000) document.getElementById("detail").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    else if (t.dataset.fam) {
+      state.fam = t.dataset.fam;
+      document.querySelectorAll("#fchips .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.fam === state.fam));
+      renderList();
+    }
+    else if (t.dataset.ctype) { state.convType = t.dataset.ctype; renderConv(); }
+  });
+  document.addEventListener("keydown", e => {
+    const t = e.target.closest && e.target.closest(".tl-row");
+    if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); goto(t.dataset.goto); }
+  });
+  document.addEventListener("input", e => {
+    if (e.target.id === "q") { state.q = e.target.value; renderList(); }
+  });
+
+  header();
+  let start = (location.hash || "").replace("#", "");
+  if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "mecanique"; } catch (e) { start = "mecanique"; } }
+  show(start, { keepScroll: true });
+})();
+
+</script>
+
+</body>
+</html>
