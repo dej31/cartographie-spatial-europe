@@ -1,7 +1,7 @@
 import pathlib
 src = pathlib.Path("src")
 page = (src/"page.html").read_text()
-page = page.replace("/*__DATA__*/", (src/"data.js").read_text()).replace("/*__DATA2__*/", (src/"data2.js").read_text()).replace("/*__DATA3__*/", (src/"data3.js").read_text()).replace("/*__DATA4__*/", (src/"data4.js").read_text()).replace("/*__DATA5__*/", (src/"data5.js").read_text()).replace("/*__DATA6__*/", (src/"data6.js").read_text()).replace("/*__DATA7__*/", (src/"data7.js").read_text()).replace("/*__APP__*/", (src/"app.js").read_text())
+page = page.replace("/*__DATA__*/", (src/"data.js").read_text()).replace("/*__DATA2__*/", (src/"data2.js").read_text()).replace("/*__DATA3__*/", (src/"data3.js").read_text()).replace("/*__DATA4__*/", (src/"data4.js").read_text()).replace("/*__DATA5__*/", (src/"data5.js").read_text()).replace("/*__DATA6__*/", (src/"data6.js").read_text()).replace("/*__DATA7__*/", (src/"data7.js").read_text()).replace("/*__DATA8__*/", (src/"data8.js").read_text()).replace("/*__APP__*/", (src/"app.js").read_text())
 dist = pathlib.Path("dist"); dist.mkdir(exist_ok=True)
 (dist/"atlas.html").write_text(page)
 head, sep, rest = page.partition("<header")

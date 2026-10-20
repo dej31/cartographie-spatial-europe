@@ -69,7 +69,7 @@ button { font: inherit; color: inherit; }
 .legend-fam { display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .legend-fam span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--band-ink); }
 .sw { width: 11px; height: 11px; border-radius: 2px; flex: none; display: inline-block; }
-.counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
+.counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
 .counts div { background: var(--band); padding: 10px 12px; }
 .counts b { font-family: var(--font-display); font-stretch: 115%; font-size: 26px; display: block; line-height: 1.1; }
 .counts small { color: var(--band-muted); font-size: 12px; }
@@ -98,6 +98,7 @@ main .wrap { padding-block: 30px 60px; }
 .st-dev { color: var(--f-tel); }
 .st-plan { color: var(--muted); border-style: dashed; }
 .st-fin { color: var(--faint); }
+.st-ann { color: var(--f-def); border-style: dotted; }
 .conf { font-family: var(--font-mono); font-size: 11px; padding: 0 6px; border-radius: 3px; background: var(--sunk); color: var(--muted); }
 
 /* ---------- Vue 0 : mécanique ---------- */
@@ -263,6 +264,18 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .act p { font-size: 13.5px; }
 .act-k { background: var(--sunk); padding: 6px 9px; border-radius: 4px; font-size: 13px !important; }
 .act .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.badges { display: inline-flex; gap: 4px; margin-left: 4px; vertical-align: 1px; }
+.badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: .04em; padding: 0 5px; border-radius: 3px; border: 1px solid var(--line); color: var(--muted); }
+.badge.off { border-style: dashed; color: var(--faint); }
+.act-rel { margin: 0; padding-left: 16px; font-size: 13px; color: var(--muted); display: grid; gap: 3px; }
+.act-rel .src { font-size: 11.5px; color: var(--faint); margin-left: 4px; white-space: nowrap; }
+.act.flash { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chip-txt { cursor: default; }
+.struct-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 12px; margin-bottom: 8px; }
+.struct { align-content: start; gap: 6px; }
+.struct h4 { margin: 0; font-size: 14.5px; }
+.struct ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; font-size: 13.5px; }
+.eng { font-family: var(--font-mono); font-size: 11px; }
 @media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -419,6 +432,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 /*__DATA5__*/
 /*__DATA6__*/
 /*__DATA7__*/
+/*__DATA8__*/
 </script>
 <script>
 /*__APP__*/

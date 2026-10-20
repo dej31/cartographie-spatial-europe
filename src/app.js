@@ -29,15 +29,35 @@
   }
   const pill = st => `<span class="pill st-${st}">${STATUTS[st]}</span>`;
 
+  /* ---- Acteurs et relations (phase 2) ---- */
+  const REL = typeof RELATIONS !== "undefined" ? RELATIONS : [];
+  const actById = Object.fromEntries(ACTEURS.map(a => [a.id, a]));
+  const ROLES_PROG = ["maître d'œuvre", "maître d'ouvrage", "sous-traitant", "fournisseur", "opérateur", "utilisateur", "financeur", "partenaire scientifique", "partenaire", "bénéficiaire", "consortium"];
+  const ORG_TYPES = ["filiale", "participation", "coentreprise", "consortium", "partenariat", "acquisition", "fusion", "projet de fusion", "essaimage", "fournisseur"];
+  const ENG = { annonce: "Annoncé", signe: "Signé", verse: "Versé" };
+  function actChip(id, extra) {
+    const a = actById[id];
+    if (!a) return `<span class="chip chip-txt">${esc(id)}</span>`;
+    return `<button class="chip" type="button" data-actor="${a.id}" title="Voir l'acteur">${esc(a.n)}${extra ? ` <span class="note">· ${esc(extra)}</span>` : ""}</button>`;
+  }
+  const entLabel = x => actById[x] ? actById[x].n : x;
+  function paysBadges(p) {
+    const i = typeof PAYS_INFO !== "undefined" && PAYS_INFO[p];
+    if (!i) return "";
+    return `<span class="badges">${i.ue ? '<span class="badge">UE</span>' : '<span class="badge off">hors UE</span>'}${i.esa === "membre" ? '<span class="badge">ESA</span>' : `<span class="badge off">ESA : ${esc(i.esa)}</span>`}</span>`;
+  }
+
   /* ================= EN-TÊTE ================= */
   function header() {
     document.getElementById("legendFam").innerHTML = Object.entries(FAMILLES)
       .map(([k, f]) => `<span><i class="sw" style="background:${col(k)}"></i>${f.nom}</span>`).join("");
     document.getElementById("counts").innerHTML = [
       [PROGRAMMES.length, "programmes"],
+      [ACTEURS.length, "acteurs"],
+      [ACTEURS.filter(a => a.c === "lab").length, "laboratoires"],
       [LIGNEES.length, "filiations"],
       [CONVERGENCES.length, "convergences"],
-      [ACTEURS.length, "acteurs"]
+      [REL.length, "relations"]
     ].map(([v, l]) => `<div><b>${v}</b><small>${l}</small></div>`).join("");
     document.getElementById("tabs").innerHTML = VIEWS.map(([k, l], i) =>
       `<button class="tab" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
@@ -130,7 +150,7 @@
         }).join("")}</div></div>`;
     }).join("");
     return `<div class="view-head"><h2>Carte des domaines</h2>
-      <p>Cinq grandes familles, neuf domaines. Les pastilles sont classées par date de début ; un clic ouvre la fiche du programme.</p></div>
+      <p>${Object.keys(FAMILLES).length} familles, ${Object.keys(DOMAINES).length} domaines, ${PROGRAMMES.length} programmes. Les pastilles sont classées par date de début ; un clic ouvre la fiche du programme.</p></div>
       <div class="fams">${fams}</div>`;
   }
 
@@ -223,6 +243,7 @@
         <div><h4>Découle de</h4><div class="chips">${preds.length ? preds.map(chip).join("") : `<span class="note">Programme sans prédécesseur direct dans l'atlas.</span>`}</div></div>
         <div><h4>A donné naissance à</h4><div class="chips">${succs.concat(usedBy.map(q => q.id)).length ? succs.concat(usedBy.map(q => q.id)).map(chip).join("") : `<span class="note">Pas de successeur identifié à ce jour.</span>`}</div></div>
         ${convs.length ? `<div><h4>Convergences</h4>${convs.map(c => `<p class="conv-line"><b>${esc(c.titre)}</b> · ${esc(c.type)}. ${esc(c.txt)}</p>`).join("")}</div>` : ""}
+        ${acteursProgHtml(p)}
         ${suitesHtml(p)}
         ${liensHtml(p)}
       </div>
@@ -230,12 +251,24 @@
   }
 
 
+  function acteursProgHtml(p) {
+    const roles = {};
+    REL.filter(r => r.vers === p.id && actById[r.de]).forEach(r => { (roles[r.de] = roles[r.de] || []).push(r.type); });
+    ACTEURS.filter(a => a.pr.includes(p.id)).forEach(a => { roles[a.id] = roles[a.id] || []; });
+    const ids = Object.keys(roles);
+    if (!ids.length) return "";
+    const order = id => roles[id].length ? Math.min(...roles[id].map(t => { const i = ROLES_PROG.indexOf(t); return i < 0 ? 99 : i; })) : 98;
+    ids.sort((x, y) => order(x) - order(y) || actById[x].n.localeCompare(actById[y].n, "fr"));
+    return `<div><h4>Acteurs impliqués</h4><div class="chips">${ids.map(id => actChip(id, [...new Set(roles[id])].join(", "))).join("")}</div>
+      <p class="note" style="margin-top:6px">Rôle indiqué quand il est documenté et sourcé (voir la fiche de l'acteur).</p></div>`;
+  }
+
   /* ================= VUE : ACTEURS ================= */
   function vActeurs() {
     const cats = [["all", "Tous"]].concat(Object.entries(CAT_ACTEURS));
     const pays = [...new Set(ACTEURS.map(a => a.p))].sort((x, y) => (PAYS[x] || x).localeCompare(PAYS[y] || y, "fr"));
     return `<div class="view-head"><h2>Acteurs</h2>
-      <p>Institutions, grands groupes, équipementiers, opérateurs et NewSpace. Les montants ne figurent que lorsqu'ils sont publiés et vérifiables ; un champ vide veut dire « non publié », pas « nul ». Cet annuaire couvre les acteurs qui comptent, il n'est pas exhaustif : l'Europe compte plusieurs centaines de jeunes entreprises spatiales.</p></div>
+      <p>Institutions, grands groupes, équipementiers, opérateurs, NewSpace, laboratoires et organismes de recherche. Les acteurs non européens ne figurent qu'au titre d'une filiale ou d'une activité documentée en Europe. Les montants ne figurent que lorsqu'ils sont publiés et vérifiables ; un champ vide veut dire « non publié », pas « nul ». Cet annuaire couvre les acteurs qui comptent, il n'est pas exhaustif : l'Europe compte plusieurs centaines de jeunes entreprises spatiales.</p></div>
       <div class="act-top">
         <div class="panel">
           <h3 class="section-title" style="margin:0">Marché en chiffres</h3>
@@ -259,7 +292,42 @@
         </div>
       </div>
       <p class="note" id="acount" style="margin:6px 0 12px"></p>
-      <div class="act-grid" id="agrid"></div>`;
+      <div class="act-grid" id="agrid"></div>
+      ${structureHtml()}`;
+  }
+  function chipRole(id, role) {
+    const p = byId[id];
+    if (!p) return "";
+    return `<button class="chip" data-goto="${p.id}" type="button"><span class="dot" style="background:${col(famOf(p))}"></span>${esc(p.n)} <span class="note">· ${esc(role)}</span></button>`;
+  }
+  function actRelHtml(a) {
+    const lines = [];
+    if (a.grp) lines.push(`Groupe : ${actById[a.grp] ? `<button type="button" class="lnk" data-actor="${a.grp}">${esc(actById[a.grp].n)}</button>` : esc(a.grp)}`);
+    REL.filter(r => ORG_TYPES.includes(r.type) && !byId[r.vers] && (r.de === a.id || r.vers === a.id)).forEach(r => {
+      const other = r.de === a.id ? r.vers : r.de;
+      if (a.grp && other === a.grp) return;
+      const lab = actById[other] ? `<button type="button" class="lnk" data-actor="${other}">${esc(actById[other].n)}</button>` : esc(other);
+      const sens = r.de === a.id ? { filiale: "Filiale", participation: "Participation dans", coentreprise: "Détient", acquisition: "A acquis", fusion: "A fusionné avec", "projet de fusion": "Projet de fusion", essaimage: "Essaimage", fournisseur: "Fournisseur de", partenariat: "Partenariat avec" }[r.type] || r.type
+        : { filiale: "Filiale de", participation: "Détenue en partie par", coentreprise: "Coentreprise de", acquisition: "Acquise par", fusion: "Issue de", essaimage: "Issue de", fournisseur: "Client de", partenariat: "Partenariat avec" }[r.type] || r.type;
+      lines.push(`${sens} ${lab}${r.part ? ` (${esc(r.part)})` : ""}${r.a ? ` · ${r.a}` : ""} <a class="src" href="${esc(r.src)}" target="_blank" rel="noopener" title="${esc(r.txt)}">source <span class="conf">${r.bc}</span></a>`);
+    });
+    return lines.length ? `<ul class="act-rel">${lines.map(l => `<li>${l}</li>`).join("")}</ul>` : "";
+  }
+  function structureHtml() {
+    const parents = {};
+    REL.filter(r => ["filiale", "coentreprise", "participation"].includes(r.type)).forEach(r => { (parents[r.de] = parents[r.de] || []).push(r); });
+    ACTEURS.filter(a => a.grp && !REL.some(r => r.vers === a.id && r.de === a.grp)).forEach(a => { (parents[a.grp] = parents[a.grp] || []).push({ de: a.grp, vers: a.id, type: "filiale", bc: "B" }); });
+    const groups = Object.entries(parents).sort((x, y) => y[1].length - x[1].length || entLabel(x[0]).localeCompare(entLabel(y[0]), "fr"));
+    const ops = REL.filter(r => ["acquisition", "fusion", "projet de fusion", "essaimage"].includes(r.type)).sort((x, y) => (y.a || 0) - (x.a || 0));
+    const opsSeen = new Set();
+    return `<h3 class="section-title">Structure industrielle : groupes, filiales et coentreprises</h3>
+      <p class="note" style="margin-bottom:12px">Chaque société reste une entité distincte : appartenir au même groupe ne veut pas dire être la même entreprise (KSAT et Kongsberg Defence & Aerospace, par exemple).</p>
+      <div class="struct-grid">${groups.map(([g, rs]) => `<div class="panel struct"><h4>${actById[g] ? `<button type="button" class="lnk" data-actor="${g}">${esc(actById[g].n)}</button>` : esc(g)}</h4>
+        <ul>${rs.map(r => `<li>${actById[r.vers] ? `<button type="button" class="lnk" data-actor="${r.vers}">${esc(actById[r.vers].n)}</button>` : byId[r.vers] ? `<button type="button" class="lnk" data-goto="${r.vers}">${esc(byId[r.vers].n)}</button>` : esc(r.vers)} <span class="note">${esc(r.type)}${r.part ? " · " + esc(r.part) : ""}</span></li>`).join("")}</ul></div>`).join("")}</div>
+      <h3 class="section-title">Acquisitions, fusions et essaimages</h3>
+      <div class="panel" style="overflow-x:auto"><table class="fin-table"><thead><tr><th>Année</th><th>Opération</th><th>Détail</th><th>Conf.</th></tr></thead><tbody>
+      ${ops.filter(r => { const k = r.type + r.vers + (r.a || ""); if (r.type === "projet de fusion") { if (opsSeen.has(k)) return false; opsSeen.add(k); } return true; }).map(r => `<tr><td class="mono">${r.a || "—"}</td><td>${esc(entLabel(r.type === "projet de fusion" ? "Airbus, Thales, Leonardo" : r.de))} → ${esc(entLabel(r.vers))} <div class="note">${esc(r.type)}</div></td><td>${esc(r.txt)} <a href="${esc(r.src)}" target="_blank" rel="noopener">source ↗</a></td><td><span class="conf">${r.bc}</span></td></tr>`).join("")}
+      </tbody></table></div>`;
   }
   function renderActeurs() {
     const g = document.getElementById("agrid");
@@ -269,13 +337,15 @@
       (!q || [a.n, a.m, a.v, a.t, a.k, CAT_ACTEURS[a.c]].join(" ").toLowerCase().includes(q)));
     document.getElementById("acount").textContent = `${list.length} acteur${list.length > 1 ? "s" : ""} affiché${list.length > 1 ? "s" : ""}`;
     g.innerHTML = list.length ? list.map(a => `
-      <article class="act">
-        <div class="act-h"><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><span class="mono note">${esc(a.p)} · ${a.y}</span></div>
+      <article class="act" id="act-${a.id}">
+        <div class="act-h"><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><span class="mono note">${esc(a.p)}${a.y ? " · " + a.y : ""}</span></div>
         <h3>${esc(a.n)}</h3>
-        <p class="note">${esc(a.v)} · ${esc(a.t)}</p>
+        <p class="note">${esc(a.v)} · ${esc(a.t)} ${paysBadges(a.p)}</p>
         <p>${esc(a.m)}</p>
         ${a.k ? `<p class="act-k">${esc(a.k)} <span class="conf">${a.kb}</span></p>` : ""}
-        ${a.pr.length ? `<div class="chips">${a.pr.map(chip).join("")}</div>` : ""}
+        ${actRelHtml(a)}
+        ${a.pr.length ? `<div class="chips">${a.pr.map(id => { const t = REL.filter(r => r.de === a.id && r.vers === id).map(r => r.type); return t.length ? chipRole(id, t.join(", ")) : chip(id); }).join("")}</div>` : ""}
+        ${a.u ? `<p class="note"><a href="${esc(a.u)}" target="_blank" rel="noopener">Site ou source ↗</a></p>` : ""}
       </article>`).join("") : `<p class="note">Aucun acteur ne correspond. Élargissez la catégorie ou le pays.</p>`;
     document.querySelectorAll("#acats .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.acat === state.acat));
     const counts = {};
@@ -352,7 +422,7 @@
           ${rows.slice().sort((x, y) => state.sort === "a" ? y.a - x.a || y.m - x.m : y.m - x.m).map(r => `<tr>
             <td class="mono">${r.a}</td>
             <td>${state.ds === "contrats" ? (r.prog && byId[r.prog] ? `<button type="button" class="lnk" data-goto="${r.prog}">${esc(r.lib)}</button>` : esc(r.lib)) : esc(r.ent)}${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}</td>
-            <td>${state.ds === "contrats" ? esc(r.ent) + `<div class="note">${esc(r.fin)}</div>` : esc(PAYS[r.p] || r.p) + " · " + esc(r.ty)}</td>
+            <td>${state.ds === "contrats" ? ([].concat(r.act || []).length ? [].concat(r.act).map(x => actById[x] ? `<button type="button" class="lnk" data-actor="${x}">${esc(actById[x].n)}</button>` : esc(x)).join(", ") : esc(r.ent)) + `<div class="note">${esc(r.fin)}${r.eng ? ` · <span class="eng">${ENG[r.eng]}</span>` : ""}</div>` : esc(PAYS[r.p] || r.p) + " · " + esc(r.ty)}</td>
             <td><span class="sw" style="background:${col(r.fam)}"></span> ${FAMILLES[r.fam].court}</td>
             <td class="num mono">${fmtM(r.m)}</td><td><span class="conf">${r.bc}</span></td></tr>`).join("")}
         </tbody></table>
@@ -757,9 +827,20 @@
     if (item) item.scrollIntoView({ block: "nearest" });
   }
 
+  function gotoActor(id) {
+    const a = actById[id];
+    if (!a) return;
+    state.acat = "all"; state.apays = "all"; state.aq = a.n;
+    rendered.acteurs = false;
+    show("acteurs");
+    const el = document.getElementById("act-" + id);
+    if (el) { el.scrollIntoView({ block: "center" }); el.classList.add("flash"); }
+  }
+
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
+    const t = e.target.closest("[data-actor],[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
     if (!t) return;
+    if (t.dataset.actor) { gotoActor(t.dataset.actor); return; }
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
     else if (t.dataset.sel) {
@@ -796,7 +877,18 @@
     if (e.target.id === "fty") { state.ty = e.target.value; renderFin(); }
   });
 
+  function fromHash() {
+    const h = decodeURIComponent((location.hash || "").replace("#", ""));
+    const [v, id] = h.split("/");
+    if (v === "fiche" && byId[id]) { goto(id); return true; }
+    if (v === "acteur" && actById[id]) { gotoActor(id); return true; }
+    if (RENDER[v]) { if (v !== state.view) show(v, { keepScroll: true }); return true; }
+    return false;
+  }
+  window.addEventListener("hashchange", fromHash);
+
   header();
+  if (fromHash()) return;
   let start = (location.hash || "").replace("#", "");
   if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "mecanique"; } catch (e) { start = "mecanique"; } }
   show(start, { keepScroll: true });
