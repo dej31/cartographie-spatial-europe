@@ -75,7 +75,7 @@ button { font: inherit; color: inherit; }
 .legend-fam { display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .legend-fam span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--band-ink); }
 .sw { width: 11px; height: 11px; border-radius: 2px; flex: none; display: inline-block; }
-.counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
+.counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
 .counts div { background: var(--band); padding: 10px 12px; }
 .counts b { font-family: var(--font-display); font-stretch: 115%; font-size: 26px; display: block; line-height: 1.1; }
 .counts small { color: var(--band-muted); font-size: 12px; }
@@ -248,6 +248,30 @@ table.sites th { font-family: var(--font-mono); font-size: 11px; letter-spacing:
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: space-between; }
 
+
+/* ---------- Vue : acteurs ---------- */
+.act-top { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+.kpis div { display: grid; gap: 2px; }
+.kpis b { font-family: var(--font-display); font-stretch: 112%; font-size: 26px; line-height: 1.1; }
+.kpis span { font-size: 13px; color: var(--muted); }
+.pays-bars { display: grid; gap: 4px; max-height: 260px; overflow-y: auto; }
+button.pbar { border: 0; background: none; text-align: left; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
+button.pbar:hover, button.pbar.on { background: var(--sunk); }
+.act-search { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
+.act-search > div { display: grid; gap: 4px; }
+.act-search input, .act-search select { width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; }
+.act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.act { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 7px; align-content: start; }
+.act-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.act .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.act h3 { font-size: 16.5px; font-stretch: 104%; }
+.act p { font-size: 13.5px; }
+.act-k { background: var(--sunk); padding: 6px 9px; border-radius: 4px; font-size: 13px !important; }
+.act .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+@media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
   .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -298,6 +322,7 @@ footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted);
     <section id="v-mecanique" data-view hidden></section>
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>
+    <section id="v-acteurs" data-view hidden></section>
     <section id="v-frise" data-view hidden></section>
     <section id="v-genealogie" data-view hidden></section>
     <section id="v-convergences" data-view hidden></section>
@@ -1626,6 +1651,265 @@ GLOSSAIRE.push(
 );
 GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
 
+/* ============================================================
+   Atlas du spatial européen — livraison 2 : annuaire des acteurs
+   Chiffres financiers : uniquement publiés, avec indice de confiance.
+   ============================================================ */
+
+/* Programmes souverains achetés au NewSpace (révélés par l'enquête acteurs) */
+PROGRAMMES.push(
+  { id: "spock", n: "SPOCK", d: "dob", sub: "Constellation radar souveraine allemande",
+    fin: "Bundeswehr", moa: "BAAINBw",
+    moe: "ICEYE avec Rheinmetall", g: ["autre"], plat: "Micro-satellites radar ICEYE",
+    instr: "Radar SAR bande X",
+    app: "Donner à l'armée allemande une capacité radar à revisite rapide, achetée clés en main à un acteur NewSpace.",
+    bud: "≈ 1,7 Md€", bc: "A",
+    y0: 2025, y1: 2035, jal: [[2025, "Contrat"]],
+    st: "dev", pred: ["sarah"], succ: [],
+    note: "Bascule notable : un État achète une constellation militaire à une start-up plutôt qu'à un maître d'œuvre historique." },
+  { id: "polsaris", n: "POLSARIS", d: "dob", sub: "Constellation radar souveraine polonaise",
+    fin: "Pologne (Défense)", moa: "Ministère polonais de la Défense",
+    moe: "ICEYE", g: ["autre"], plat: "Micro-satellites radar ICEYE",
+    instr: "Radar SAR bande X",
+    app: "Capacité radar nationale livrée en douze mois après la signature.",
+    bud: "≈ 200 M€", bc: "A",
+    y0: 2025, y1: 2033, jal: [[2025, "Contrat puis livraison en 12 mois"]],
+    st: "op", pred: [], succ: [] }
+);
+CONVERGENCES.push(
+  { type: "Public-privé", a: "spock", b: "iceye", titre: "Le NewSpace devient fournisseur de défense", txt: "L'Allemagne (SPOCK, ≈ 1,7 Md€) et la Pologne (POLSARIS, ≈ 200 M€) achètent des constellations radar souveraines à ICEYE, une start-up finlandaise." }
+);
+Object.assign(SOURCES, {
+  iceye: ["Großwald – ICEYE lève plus d'1 Md€ (juin 2026)", "https://www.grosswald.org/iceye-1-billion-series-f-general-atlantic-10-billion-valuation-sar-satellites/"],
+  tec: ["Raising.fi – Série C de The Exploration Company (sept. 2026)", "https://raising.fi/news/the-exploration-company-series-c-september-2026"],
+  techeu26: ["Tech.eu – Levées de fonds spatiales en Europe, 2026", "https://funding.tech.eu/sectors/space/2026"],
+  techeu25: ["Tech.eu – Levées de fonds spatiales en Europe, 2025", "https://funding.tech.eu/sectors/space/2025"],
+  sc26: ["Silicon Canals – Le financement spatial européen au 1er semestre 2026", "https://siliconcanals.com/t-european-space-tech-funding-reached-2-9-billion-in-h1-2026-up-622-but-debt-and-a-handful-of-sovereign-infrastructure-bets-explain-most-of-the-apparent-explosion/"],
+  eurospace: ["Space Intel Report – Chiffres Eurospace 2025", "https://www.spaceintelreport.com/eurospace-europes-space-industry-sales-increased-23-in-2025-headcount-just-2-2-startups-are-11-of-work-force/"]
+});
+
+const CAT_ACTEURS = {
+  inst: "Institutions & agences",
+  moe: "Grands maîtres d'œuvre",
+  lanc: "Lancement",
+  equip: "Équipementiers & instruments",
+  oper: "Opérateurs",
+  aval: "Segment sol & services",
+  nsdat: "NewSpace : satellites & données",
+  nsorb: "NewSpace : services en orbite & transport",
+  fin: "Financement"
+};
+
+/* pays : code ISO à 2 lettres ; t : type de structure */
+const ACTEURS = [
+  /* ---------- Institutions ---------- */
+  { n: "ESA (Agence spatiale européenne)", c: "inst", p: "EU", v: "Paris", t: "Intergouvernemental", y: 1975,
+    m: "Conçoit et achète les programmes pour ses États membres et pour l'UE. Centres techniques ESTEC (Pays-Bas), ESOC (Allemagne), ESRIN (Italie).",
+    k: "22,1 Md€ souscrits au CM25 pour 2026-2028", kb: "A", pr: ["s1", "mtg", "juice", "ariane6", "argonaut"] },
+  { n: "Commission européenne (DG DEFIS)", c: "inst", p: "EU", v: "Bruxelles", t: "UE", y: 2019,
+    m: "Propriétaire de Copernicus, Galileo, EGNOS et IRIS². Fixe la politique spatiale de l'UE.",
+    k: "14,88 Md€ pour le programme spatial 2021-2027", kb: "A", pr: ["s2", "galg1", "iris2"] },
+  { n: "EUSPA", c: "inst", p: "CZ", v: "Prague", t: "UE", y: 2021,
+    m: "Agence de l'UE pour le programme spatial : exploitation de Galileo et EGNOS, services gouvernementaux, accréditation de sécurité.", k: "", kb: "", pr: ["galg1", "egnos", "govsatcom", "iris2"] },
+  { n: "EUMETSAT", c: "inst", p: "EU", v: "Darmstadt", t: "Intergouvernemental", y: 1986,
+    m: "Propriétaire et opérateur des satellites météo européens ; opère aussi des missions Copernicus.", k: "", kb: "", pr: ["mtg", "metopsg", "s6", "s3"] },
+  { n: "CNES", c: "inst", p: "FR", v: "Paris, Toulouse, Kourou", t: "Agence nationale", y: 1961,
+    m: "Agence spatiale française : programmes nationaux, expertise technique pour la défense, gestion du port de Kourou.", k: "", kb: "", pr: ["pleiades", "co3d", "csg", "jason"] },
+  { n: "DLR", c: "inst", p: "DE", v: "Cologne", t: "Agence nationale", y: 1969,
+    m: "Agence spatiale et centre de recherche allemand ; gère la contribution allemande à l'ESA.", k: "", kb: "", pr: ["terrasar", "hh"] },
+  { n: "ASI", c: "inst", p: "IT", v: "Rome", t: "Agence nationale", y: 1988,
+    m: "Agence spatiale italienne : COSMO-SkyMed, PRISMA, contribution à l'ESA.", k: "", kb: "", pr: ["csk", "iride"] },
+  { n: "Agencia Espacial Española (AEE)", c: "inst", p: "ES", v: "Séville", t: "Agence nationale", y: 2023,
+    m: "Jeune agence spatiale espagnole, créée pour structurer une ambition en forte hausse.", k: "", kb: "", pr: ["paz", "spainsat"] },
+  { n: "UK Space Agency", c: "inst", p: "GB", v: "Swindon", t: "Agence nationale", y: 2010,
+    m: "Agence britannique ; le Royaume-Uni reste membre de l'ESA hors UE.", k: "1,706 Md€ souscrits au CM25", kb: "A", pr: ["vigil", "orbex"] },
+  { n: "Luxembourg Space Agency", c: "inst", p: "LU", v: "Luxembourg", t: "Agence nationale", y: 2018,
+    m: "Petit pays, grande politique spatiale : SES, ressources spatiales, attractivité pour les start-up.", k: "", kb: "", pr: ["ses"] },
+  { n: "Agence spatiale polonaise (POLSA)", c: "inst", p: "PL", v: "Gdańsk", t: "Agence nationale", y: 2014,
+    m: "Pays en forte montée à l'ESA et dans le spatial de défense.", k: "", kb: "", pr: ["polsaris"] },
+  { n: "Commandement de l'Espace (CDE)", c: "inst", p: "FR", v: "Toulouse", t: "Défense", y: 2019,
+    m: "Commandement militaire français de l'espace : surveillance, protection, opérations.", k: "", kb: "", pr: ["ares", "cso"] },
+  { n: "DGA", c: "inst", p: "FR", v: "Paris", t: "Défense", y: 1961,
+    m: "Maître d'ouvrage des programmes spatiaux militaires français.", k: "", kb: "", pr: ["cso", "syracuse", "ceres"] },
+  { n: "BAAINBw", c: "inst", p: "DE", v: "Coblence", t: "Défense", y: 2012,
+    m: "Agence d'armement allemande, maître d'ouvrage de SARah, SATCOMBw, SPOCK.", k: "", kb: "", pr: ["sarah", "satcombw", "spock"] },
+  { n: "ECMWF", c: "inst", p: "EU", v: "Reading, Bologne", t: "Intergouvernemental", y: 1975,
+    m: "Centre européen de prévision météo ; opère les services Copernicus atmosphère et climat, et DestinE.", k: "", kb: "", pr: ["copsvc", "destine"] },
+  { n: "Mercator Ocean International", c: "inst", p: "FR", v: "Toulouse", t: "Organisation internationale", y: 1995,
+    m: "Opère le service marin de Copernicus.", k: "", kb: "", pr: ["copsvc"] },
+
+  /* ---------- Grands maîtres d'œuvre ---------- */
+  { n: "Airbus Defence and Space", c: "moe", p: "FR", v: "Toulouse, Friedrichshafen, Brême, Stevenage, Madrid", t: "Groupe coté (Airbus)", y: 2014,
+    m: "Premier maître d'œuvre européen : observation, télécoms, science, défense, module de service d'Orion. Vend aussi des données (OneAtlas).", k: "Partie prenante du projet Bromo (35 %)", kb: "A", pr: ["s2", "s6", "cso", "pneo", "juice", "esm", "galg2"] },
+  { n: "Thales Alenia Space", c: "moe", p: "FR", v: "Cannes, Toulouse, Rome, Turin", t: "Coentreprise Thales 67 % / Leonardo 33 %", y: 2007,
+    m: "Satellites télécoms, observation, navigation, modules habités et exploration.", k: "Partie prenante du projet Bromo", kb: "A", pr: ["s1", "s3", "mtg", "csk", "exomars", "argonaut", "gateway"] },
+  { n: "OHB SE", c: "moe", p: "DE", v: "Brême", t: "Groupe coté (famille Fuchs)", y: 1981,
+    m: "Troisième maître d'œuvre : Galileo, SARah, CO2M, Hera, PLATO, LISA. Possède RFA et MT Aerospace.", k: "Placement d'actions jusqu'à ≈ 900 M€ (juin 2026)", kb: "A", pr: ["galg1", "sarah", "co2m", "hera", "plato", "lisa"] },
+  { n: "OHB Italia", c: "moe", p: "IT", v: "Milan", t: "Filiale d'OHB", y: 1995,
+    m: "Missions scientifiques et petits satellites : Ramses, Comet Interceptor, IRIDE.", k: "", kb: "", pr: ["ramses", "cometint", "iride"] },
+  { n: "Leonardo", c: "moe", p: "IT", v: "Rome", t: "Groupe coté (État italien actionnaire)", y: 1948,
+    m: "Instruments et équipements spatiaux ; actionnaire de Thales Alenia Space (33 %) et de Telespazio (67 %).", k: "Partie prenante du projet Bromo (32,5 %)", kb: "A", pr: ["s3", "flex", "mtg"] },
+  { n: "SSTL (Surrey Satellite Technology)", c: "moe", p: "GB", v: "Guildford", t: "Filiale d'Airbus", y: 1985,
+    m: "Petits satellites et charges utiles de navigation (Galileo), satellite lunaire Lunar Pathfinder.", k: "", kb: "", pr: ["galg1", "moonlight"] },
+  { n: "QinetiQ Space", c: "moe", p: "BE", v: "Kruibeke", t: "Filiale de QinetiQ", y: 1988,
+    m: "Petits satellites de l'ESA (famille PROBA).", k: "", kb: "", pr: [] },
+  { n: "Sener", c: "moe", p: "ES", v: "Getxo, Madrid", t: "Groupe familial", y: 1956,
+    m: "Mécanismes, optique, systèmes ; acteur de référence de l'industrie spatiale espagnole.", k: "", kb: "", pr: [] },
+  { n: "Hemeria", c: "moe", p: "FR", v: "Toulouse", t: "Groupe privé", y: 2019,
+    m: "Nanosatellites et petites plateformes (constellation Kinéis), équipements, défense.", k: "", kb: "", pr: ["kineis"] },
+
+  /* ---------- Lancement ---------- */
+  { n: "ArianeGroup", c: "lanc", p: "FR", v: "Les Mureaux, Vernon, Brême", t: "Coentreprise Airbus / Safran", y: 2015,
+    m: "Maître d'œuvre d'Ariane 6, moteurs Vulcain, Vinci et Prometheus, démonstrateur Themis ; maison mère de MaiaSpace.", k: "", kb: "", pr: ["ariane6", "ariane5", "themis"] },
+  { n: "Arianespace", c: "lanc", p: "FR", v: "Évry, Kourou", t: "Filiale d'ArianeGroup", y: 1980,
+    m: "Commercialise et opère les lancements Ariane 6.", k: "", kb: "", pr: ["ariane6"] },
+  { n: "Avio", c: "lanc", p: "IT", v: "Colleferro", t: "Groupe coté", y: 1908,
+    m: "Maître d'œuvre et désormais opérateur commercial de Vega-C ; moteurs à poudre P120C pour Ariane 6.", k: "", kb: "", pr: ["vega"] },
+  { n: "MaiaSpace", c: "lanc", p: "FR", v: "Vernon", t: "Filiale d'ArianeGroup", y: 2022,
+    m: "Mini-lanceur partiellement réutilisable Maia.", k: "≈ 184 M€ réservés au European Launcher Challenge", kb: "A", pr: ["maiaspace"] },
+  { n: "Isar Aerospace", c: "lanc", p: "DE", v: "Ottobrunn", t: "Start-up", y: 2018,
+    m: "Micro-lanceur Spectrum ; premier vol orbital réussi en septembre 2026.", k: "Série D de 270 M€ (juin 2026) ; plus de 400 M€ levés auparavant", kb: "A", pr: ["isar"] },
+  { n: "Rocket Factory Augsburg (RFA)", c: "lanc", p: "DE", v: "Augsbourg", t: "Start-up (groupe OHB)", y: 2018,
+    m: "Micro-lanceur RFA One, depuis SaxaVord.", k: "≈ 191 M€ réservés au European Launcher Challenge", kb: "A", pr: ["rfa"] },
+  { n: "PLD Space", c: "lanc", p: "ES", v: "Elche", t: "Start-up", y: 2011,
+    m: "Lanceurs Miura 1 (suborbital) et Miura 5 (orbital, depuis Kourou).", k: "Série C de 180 M€ (mars 2026) et prêt BEI de 30 M€ (avril 2026)", kb: "A", pr: ["pld"] },
+  { n: "Orbex", c: "lanc", p: "GB", v: "Forres", t: "Start-up", y: 2015,
+    m: "Micro-lanceur Prime au biopropane.", k: "≈ 35 M€ réservés au European Launcher Challenge", kb: "A", pr: ["orbex"] },
+  { n: "Latitude", c: "lanc", p: "FR", v: "Reims", t: "Start-up", y: 2019,
+    m: "Micro-lanceur Zephyr.", k: "", kb: "", pr: [] },
+  { n: "HyPrSpace", c: "lanc", p: "FR", v: "Bordeaux", t: "Start-up", y: 2019,
+    m: "Propulsion hybride ; démonstrateur suborbital Baguette One prévu fin 2026.", k: "", kb: "", pr: [] },
+  { n: "Skyrora", c: "lanc", p: "GB", v: "Édimbourg", t: "Start-up", y: 2017,
+    m: "Micro-lanceur Skyrora XL.", k: "", kb: "", pr: [] },
+  { n: "Pangea Aerospace", c: "lanc", p: "ES", v: "Barcelone", t: "Start-up", y: 2018,
+    m: "Moteurs-fusées imprimés en 3D (aerospike).", k: "", kb: "", pr: [] },
+  { n: "Swedish Space Corporation (SSC)", c: "lanc", p: "SE", v: "Solna, Kiruna", t: "Entreprise publique", y: 1972,
+    m: "Base d'Esrange, réseau mondial de stations sol.", k: "", kb: "", pr: ["esrange"] },
+  { n: "Andøya Space", c: "lanc", p: "NO", v: "Andøya", t: "Entreprise publique", y: 1962,
+    m: "Port spatial norvégien, site d'Isar Aerospace.", k: "", kb: "", pr: ["andoya"] },
+
+  /* ---------- Équipementiers ---------- */
+  { n: "Safran", c: "equip", p: "FR", v: "Paris", t: "Groupe coté", y: 2005,
+    m: "Propulsion électrique (Safran Spacecraft Propulsion), optique (Reosc), électronique ; actionnaire d'ArianeGroup.", k: "", kb: "", pr: ["ariane6"] },
+  { n: "Thales (groupe)", c: "equip", p: "FR", v: "Paris", t: "Groupe coté (État actionnaire)", y: 2000,
+    m: "Radars et systèmes de défense (radar AURORE), charges utiles militaires ; actionnaire majoritaire de Thales Alenia Space.", k: "", kb: "", pr: ["ares", "ceres"] },
+  { n: "Sodern", c: "equip", p: "FR", v: "Limeil-Brévannes", t: "Filiale d'ArianeGroup", y: 1962,
+    m: "Senseurs stellaires et instruments optiques.", k: "", kb: "", pr: [] },
+  { n: "Beyond Gravity", c: "equip", p: "CH", v: "Zurich", t: "Entreprise publique suisse (ex-RUAG Space)", y: 2022,
+    m: "Coiffes de lanceurs, structures, mécanismes ; partenaire de PLATO.", k: "", kb: "", pr: ["ariane6", "plato"] },
+  { n: "Tesat-Spacecom", c: "equip", p: "DE", v: "Backnang", t: "Filiale d'Airbus", y: 2001,
+    m: "Terminaux laser et équipements de télécoms (EDRS).", k: "", kb: "", pr: ["edrs"] },
+  { n: "Jena-Optronik", c: "equip", p: "DE", v: "Iéna", t: "Filiale d'Airbus", y: 1991,
+    m: "Senseurs stellaires et instruments optiques.", k: "", kb: "", pr: [] },
+  { n: "MT Aerospace", c: "equip", p: "DE", v: "Augsbourg", t: "Filiale d'OHB", y: 1969,
+    m: "Structures métalliques d'Ariane 6.", k: "", kb: "", pr: ["ariane6"] },
+  { n: "Terma", c: "equip", p: "DK", v: "Aarhus", t: "Groupe privé", y: 1949,
+    m: "Logiciels sol et vol, électronique, senseurs.", k: "", kb: "", pr: [] },
+  { n: "AAC Clyde Space", c: "equip", p: "SE", v: "Uppsala, Glasgow", t: "Groupe coté", y: 2005,
+    m: "Petits satellites et sous-systèmes, services de données.", k: "", kb: "", pr: [] },
+  { n: "Syrlinks", c: "equip", p: "FR", v: "Rennes", t: "PME", y: 2007,
+    m: "Émetteurs radio et équipements de télécommunication spatiale.", k: "", kb: "", pr: [] },
+  { n: "Argotec", c: "equip", p: "IT", v: "Turin", t: "PME", y: 2008,
+    m: "Petits satellites (LICIACube, IRIDE).", k: "", kb: "", pr: ["iride"] },
+  { n: "Sitael", c: "equip", p: "IT", v: "Mola di Bari", t: "Groupe privé (Angel)", y: 1990,
+    m: "Petits satellites, propulsion électrique, partenaire d'Eagle-1.", k: "", kb: "", pr: ["euroqci"] },
+  { n: "Rheinmetall", c: "equip", p: "DE", v: "Düsseldorf", t: "Groupe coté (défense)", y: 1889,
+    m: "Nouvel entrant défense dans le spatial, partenaire d'ICEYE pour SPOCK.", k: "", kb: "", pr: ["spock"] },
+
+  /* ---------- Opérateurs ---------- */
+  { n: "Eutelsat Group", c: "oper", p: "FR", v: "Issy-les-Moulineaux", t: "Groupe coté (État français premier actionnaire)", y: 1977,
+    m: "Flotte géostationnaire et constellation OneWeb ; membre de SpaceRISE (IRIS²).", k: "Recapitalisation ≈ 1,5 Md€ (2025) ; ≈ 1 Md€ de crédit export (fév. 2026)", kb: "A", pr: ["eutelsat", "iris2"] },
+  { n: "SES", c: "oper", p: "LU", v: "Betzdorf", t: "Groupe coté", y: 1985,
+    m: "Opérateur multi-orbites, propriétaire d'Intelsat depuis 2025 ; membre de SpaceRISE, chef de file d'Eagle-1.", k: "", kb: "", pr: ["ses", "iris2", "euroqci"] },
+  { n: "Hispasat", c: "oper", p: "ES", v: "Madrid", t: "Filiale d'Indra", y: 1989,
+    m: "Opérateur télécoms Espagne et Amérique latine ; membre de SpaceRISE.", k: "", kb: "", pr: ["hispasat", "iris2"] },
+  { n: "Hisdesat", c: "oper", p: "ES", v: "Madrid", t: "Société à capital public-privé", y: 2001,
+    m: "Opérateur gouvernemental espagnol : SpainSat NG, PAZ.", k: "", kb: "", pr: ["spainsat", "paz"] },
+  { n: "Kinéis", c: "oper", p: "FR", v: "Toulouse", t: "Start-up", y: 2018,
+    m: "Constellation de 25 nanosatellites pour l'Internet des objets.", k: "", kb: "", pr: ["kineis"] },
+  { n: "Avanti Communications", c: "oper", p: "GB", v: "Londres", t: "Groupe privé", y: 2002,
+    m: "Opérateur en bande Ka pour l'Afrique et l'Europe.", k: "", kb: "", pr: [] },
+
+  /* ---------- Segment sol & services ---------- */
+  { n: "Telespazio", c: "aval", p: "IT", v: "Rome", t: "Coentreprise Leonardo 67 % / Thales 33 %", y: 1961,
+    m: "Opérations satellites, segment sol, services géospatiaux ; maître d'œuvre de Moonlight.", k: "", kb: "", pr: ["moonlight", "csk"] },
+  { n: "e-GEOS", c: "aval", p: "IT", v: "Rome", t: "Filiale Telespazio / ASI", y: 2000,
+    m: "Commercialise les données COSMO-SkyMed et des services géospatiaux.", k: "", kb: "", pr: ["csk"] },
+  { n: "GMV", c: "aval", p: "ES", v: "Tres Cantos", t: "Groupe familial", y: 1984,
+    m: "Segment sol, logiciels de contrôle, systèmes de navigation (Galileo).", k: "", kb: "", pr: ["galg1"] },
+  { n: "Indra", c: "aval", p: "ES", v: "Alcobendas", t: "Groupe coté (État espagnol actionnaire)", y: 1993,
+    m: "Systèmes de défense et segment sol ; propriétaire d'Hispasat. Opposé au projet Bromo.", k: "", kb: "", pr: ["hispasat"] },
+  { n: "CLS", c: "aval", p: "FR", v: "Toulouse", t: "Filiale du CNES et de partenaires", y: 1986,
+    m: "Opère Argos, services d'océanographie, de localisation et de surveillance maritime.", k: "", kb: "", pr: ["kineis", "metopsg"] },
+  { n: "Kongsberg Satellite Services (KSAT)", c: "aval", p: "NO", v: "Tromsø", t: "Coentreprise Kongsberg / État norvégien", y: 2002,
+    m: "Réseau mondial de stations sol, dont la station polaire de Svalbard.", k: "", kb: "", pr: [] },
+  { n: "Leaf Space", c: "aval", p: "IT", v: "Milan", t: "Start-up", y: 2014,
+    m: "Stations sol en service, pour les constellations.", k: "", kb: "", pr: [] },
+  { n: "Leanspace", c: "aval", p: "FR", v: "Toulouse", t: "Start-up", y: 2019,
+    m: "Logiciel de contrôle de satellites en mode service.", k: "", kb: "", pr: [] },
+
+  /* ---------- NewSpace : satellites & données ---------- */
+  { n: "ICEYE", c: "nsdat", p: "FI", v: "Espoo", t: "Start-up rentable", y: 2014,
+    m: "Constellation radar (72 satellites), données et systèmes souverains pour sept gouvernements.", k: "Plus d'1 Md€ levé en juin 2026 (450 M€ primaires), valorisation > 10 Md€ ; CA 2025 > 250 M€", kb: "A", pr: ["iceye", "spock", "polsaris"] },
+  { n: "Aerospacelab", c: "nsdat", p: "BE", v: "Louvain-la-Neuve", t: "Start-up", y: 2018,
+    m: "Petits satellites produits en série, imagerie ; membre de l'équipe industrielle d'IRIS².", k: "", kb: "", pr: ["iris2"] },
+  { n: "Open Cosmos", c: "nsdat", p: "GB", v: "Harwell, Barcelone", t: "Start-up", y: 2015,
+    m: "Missions de petits satellites clés en main et plateforme de données.", k: "", kb: "", pr: [] },
+  { n: "Unseenlabs", c: "nsdat", p: "FR", v: "Rennes", t: "Start-up", y: 2015,
+    m: "Détection des navires par leurs émissions radio depuis l'espace.", k: "", kb: "", pr: [] },
+  { n: "EnduroSat", c: "nsdat", p: "BG", v: "Sofia", t: "Start-up", y: 2015,
+    m: "Petits satellites en série et services de données.", k: "90 M€ (oct. 2025)", kb: "A", pr: [] },
+  { n: "Kuva Space", c: "nsdat", p: "FI", v: "Espoo", t: "Start-up", y: 2016,
+    m: "Constellation hyperspectrale.", k: "", kb: "", pr: [] },
+  { n: "Constellr", c: "nsdat", p: "DE", v: "Fribourg", t: "Start-up", y: 2020,
+    m: "Température de surface pour l'agriculture, en complément de LSTM.", k: "", kb: "", pr: ["lstm"] },
+  { n: "OroraTech", c: "nsdat", p: "DE", v: "Munich", t: "Start-up", y: 2018,
+    m: "Détection des feux de forêt par infrarouge thermique.", k: "", kb: "", pr: [] },
+  { n: "Prométhée", c: "nsdat", p: "FR", v: "Paris", t: "Start-up", y: 2020,
+    m: "Constellation d'observation souveraine (JAPETUS).", k: "", kb: "", pr: [] },
+  { n: "U-Space", c: "nsdat", p: "FR", v: "Toulouse", t: "Start-up", y: 2019,
+    m: "Nanosatellites, notamment pour la défense.", k: "", kb: "", pr: [] },
+  { n: "Reflex Aerospace", c: "nsdat", p: "DE", v: "Berlin", t: "Start-up", y: 2021,
+    m: "Satellites sur mesure à production rapide.", k: "", kb: "", pr: [] },
+  { n: "Loft Orbital", c: "nsdat", p: "FR", v: "Toulouse, San Francisco", t: "Start-up franco-américaine", y: 2017,
+    m: "Satellites mutualisés : héberge les charges utiles de clients en mode service.", k: "", kb: "", pr: [] },
+  { n: "Satlantis", c: "nsdat", p: "ES", v: "Bilbao", t: "Start-up", y: 2013,
+    m: "Caméras haute résolution pour petits satellites, détection de méthane.", k: "", kb: "", pr: [] },
+  { n: "Look Up Space", c: "nsdat", p: "FR", v: "Paris", t: "Start-up", y: 2022,
+    m: "Surveillance de l'espace par radars, au service de la défense et des opérateurs.", k: "Levée en 2025 (montant non retenu)", kb: "B", pr: ["eusst"] },
+  { n: "Aldoria", c: "nsdat", p: "FR", v: "Toulouse", t: "Start-up", y: 2017,
+    m: "Surveillance de l'espace par réseau de télescopes.", k: "", kb: "", pr: ["eusst"] },
+
+  /* ---------- NewSpace : services en orbite & transport ---------- */
+  { n: "The Exploration Company", c: "nsorb", p: "DE", v: "Munich, Bordeaux", t: "Start-up franco-allemande", y: 2021,
+    m: "Capsule cargo réutilisable Nyx pour l'ISS et les futures stations.", k: "Série C de 387 M€ / 450 M$ (sept. 2026)", kb: "A", pr: ["cargo"] },
+  { n: "D-Orbit", c: "nsorb", p: "IT", v: "Fino Mornasco", t: "Start-up", y: 2011,
+    m: "Remorqueurs orbitaux ION pour déposer des satellites sur leur orbite finale.", k: "Plus de 100 M€ levés au 1er semestre 2026", kb: "A", pr: [] },
+  { n: "Exotrail", c: "nsorb", p: "FR", v: "Massy, Toulouse", t: "Start-up", y: 2017,
+    m: "Propulsion électrique et véhicule de transfert orbital spacevan.", k: "", kb: "", pr: [] },
+  { n: "Infinite Orbits", c: "nsorb", p: "FR", v: "Toulouse", t: "Start-up", y: 2017,
+    m: "Inspection et prolongation de vie de satellites géostationnaires.", k: "", kb: "", pr: [] },
+  { n: "ClearSpace", c: "nsorb", p: "CH", v: "Renens", t: "Start-up", y: 2018,
+    m: "Retrait actif de débris.", k: "", kb: "", pr: ["clearspace"] },
+  { n: "Atmos Space Cargo", c: "nsorb", p: "DE", v: "Lahr", t: "Start-up", y: 2022,
+    m: "Capsules de retour de fret.", k: "", kb: "", pr: [] },
+
+  /* ---------- Financement ---------- */
+  { n: "Banque européenne d'investissement (BEI)", c: "fin", p: "EU", v: "Luxembourg", t: "UE", y: 1958,
+    m: "Prêts aux industriels et start-up spatiales (PLD Space, Isar…).", k: "Prêt de 30 M€ à PLD Space (2026)", kb: "A", pr: [] },
+  { n: "Scaleup Europe Fund", c: "fin", p: "EU", v: "—", t: "Fonds public-privé (gestion EQT)", y: 2025,
+    m: "Fonds européen de croissance pour les technologies stratégiques ; co-chef de file de la Série C de The Exploration Company.", k: "≈ 5 Md€ visés", kb: "B", pr: [] },
+  { n: "CASSINI (Commission européenne)", c: "fin", p: "EU", v: "Bruxelles", t: "UE", y: 2022,
+    m: "Initiative de soutien aux start-up spatiales : fonds de capital-risque, concours, accélérateurs.", k: "≈ 2 Md€ de capital-risque attendus", kb: "B", pr: [] },
+  { n: "KfW Capital / Bayern Kapital", c: "fin", p: "DE", v: "Francfort, Landshut", t: "Investisseurs publics", y: 2018,
+    m: "Investisseurs publics allemands très actifs dans les lanceurs et le NewSpace.", k: "", kb: "", pr: ["isar"] },
+  { n: "Bpifrance / France 2030", c: "fin", p: "FR", v: "Paris", t: "Public", y: 2021,
+    m: "Financement public français de l'innovation spatiale (constellations, micro-lanceurs).", k: "", kb: "", pr: [] }
+];
+
+const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "Italie", ES: "Espagne", GB: "Royaume-Uni", BE: "Belgique",
+  LU: "Luxembourg", FI: "Finlande", SE: "Suède", NO: "Norvège", DK: "Danemark", CH: "Suisse", CZ: "Tchéquie", PL: "Pologne", BG: "Bulgarie" };
+
 </script>
 <script>
 (function () {
@@ -1641,6 +1925,7 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
     ["mecanique", "Mécanique du marché"],
     ["domaines", "Carte des domaines"],
     ["fiches", "Fiches programmes"],
+    ["acteurs", "Acteurs"],
     ["frise", "Frise 1965-2045"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
@@ -1648,7 +1933,7 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
     ["glossaire", "Glossaire & sources"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "" };
 
   function chip(id) {
     const p = byId[id];
@@ -1664,7 +1949,8 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
     document.getElementById("counts").innerHTML = [
       [PROGRAMMES.length, "programmes"],
       [LIGNEES.length, "filiations"],
-      [CONVERGENCES.length, "convergences"]
+      [CONVERGENCES.length, "convergences"],
+      [ACTEURS.length, "acteurs"]
     ].map(([v, l]) => `<div><b>${v}</b><small>${l}</small></div>`).join("");
     document.getElementById("tabs").innerHTML = VIEWS.map(([k, l], i) =>
       `<button class="tab" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
@@ -1850,6 +2136,62 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
     </article>`;
   }
 
+
+  /* ================= VUE : ACTEURS ================= */
+  function vActeurs() {
+    const cats = [["all", "Tous"]].concat(Object.entries(CAT_ACTEURS));
+    const pays = [...new Set(ACTEURS.map(a => a.p))].sort((x, y) => (PAYS[x] || x).localeCompare(PAYS[y] || y, "fr"));
+    return `<div class="view-head"><h2>Acteurs</h2>
+      <p>Institutions, grands groupes, équipementiers, opérateurs et NewSpace. Les montants ne figurent que lorsqu'ils sont publiés et vérifiables ; un champ vide veut dire « non publié », pas « nul ». Cet annuaire couvre les acteurs qui comptent, il n'est pas exhaustif : l'Europe compte plusieurs centaines de jeunes entreprises spatiales.</p></div>
+      <div class="act-top">
+        <div class="panel">
+          <h3 class="section-title" style="margin:0">Marché en chiffres</h3>
+          <div class="kpis">
+            <div><b class="mono">10,9 Md€</b><span>Ventes de l'industrie spatiale européenne en 2025 (+23 %) <span class="conf">A</span></span></div>
+            <div><b class="mono">68 139</b><span>Emplois directs en 2025 (+2,2 %), dont 11 % en start-up <span class="conf">A</span></span></div>
+            <div><b class="mono">1,1 Md€</b><span>Levées de fonds des start-up spatiales européennes en 2025 <span class="conf">A</span></span></div>
+            <div><b class="mono">3,8 Md€</b><span>Levées en 2026 au 20 octobre, dont près de la moitié en dette <span class="conf">A</span></span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 class="section-title" style="margin:0">Acteurs de l'annuaire par pays</h3>
+          <div id="paysBars" class="pays-bars"></div>
+        </div>
+      </div>
+      <div class="filters" style="margin-top:20px">
+        <div class="fchips" id="acats">${cats.map(([k, l]) => `<button class="fchip" type="button" data-acat="${k}" aria-pressed="${state.acat === k}">${esc(l)} <span class="mono" style="opacity:.6">${k === "all" ? ACTEURS.length : ACTEURS.filter(a => a.c === k).length}</span></button>`).join("")}</div>
+        <div class="act-search">
+          <div><label class="note" for="aq">Rechercher</label><input id="aq" type="search" placeholder="ex. radar, Toulouse, lanceur…" value="${esc(state.aq)}"></div>
+          <div><label class="note" for="apays">Pays</label><select id="apays"><option value="all">Tous les pays</option>${pays.map(p => `<option value="${p}"${state.apays === p ? " selected" : ""}>${esc(PAYS[p] || p)}</option>`).join("")}</select></div>
+        </div>
+      </div>
+      <p class="note" id="acount" style="margin:6px 0 12px"></p>
+      <div class="act-grid" id="agrid"></div>`;
+  }
+  function renderActeurs() {
+    const g = document.getElementById("agrid");
+    if (!g) return;
+    const q = state.aq.trim().toLowerCase();
+    const list = ACTEURS.filter(a => (state.acat === "all" || a.c === state.acat) && (state.apays === "all" || a.p === state.apays) &&
+      (!q || [a.n, a.m, a.v, a.t, a.k, CAT_ACTEURS[a.c]].join(" ").toLowerCase().includes(q)));
+    document.getElementById("acount").textContent = `${list.length} acteur${list.length > 1 ? "s" : ""} affiché${list.length > 1 ? "s" : ""}`;
+    g.innerHTML = list.length ? list.map(a => `
+      <article class="act">
+        <div class="act-h"><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><span class="mono note">${esc(a.p)} · ${a.y}</span></div>
+        <h3>${esc(a.n)}</h3>
+        <p class="note">${esc(a.v)} · ${esc(a.t)}</p>
+        <p>${esc(a.m)}</p>
+        ${a.k ? `<p class="act-k">${esc(a.k)} <span class="conf">${a.kb}</span></p>` : ""}
+        ${a.pr.length ? `<div class="chips">${a.pr.map(chip).join("")}</div>` : ""}
+      </article>`).join("") : `<p class="note">Aucun acteur ne correspond. Élargissez la catégorie ou le pays.</p>`;
+    document.querySelectorAll("#acats .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.acat === state.acat));
+    const counts = {};
+    ACTEURS.filter(a => state.acat === "all" || a.c === state.acat).forEach(a => counts[a.p] = (counts[a.p] || 0) + 1);
+    const rows = Object.entries(counts).sort((x, y) => y[1] - x[1]);
+    const max = Math.max(1, ...rows.map(r => r[1]));
+    document.getElementById("paysBars").innerHTML = rows.map(([p, n]) => `<button type="button" class="hbar pbar${state.apays === p ? " on" : ""}" data-apays="${p}"><span>${esc(PAYS[p] || p)}</span><span class="track"><i style="width:${n / max * 100}%;background:var(--accent)"></i></span><span class="val">${n}</span></button>`).join("");
+  }
+
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
     return `<div class="view-head"><h2>Frise 1965-2045</h2>
@@ -2016,7 +2358,7 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   function show(view, opts) {
@@ -2028,6 +2370,7 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
     if (!rendered[view]) { sec.innerHTML = RENDER[view](); rendered[view] = true; }
     if (view === "fiches") { renderList(); renderDetail(); }
     if (view === "convergences") renderConv();
+    if (view === "acteurs") renderActeurs();
 
     try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
@@ -2049,7 +2392,7 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
   }
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype]");
+    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays]");
     if (!t) return;
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
@@ -2063,6 +2406,8 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
       renderList();
     }
     else if (t.dataset.ctype) { state.convType = t.dataset.ctype; renderConv(); }
+    else if (t.dataset.acat) { state.acat = t.dataset.acat; renderActeurs(); }
+    else if (t.dataset.apays) { state.apays = state.apays === t.dataset.apays ? "all" : t.dataset.apays; const sel = document.getElementById("apays"); if (sel) sel.value = state.apays; renderActeurs(); }
   });
   document.addEventListener("keydown", e => {
     const t = e.target.closest && e.target.closest(".tl-row");
@@ -2070,6 +2415,8 @@ GLOSSAIRE.sort((a, b) => a[0].localeCompare(b[0], "fr"));
   });
   document.addEventListener("input", e => {
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
+    if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
+    if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
   });
 
   header();

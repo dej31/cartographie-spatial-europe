@@ -69,7 +69,7 @@ button { font: inherit; color: inherit; }
 .legend-fam { display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .legend-fam span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--band-ink); }
 .sw { width: 11px; height: 11px; border-radius: 2px; flex: none; display: inline-block; }
-.counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
+.counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: rgba(154,169,188,.25); border: 1px solid rgba(154,169,188,.25); border-radius: var(--r); overflow: hidden; margin-top: 16px; }
 .counts div { background: var(--band); padding: 10px 12px; }
 .counts b { font-family: var(--font-display); font-stretch: 115%; font-size: 26px; display: block; line-height: 1.1; }
 .counts small { color: var(--band-muted); font-size: 12px; }
@@ -242,6 +242,30 @@ table.sites th { font-family: var(--font-mono); font-size: 11px; letter-spacing:
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: space-between; }
 
+
+/* ---------- Vue : acteurs ---------- */
+.act-top { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+.kpis div { display: grid; gap: 2px; }
+.kpis b { font-family: var(--font-display); font-stretch: 112%; font-size: 26px; line-height: 1.1; }
+.kpis span { font-size: 13px; color: var(--muted); }
+.pays-bars { display: grid; gap: 4px; max-height: 260px; overflow-y: auto; }
+button.pbar { border: 0; background: none; text-align: left; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
+button.pbar:hover, button.pbar.on { background: var(--sunk); }
+.act-search { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
+.act-search > div { display: grid; gap: 4px; }
+.act-search input, .act-search select { width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; }
+.act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.act { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 7px; align-content: start; }
+.act-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.act .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.act h3 { font-size: 16.5px; font-stretch: 104%; }
+.act p { font-size: 13.5px; }
+.act-k { background: var(--sunk); padding: 6px 9px; border-radius: 4px; font-size: 13px !important; }
+.act .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+@media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
   .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -290,6 +314,7 @@ footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted);
     <section id="v-mecanique" data-view hidden></section>
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>
+    <section id="v-acteurs" data-view hidden></section>
     <section id="v-frise" data-view hidden></section>
     <section id="v-genealogie" data-view hidden></section>
     <section id="v-convergences" data-view hidden></section>
@@ -308,6 +333,7 @@ footer .wrap { padding-block: 18px 28px; font-size: 12.5px; color: var(--muted);
 <script>
 /*__DATA__*/
 /*__DATA2__*/
+/*__DATA3__*/
 </script>
 <script>
 /*__APP__*/

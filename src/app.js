@@ -11,6 +11,7 @@
     ["mecanique", "Mécanique du marché"],
     ["domaines", "Carte des domaines"],
     ["fiches", "Fiches programmes"],
+    ["acteurs", "Acteurs"],
     ["frise", "Frise 1965-2045"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
@@ -18,7 +19,7 @@
     ["glossaire", "Glossaire & sources"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "" };
 
   function chip(id) {
     const p = byId[id];
@@ -34,7 +35,8 @@
     document.getElementById("counts").innerHTML = [
       [PROGRAMMES.length, "programmes"],
       [LIGNEES.length, "filiations"],
-      [CONVERGENCES.length, "convergences"]
+      [CONVERGENCES.length, "convergences"],
+      [ACTEURS.length, "acteurs"]
     ].map(([v, l]) => `<div><b>${v}</b><small>${l}</small></div>`).join("");
     document.getElementById("tabs").innerHTML = VIEWS.map(([k, l], i) =>
       `<button class="tab" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
@@ -220,6 +222,62 @@
     </article>`;
   }
 
+
+  /* ================= VUE : ACTEURS ================= */
+  function vActeurs() {
+    const cats = [["all", "Tous"]].concat(Object.entries(CAT_ACTEURS));
+    const pays = [...new Set(ACTEURS.map(a => a.p))].sort((x, y) => (PAYS[x] || x).localeCompare(PAYS[y] || y, "fr"));
+    return `<div class="view-head"><h2>Acteurs</h2>
+      <p>Institutions, grands groupes, équipementiers, opérateurs et NewSpace. Les montants ne figurent que lorsqu'ils sont publiés et vérifiables ; un champ vide veut dire « non publié », pas « nul ». Cet annuaire couvre les acteurs qui comptent, il n'est pas exhaustif : l'Europe compte plusieurs centaines de jeunes entreprises spatiales.</p></div>
+      <div class="act-top">
+        <div class="panel">
+          <h3 class="section-title" style="margin:0">Marché en chiffres</h3>
+          <div class="kpis">
+            <div><b class="mono">10,9 Md€</b><span>Ventes de l'industrie spatiale européenne en 2025 (+23 %) <span class="conf">A</span></span></div>
+            <div><b class="mono">68 139</b><span>Emplois directs en 2025 (+2,2 %), dont 11 % en start-up <span class="conf">A</span></span></div>
+            <div><b class="mono">1,1 Md€</b><span>Levées de fonds des start-up spatiales européennes en 2025 <span class="conf">A</span></span></div>
+            <div><b class="mono">3,8 Md€</b><span>Levées en 2026 au 20 octobre, dont près de la moitié en dette <span class="conf">A</span></span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 class="section-title" style="margin:0">Acteurs de l'annuaire par pays</h3>
+          <div id="paysBars" class="pays-bars"></div>
+        </div>
+      </div>
+      <div class="filters" style="margin-top:20px">
+        <div class="fchips" id="acats">${cats.map(([k, l]) => `<button class="fchip" type="button" data-acat="${k}" aria-pressed="${state.acat === k}">${esc(l)} <span class="mono" style="opacity:.6">${k === "all" ? ACTEURS.length : ACTEURS.filter(a => a.c === k).length}</span></button>`).join("")}</div>
+        <div class="act-search">
+          <div><label class="note" for="aq">Rechercher</label><input id="aq" type="search" placeholder="ex. radar, Toulouse, lanceur…" value="${esc(state.aq)}"></div>
+          <div><label class="note" for="apays">Pays</label><select id="apays"><option value="all">Tous les pays</option>${pays.map(p => `<option value="${p}"${state.apays === p ? " selected" : ""}>${esc(PAYS[p] || p)}</option>`).join("")}</select></div>
+        </div>
+      </div>
+      <p class="note" id="acount" style="margin:6px 0 12px"></p>
+      <div class="act-grid" id="agrid"></div>`;
+  }
+  function renderActeurs() {
+    const g = document.getElementById("agrid");
+    if (!g) return;
+    const q = state.aq.trim().toLowerCase();
+    const list = ACTEURS.filter(a => (state.acat === "all" || a.c === state.acat) && (state.apays === "all" || a.p === state.apays) &&
+      (!q || [a.n, a.m, a.v, a.t, a.k, CAT_ACTEURS[a.c]].join(" ").toLowerCase().includes(q)));
+    document.getElementById("acount").textContent = `${list.length} acteur${list.length > 1 ? "s" : ""} affiché${list.length > 1 ? "s" : ""}`;
+    g.innerHTML = list.length ? list.map(a => `
+      <article class="act">
+        <div class="act-h"><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><span class="mono note">${esc(a.p)} · ${a.y}</span></div>
+        <h3>${esc(a.n)}</h3>
+        <p class="note">${esc(a.v)} · ${esc(a.t)}</p>
+        <p>${esc(a.m)}</p>
+        ${a.k ? `<p class="act-k">${esc(a.k)} <span class="conf">${a.kb}</span></p>` : ""}
+        ${a.pr.length ? `<div class="chips">${a.pr.map(chip).join("")}</div>` : ""}
+      </article>`).join("") : `<p class="note">Aucun acteur ne correspond. Élargissez la catégorie ou le pays.</p>`;
+    document.querySelectorAll("#acats .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.acat === state.acat));
+    const counts = {};
+    ACTEURS.filter(a => state.acat === "all" || a.c === state.acat).forEach(a => counts[a.p] = (counts[a.p] || 0) + 1);
+    const rows = Object.entries(counts).sort((x, y) => y[1] - x[1]);
+    const max = Math.max(1, ...rows.map(r => r[1]));
+    document.getElementById("paysBars").innerHTML = rows.map(([p, n]) => `<button type="button" class="hbar pbar${state.apays === p ? " on" : ""}" data-apays="${p}"><span>${esc(PAYS[p] || p)}</span><span class="track"><i style="width:${n / max * 100}%;background:var(--accent)"></i></span><span class="val">${n}</span></button>`).join("");
+  }
+
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
     return `<div class="view-head"><h2>Frise 1965-2045</h2>
@@ -386,7 +444,7 @@
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   function show(view, opts) {
@@ -398,6 +456,7 @@
     if (!rendered[view]) { sec.innerHTML = RENDER[view](); rendered[view] = true; }
     if (view === "fiches") { renderList(); renderDetail(); }
     if (view === "convergences") renderConv();
+    if (view === "acteurs") renderActeurs();
 
     try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
@@ -419,7 +478,7 @@
   }
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype]");
+    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays]");
     if (!t) return;
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
@@ -433,6 +492,8 @@
       renderList();
     }
     else if (t.dataset.ctype) { state.convType = t.dataset.ctype; renderConv(); }
+    else if (t.dataset.acat) { state.acat = t.dataset.acat; renderActeurs(); }
+    else if (t.dataset.apays) { state.apays = state.apays === t.dataset.apays ? "all" : t.dataset.apays; const sel = document.getElementById("apays"); if (sel) sel.value = state.apays; renderActeurs(); }
   });
   document.addEventListener("keydown", e => {
     const t = e.target.closest && e.target.closest(".tl-row");
@@ -440,6 +501,8 @@
   });
   document.addEventListener("input", e => {
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
+    if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
+    if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
   });
 
   header();
