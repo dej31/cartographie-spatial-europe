@@ -8,18 +8,19 @@
   const NOW = 2026.8;
 
   const VIEWS = [
-    ["mecanique", "Mécanique du marché"],
-    ["domaines", "Carte des domaines"],
-    ["fiches", "Fiches programmes"],
+    ["mecanique", "Mécanique"],
+    ["domaines", "Domaines"],
+    ["fiches", "Fiches"],
     ["acteurs", "Acteurs"],
-    ["frise", "Frise 1965-2045"],
+    ["frise", "Frise"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
-    ["industrie", "Lecture industrielle"],
-    ["glossaire", "Glossaire & sources"]
+    ["industrie", "Industrie"],
+    ["finances", "Finances"],
+    ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m" };
 
   function chip(id) {
     const p = byId[id];
@@ -278,6 +279,124 @@
     document.getElementById("paysBars").innerHTML = rows.map(([p, n]) => `<button type="button" class="hbar pbar${state.apays === p ? " on" : ""}" data-apays="${p}"><span>${esc(PAYS[p] || p)}</span><span class="track"><i style="width:${n / max * 100}%;background:var(--accent)"></i></span><span class="val">${n}</span></button>`).join("");
   }
 
+
+  /* ================= VUE : FINANCES ================= */
+  const fmtM = v => v >= 1000 ? (v / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " Md€" : v.toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M€";
+  const entName = r => r.ent;
+  function finRows() {
+    const src = state.ds === "contrats" ? CONTRATS : LEVEES;
+    return src.filter(r => r.a >= state.y0 && r.a <= state.y1 &&
+      (!state.fams.length || state.fams.includes(r.fam)) &&
+      (state.ent === "all" || entName(r) === state.ent) &&
+      (state.ds !== "contrats" || state.finT === "all" || r.fin === state.finT) &&
+      (state.ds !== "levees" || state.ty === "all" || r.ty === state.ty));
+  }
+  function vFinances() {
+    return `<div class="view-head"><h2>Tableau de bord financier</h2>
+      <p>Trois jeux de données séparés, parce qu'ils ne mesurent pas la même chose : les contrats et engagements publics, les levées de fonds privées, et les grandes séries annuelles. Choisissez un jeu, puis filtrez : tous les graphiques se recalculent. Les montants sont ceux qui ont été publiés ; ce tableau de bord n'est pas un recensement complet du marché.</p></div>
+      <div class="seg" role="group" aria-label="Jeu de données" id="dsSeg">
+        ${[["contrats", "Contrats publics", CONTRATS.length], ["levees", "Levées de fonds", LEVEES.length], ["series", "Séries annuelles", SERIES.length]].map(([k, l, n]) =>
+          `<button type="button" data-ds="${k}" aria-pressed="${state.ds === k}">${l} <span class="mono">${n}</span></button>`).join("")}
+      </div>
+      <div id="finBody"></div>`;
+  }
+  function renderFin() {
+    const body = document.getElementById("finBody");
+    if (!body) return;
+    document.querySelectorAll("#dsSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === state.ds));
+    if (state.ds === "series") { body.innerHTML = seriesHtml(); return; }
+    const src = state.ds === "contrats" ? CONTRATS : LEVEES;
+    const years = [...new Set(src.map(r => r.a))].sort();
+    const ents = [...new Set(src.map(entName))].sort((x, y) => x.localeCompare(y, "fr"));
+    const fams = [...new Set(src.map(r => r.fam))];
+    const rows = finRows();
+    const total = rows.reduce((t, r) => t + r.m, 0);
+    const big = rows.slice().sort((x, y) => y.m - x.m)[0];
+    const byEnt = groupSum(rows, entName), byYear = groupSum(rows, r => r.a), byFam = groupSum(rows, r => r.fam);
+    const topEnt = Object.entries(byEnt).sort((x, y) => y[1] - x[1])[0];
+    const yearOpts = sel => years.map(y => `<option value="${y}"${y === sel ? " selected" : ""}>${y}</option>`).join("");
+    const extra = state.ds === "contrats"
+      ? `<div><label class="note" for="finT">Financeur</label><select id="finT"><option value="all">Tous</option>${[...new Set(CONTRATS.map(r => r.fin))].map(f => `<option${state.finT === f ? " selected" : ""}>${esc(f)}</option>`).join("")}</select></div>`
+      : `<div><label class="note" for="fty">Type</label><select id="fty"><option value="all">Capital et dette</option>${["Capital", "Dette"].map(f => `<option${state.ty === f ? " selected" : ""}>${f}</option>`).join("")}</select></div>`;
+    body.innerHTML = `
+      <div class="fin-filters">
+        <div><label class="note" for="fy0">De</label><select id="fy0">${yearOpts(Math.max(state.y0, years[0]))}</select></div>
+        <div><label class="note" for="fy1">À</label><select id="fy1">${yearOpts(Math.min(state.y1, years[years.length - 1]))}</select></div>
+        <div><label class="note" for="fent">Entreprise</label><select id="fent"><option value="all">Toutes</option>${ents.map(e => `<option${state.ent === e ? " selected" : ""}>${esc(e)}</option>`).join("")}</select></div>
+        ${extra}
+        <div class="fin-fams"><span class="note">Secteurs</span><div class="fchips">${fams.map(f => `<button class="fchip" type="button" data-ffam="${f}" aria-pressed="${state.fams.includes(f)}"><span class="sw" style="background:${col(f)}"></span>${FAMILLES[f].court}</button>`).join("")}</div></div>
+        <div><span class="note">&nbsp;</span><button type="button" class="reset" data-freset="1">Réinitialiser</button></div>
+      </div>
+      <div class="fin-kpis">
+        <div class="kpi"><span>Total affiché</span><b class="mono">${fmtM(total)}</b></div>
+        <div class="kpi"><span>${state.ds === "contrats" ? "Contrats" : "Opérations"}</span><b class="mono">${rows.length}</b></div>
+        <div class="kpi"><span>Plus gros montant</span><b class="mono">${big ? fmtM(big.m) : "—"}</b><small>${big ? esc(entName(big)) + " · " + big.a : ""}</small></div>
+        <div class="kpi"><span>Premier bénéficiaire</span><b class="mono">${topEnt ? Math.round(topEnt[1] / total * 100) + " %" : "—"}</b><small>${topEnt ? esc(topEnt[0]) : ""}</small></div>
+      </div>
+      ${rows.length ? `<div class="fin-charts">
+        <div class="panel"><h3 class="ch-t">Par année</h3>${barsV(byYear)}</div>
+        <div class="panel"><h3 class="ch-t">Par secteur</h3>${barsH(Object.entries(byFam).sort((x, y) => y[1] - x[1]).map(([k, v]) => [FAMILLES[k].nom, v, col(k), null]))}</div>
+        <div class="panel wide"><h3 class="ch-t">Par bénéficiaire <span class="note">(un clic filtre)</span></h3>${barsH(Object.entries(byEnt).sort((x, y) => y[1] - x[1]).slice(0, 12).map(([k, v]) => [k, v, "var(--accent)", k]))}</div>
+      </div>
+      <div class="panel" style="margin-top:16px;overflow-x:auto">
+        <h3 class="ch-t">Détail des lignes</h3>
+        <table class="fin-table"><thead><tr>
+          <th><button type="button" data-fsort="a">Année</button></th><th>${state.ds === "contrats" ? "Objet" : "Entreprise"}</th><th>${state.ds === "contrats" ? "Bénéficiaire" : "Pays / type"}</th><th>Secteur</th>
+          <th class="num"><button type="button" data-fsort="m">Montant</button></th><th>Conf.</th></tr></thead><tbody>
+          ${rows.slice().sort((x, y) => state.sort === "a" ? y.a - x.a || y.m - x.m : y.m - x.m).map(r => `<tr>
+            <td class="mono">${r.a}</td>
+            <td>${state.ds === "contrats" ? (r.prog && byId[r.prog] ? `<button type="button" class="lnk" data-goto="${r.prog}">${esc(r.lib)}</button>` : esc(r.lib)) : esc(r.ent)}${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}</td>
+            <td>${state.ds === "contrats" ? esc(r.ent) + `<div class="note">${esc(r.fin)}</div>` : esc(PAYS[r.p] || r.p) + " · " + esc(r.ty)}</td>
+            <td><span class="sw" style="background:${col(r.fam)}"></span> ${FAMILLES[r.fam].court}</td>
+            <td class="num mono">${fmtM(r.m)}</td><td><span class="conf">${r.bc}</span></td></tr>`).join("")}
+        </tbody></table>
+      </div>` : `<p class="note" style="margin-top:16px">Aucune ligne ne correspond à ces filtres. Élargissez la période ou cliquez sur « Réinitialiser ».</p>`}`;
+  }
+  function groupSum(rows, key) { const o = {}; rows.forEach(r => { const k = key(r); o[k] = (o[k] || 0) + r.m; }); return o; }
+  function niceMax(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+  function barsV(obj, unit) {
+    const ks = Object.keys(obj).map(Number).sort((a, b) => a - b);
+    const all = []; for (let y = ks[0]; y <= ks[ks.length - 1]; y++) all.push(y);
+    const max = niceMax(Math.max(...Object.values(obj)));
+    const W = 560, H = 230, L = 52, B = 26, T = 14, bw = Math.min(34, (W - L - 10) / all.length - 6);
+    const x = i => L + 6 + i * ((W - L - 10) / all.length), y = v => T + (H - T - B) * (1 - v / max);
+    const fmt = unit === "Md" ? (v => v.toLocaleString("fr-FR") + " Md€") : fmtM;
+    let s = `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="Montants par année">`;
+    [0, .25, .5, .75, 1].forEach(f => { const v = max * f; s += `<line x1="${L}" x2="${W - 4}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${f ? .6 : 1}"></line><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">${unit === "Md" ? v.toLocaleString("fr-FR") : (v >= 1000 ? (v / 1000).toLocaleString("fr-FR") + " Md" : Math.round(v))}</text>`; });
+    const step = all.length > 12 ? 2 : 1;
+    all.forEach((yr, i) => {
+      const v = obj[yr] || 0, cx = x(i);
+      if (v) s += `<g class="bar"><path d="M${cx},${y(0)} V${y(v) + 4} q0,-4 4,-4 h${bw - 8} q4,0 4,4 V${y(0)} Z" fill="var(--accent)"></path><rect x="${cx - 3}" y="${T}" width="${bw + 6}" height="${H - T - B}" fill="transparent"><title>${yr} : ${fmt(v)}</title></rect></g>`;
+      if (i % step === 0) s += `<text x="${cx + bw / 2}" y="${H - 8}" text-anchor="middle" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">${yr}</text>`;
+    });
+    return s + `</svg>`;
+  }
+  function barsH(items, unit) {
+    if (!items.length) return "";
+    const max = Math.max(...items.map(i => i[1]));
+    const fmt = unit === "Md" ? (v => v.toLocaleString("fr-FR") + " Md€") : fmtM;
+    return `<div class="hb-list">${items.map(([lab, v, c, filt]) => `
+      <${filt ? `button type="button" data-fent="${esc(filt)}"` : "div"} class="hb${filt && state.ent === filt ? " on" : ""}" title="${esc(lab)} : ${fmt(v)}">
+        <span class="hb-l">${esc(lab)}</span><span class="hb-t"><i style="width:${Math.max(1.5, v / max * 100)}%;background:${c}"></i></span><span class="hb-v mono">${fmt(v)}</span>
+      </${filt ? "button" : "div"}>`).join("")}</div>`;
+  }
+  function seriesHtml() {
+    const max = niceMax(Math.max(...SERIES.flatMap(s => s.pts.map(p => p[1]))));
+    const cards = SERIES.map(sr => {
+      const obj = Object.fromEntries(sr.pts.map(p => [p[0], p[1]]));
+      const last = sr.pts[sr.pts.length - 1];
+      return `<div class="panel"><h3 class="ch-t">${esc(sr.nom)}</h3>
+        <div class="kpi-inline"><b class="mono">${last[1].toLocaleString("fr-FR")} Md€</b><span class="note">en ${last[0]} <span class="conf">${last[2]}</span></span></div>
+        ${sr.pts.length > 3 ? barsV(obj, "Md") : barsH(sr.pts.map(p => [String(p[0]) + (p[2] === "C" ? " (déduit)" : ""), p[1], "var(--accent)", null]), "Md")}
+        <p class="note">${esc(sr.note)} Source : ${esc(sr.src)}.</p></div>`;
+    }).join("");
+    return `<p class="note" style="margin:14px 0">Quatre séries en milliards d'euros, présentées côte à côte et non superposées : elles mesurent des choses différentes (dépense publique, ventes industrielles, capital privé).</p>
+      <div class="fin-charts">${cards}
+        <div class="panel"><h3 class="ch-t">Contributions nationales à l'ESA en 2024</h3>${barsH(CONTRIB.map(c => [c.p, c.m, "var(--accent)", null]))}
+        <p class="note">Au CM25 (2026-2028), l'Allemagne passe à plus de 5 Md€ (23 % du total) et le Royaume-Uni recule à 1,7 Md€.</p></div>
+      </div>`;
+  }
+
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
     return `<div class="view-head"><h2>Frise 1965-2045</h2>
@@ -444,7 +563,7 @@
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   function show(view, opts) {
@@ -457,6 +576,7 @@
     if (view === "fiches") { renderList(); renderDetail(); }
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
+    if (view === "finances") renderFin();
 
     try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
@@ -478,7 +598,7 @@
   }
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays]");
+    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
     if (!t) return;
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
@@ -492,6 +612,11 @@
       renderList();
     }
     else if (t.dataset.ctype) { state.convType = t.dataset.ctype; renderConv(); }
+    else if (t.dataset.ds) { state.ds = t.dataset.ds; state.ent = "all"; state.fams = []; renderFin(); }
+    else if (t.dataset.ffam) { const f = t.dataset.ffam; state.fams = state.fams.includes(f) ? state.fams.filter(x => x !== f) : state.fams.concat(f); renderFin(); }
+    else if (t.dataset.fent) { state.ent = state.ent === t.dataset.fent ? "all" : t.dataset.fent; renderFin(); }
+    else if (t.dataset.freset) { Object.assign(state, { y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all" }); renderFin(); }
+    else if (t.dataset.fsort) { state.sort = t.dataset.fsort; renderFin(); }
     else if (t.dataset.acat) { state.acat = t.dataset.acat; renderActeurs(); }
     else if (t.dataset.apays) { state.apays = state.apays === t.dataset.apays ? "all" : t.dataset.apays; const sel = document.getElementById("apays"); if (sel) sel.value = state.apays; renderActeurs(); }
   });
@@ -503,6 +628,11 @@
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
     if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
+    if (e.target.id === "fy0") { state.y0 = +e.target.value; if (state.y1 < state.y0) state.y1 = state.y0; renderFin(); }
+    if (e.target.id === "fy1") { state.y1 = +e.target.value; if (state.y0 > state.y1) state.y0 = state.y1; renderFin(); }
+    if (e.target.id === "fent") { state.ent = e.target.value; renderFin(); }
+    if (e.target.id === "finT") { state.finT = e.target.value; renderFin(); }
+    if (e.target.id === "fty") { state.ty = e.target.value; renderFin(); }
   });
 
   header();

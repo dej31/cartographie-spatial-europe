@@ -25,13 +25,13 @@
   --band-ink: #E8EEF5;
   --band-muted: #9AA9BC;
   --accent: #1E56C9;
-  --f-obs: #0E8174;
-  --f-met: #2370B8;
-  --f-def: #B03F2E;
-  --f-tel: #B67D0B;
-  --f-nav: #6A4BC4;
-  --f-exp: #A8327A;
-  --f-lan: #4F7A1F;
+  --f-obs: #008A78;
+  --f-met: #2160D0;
+  --f-def: #B23A28;
+  --f-tel: #B07A00;
+  --f-nav: #6A44D8;
+  --f-exp: #B02A80;
+  --f-lan: #4C7D14;
   --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(18,32,47,.14) 4px 6px);
   --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -42,7 +42,7 @@
   :root:not([data-theme="light"]) {
     --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
     --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
-    --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2; --f-exp: #E07AB8; --f-lan: #93C25A;
+    --f-obs: #16A08D; --f-met: #4A8EEA; --f-def: #CF4337; --f-tel: #B08C16; --f-nav: #9479F2; --f-exp: #E05FA0; --f-lan: #6C9C30;
     --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
     color-scheme: dark;
   }
@@ -50,7 +50,7 @@
 :root[data-theme="dark"] {
   --paper: #0C131C; --surface: #141E2A; --sunk: #1A2633; --ink: #E5EBF2; --muted: #9AA8B9; --faint: #6E7D90;
   --line: #2A3848; --band: #070D14; --band-ink: #E8EEF5; --band-muted: #8F9FB3; --accent: #7AA6FF;
-  --f-obs: #3CC2B0; --f-met: #5CA8EE; --f-def: #EB7A66; --f-tel: #E5AE3F; --f-nav: #A68CF2; --f-exp: #E07AB8; --f-lan: #93C25A;
+  --f-obs: #16A08D; --f-met: #4A8EEA; --f-def: #CF4337; --f-tel: #B08C16; --f-nav: #9479F2; --f-exp: #E05FA0; --f-lan: #6C9C30;
   --plan: repeating-linear-gradient(135deg, transparent 0 4px, rgba(229,235,242,.16) 4px 6px);
   color-scheme: dark;
 }
@@ -272,6 +272,49 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 @media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+
+/* ---------- Vue : finances ---------- */
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: none; padding: 9px 16px; cursor: pointer; font-weight: 500; border-right: 1px solid var(--line); }
+.seg button:last-child { border-right: 0; }
+.seg button .mono { font-size: 11px; opacity: .6; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.fin-filters { display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: end; margin: 18px 0 16px; }
+.fin-filters > div { display: grid; gap: 4px; min-width: 0; }
+.fin-filters select { padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; max-width: 100%; }
+.fin-fams .fchips { gap: 5px; }
+.reset { border: 1px solid var(--line); background: var(--surface); padding: 8px 12px; border-radius: var(--r); cursor: pointer; }
+.reset:hover { border-color: var(--ink); }
+.fin-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 2px; align-content: start; }
+.kpi span { font-size: 12px; color: var(--muted); }
+.kpi b { font-family: var(--font-display); font-stretch: 112%; font-size: 26px; line-height: 1.15; }
+.kpi small { font-size: 12px; color: var(--muted); }
+.kpi-inline { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.kpi-inline b { font-family: var(--font-display); font-stretch: 112%; font-size: 22px; }
+.fin-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.fin-charts .wide { grid-column: 1 / -1; }
+.ch-t { font-family: var(--font-display); font-size: 15px; font-stretch: 105%; margin: 0; }
+svg.chart { width: 100%; height: auto; display: block; }
+svg.chart .bar:hover path { opacity: .8; }
+.hb-list { display: grid; gap: 4px; }
+.hb { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px; border: 0; background: none; text-align: left; padding: 3px 4px; border-radius: 4px; color: inherit; }
+button.hb { cursor: pointer; }
+button.hb:hover, .hb.on { background: var(--sunk); }
+.hb-l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hb-t { height: 12px; background: var(--sunk); border-radius: 2px; overflow: hidden; display: flex; }
+.hb-t i { display: block; height: 100%; border-radius: 0 3px 3px 0; }
+.hb-v { text-align: right; font-size: 12.5px; }
+table.fin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+.fin-table th, .fin-table td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.fin-table th { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+.fin-table th button { border: 0; background: none; padding: 0; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-decoration: underline dotted; }
+.fin-table .num { text-align: right; white-space: nowrap; }
+.fin-table .sw { width: 9px; height: 9px; }
+button.lnk { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; text-align: left; font: inherit; }
+@media (max-width: 900px) { .fin-charts { grid-template-columns: minmax(0, 1fr); } .fin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .hb { grid-template-columns: minmax(0, 110px) minmax(0, 1fr) 70px; } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
   .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -327,6 +370,7 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
     <section id="v-genealogie" data-view hidden></section>
     <section id="v-convergences" data-view hidden></section>
     <section id="v-industrie" data-view hidden></section>
+    <section id="v-finances" data-view hidden></section>
     <section id="v-glossaire" data-view hidden></section>
   </div>
 </main>
@@ -1910,6 +1954,87 @@ const ACTEURS = [
 const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "Italie", ES: "Espagne", GB: "Royaume-Uni", BE: "Belgique",
   LU: "Luxembourg", FI: "Finlande", SE: "Suède", NO: "Norvège", DK: "Danemark", CH: "Suisse", CZ: "Tchéquie", PL: "Pologne", BG: "Bulgarie" };
 
+/* ============================================================
+   Atlas du spatial européen — livraison 3 : données financières
+   Trois jeux séparés, à ne pas additionner entre eux.
+   Montants en millions d'euros (M€). bc : indice de confiance.
+   ============================================================ */
+
+/* ---- 1. Contrats et engagements publics ----
+   a : année · lib : objet · ent : bénéficiaire · grp : groupe (clé GROUPES ou nom) ·
+   fin : type de financeur · fam : famille · m : M€ · prog : id de programme */
+const CONTRATS = [
+  { a: 2014, lib: "MetOp-SG, contrat satellites", ent: "Airbus DS", grp: "airbus", fin: "ESA / EUMETSAT", fam: "met", m: 1300, bc: "B", prog: "metopsg" },
+  { a: 2015, lib: "Sentinel-1C et 1D", ent: "Thales Alenia Space", grp: "tas", fin: "UE / ESA", fam: "obs", m: 400, bc: "B", prog: "s1" },
+  { a: 2020, lib: "LSTM (Sentinel-8)", ent: "Airbus DS", grp: "airbus", fin: "UE / ESA", fam: "obs", m: 389, bc: "A", prog: "lstm" },
+  { a: 2020, lib: "CIMR et CHIME (part du lot de 1,3 Md€ avec LSTM)", ent: "Thales Alenia Space", grp: "tas", fin: "UE / ESA", fam: "obs", m: 911, bc: "C", prog: "chime", note: "Déduit : 1,3 Md€ moins les 389 M€ de LSTM" },
+  { a: 2020, lib: "Hera, construction", ent: "OHB", grp: "ohb", fin: "ESA", fam: "def", m: 129.4, bc: "A", prog: "hera" },
+  { a: 2021, lib: "Galileo 2e génération, deux lots de 6 satellites", ent: "Airbus DS + Thales Alenia Space", grp: "consortium", fin: "UE / ESA", fam: "nav", m: 1470, bc: "B", prog: "galg2", note: "Répartition entre les deux non publiée" },
+  { a: 2021, lib: "Modules de service Orion ESM 4 à 6", ent: "Airbus DS", grp: "airbus", fin: "ESA", fam: "exp", m: 625, bc: "C", prog: "esm", note: "738 M$ convertis au cours de 2021" },
+  { a: 2024, lib: "SATCOMBw étape 3", ent: "Airbus DS", grp: "airbus", fin: "Défense nationale", fam: "def", m: 2100, bc: "A", prog: "satcombw" },
+  { a: 2024, lib: "ExoMars Rosalind Franklin", ent: "Thales Alenia Space", grp: "tas", fin: "ESA", fam: "exp", m: 522, bc: "A", prog: "exomars" },
+  { a: 2024, lib: "Vigil, météo spatiale", ent: "Airbus DS", grp: "airbus", fin: "ESA", fam: "def", m: 340, bc: "A", prog: "vigil" },
+  { a: 2024, lib: "Retour de cargo, phase 1", ent: "The Exploration Company", grp: "autre", fin: "ESA", fam: "exp", m: 25, bc: "A", prog: "cargo" },
+  { a: 2024, lib: "Retour de cargo, phase 1", ent: "Thales Alenia Space", grp: "tas", fin: "ESA", fam: "exp", m: 25, bc: "A", prog: "cargo" },
+  { a: 2025, lib: "Argonaut, élément de descente lunaire", ent: "Thales Alenia Space", grp: "tas", fin: "ESA", fam: "exp", m: 862, bc: "A", prog: "argonaut" },
+  { a: 2025, lib: "SPOCK, constellation radar", ent: "ICEYE (avec Rheinmetall)", grp: "autre", fin: "Défense nationale", fam: "def", m: 1700, bc: "A", prog: "spock" },
+  { a: 2025, lib: "POLSARIS, constellation radar", ent: "ICEYE", grp: "autre", fin: "Défense nationale", fam: "def", m: 200, bc: "A", prog: "polsaris" },
+  { a: 2025, lib: "European Launcher Challenge (réservation)", ent: "Isar Aerospace", grp: "autre", fin: "ESA", fam: "lan", m: 205.65, bc: "A", prog: "isar", note: "Montant réservé, contrats-cadres signés en 2026" },
+  { a: 2025, lib: "European Launcher Challenge (réservation)", ent: "Rocket Factory Augsburg", grp: "autre", fin: "ESA", fam: "lan", m: 190.51, bc: "A", prog: "rfa" },
+  { a: 2025, lib: "European Launcher Challenge (réservation)", ent: "MaiaSpace", grp: "lanc", fin: "ESA", fam: "lan", m: 184.3, bc: "A", prog: "maiaspace" },
+  { a: 2025, lib: "European Launcher Challenge (réservation)", ent: "PLD Space", grp: "autre", fin: "ESA", fam: "lan", m: 169.1, bc: "A", prog: "pld" },
+  { a: 2025, lib: "European Launcher Challenge (réservation)", ent: "Orbex", grp: "autre", fin: "ESA", fam: "lan", m: 34.9, bc: "A", prog: "orbex" },
+  { a: 2026, lib: "Ramses, contrat principal", ent: "OHB Italia", grp: "ohb", fin: "ESA", fam: "def", m: 81.2, bc: "B", prog: "ramses", note: "Année d'attribution à confirmer" }
+];
+
+/* ---- 2. Levées de fonds et financements privés ----
+   ty : equity (capital) ou dette */
+const LEVEES = [
+  { a: 2020, ent: "Isar Aerospace", p: "DE", ty: "Capital", fam: "lan", m: 75, bc: "B", note: "Tour mené par Lakestar" },
+  { a: 2023, ent: "Isar Aerospace", p: "DE", ty: "Capital", fam: "lan", m: 152, bc: "C", note: "Série C de 165 M$, convertie" },
+  { a: 2024, ent: "Isar Aerospace", p: "DE", ty: "Capital", fam: "lan", m: 65, bc: "C", note: "70 M$ dont le fonds d'innovation de l'OTAN, convertis" },
+  { a: 2025, ent: "Isar Aerospace", p: "DE", ty: "Dette", fam: "lan", m: 150, bc: "A" },
+  { a: 2025, ent: "ICEYE", p: "FI", ty: "Capital", fam: "def", m: 200, bc: "A" },
+  { a: 2025, ent: "EnduroSat", p: "BG", ty: "Capital", fam: "obs", m: 90, bc: "A" },
+  { a: 2025, ent: "Eutelsat", p: "FR", ty: "Capital", fam: "tel", m: 1500, bc: "A", note: "Recapitalisation d'un groupe coté, État français en tête" },
+  { a: 2026, ent: "Eutelsat", p: "FR", ty: "Dette", fam: "tel", m: 975, bc: "A", note: "Crédit export pour les satellites OneWeb" },
+  { a: 2026, ent: "ICEYE", p: "FI", ty: "Capital", fam: "def", m: 150, bc: "A", note: "Février" },
+  { a: 2026, ent: "ICEYE", p: "FI", ty: "Dette", fam: "def", m: 300, bc: "A", note: "Crédit renouvelable, 7 banques" },
+  { a: 2026, ent: "ICEYE", p: "FI", ty: "Capital", fam: "def", m: 450, bc: "A", note: "Série F, part primaire ; plus 550 M€ de cessions secondaires" },
+  { a: 2026, ent: "Isar Aerospace", p: "DE", ty: "Capital", fam: "lan", m: 270, bc: "A", note: "Série D, avec KfW Capital" },
+  { a: 2026, ent: "PLD Space", p: "ES", ty: "Capital", fam: "lan", m: 180, bc: "A", note: "Série C" },
+  { a: 2026, ent: "PLD Space", p: "ES", ty: "Dette", fam: "lan", m: 30, bc: "A", note: "Prêt BEI" },
+  { a: 2026, ent: "The Exploration Company", p: "DE", ty: "Capital", fam: "exp", m: 387, bc: "A", note: "Série C (450 M$)" },
+  { a: 2026, ent: "D-Orbit", p: "IT", ty: "Capital", fam: "exp", m: 100, bc: "C", note: "« Plus de 100 M€ » : seuil minimum retenu" },
+  { a: 2026, ent: "OHB", p: "DE", ty: "Capital", fam: "obs", m: 900, bc: "B", note: "Placement d'actions, montant relevé jusqu'à ≈ 900 M€" }
+];
+
+/* ---- 3. Séries annuelles (Md€) ---- */
+const SERIES = [
+  { id: "esa", nom: "Budget annuel de l'ESA", src: "Communications annuelles de l'ESA",
+    pts: [[2015, 4.43, "B"], [2016, 5.25, "B"], [2017, 5.75, "B"], [2018, 5.60, "B"], [2019, 5.72, "B"], [2020, 6.68, "B"], [2021, 6.49, "B"], [2022, 7.15, "B"], [2023, 7.08, "B"], [2024, 7.79, "A"], [2025, 7.68, "B"], [2026, 8.26, "C"]],
+    note: "2026 déduit de la hausse annoncée de 7,6 %. L'UE apporte environ 1,7 Md€ par an au budget de l'ESA." },
+  { id: "inst", nom: "Budgets spatiaux publics européens (tous)", src: "Rapport ESA sur l'économie spatiale 2026",
+    pts: [[2024, 12.05, "C"], [2025, 13.5, "A"]], note: "2024 déduit de la hausse de 12 %. Comprend les budgets civils et militaires nationaux, l'UE et l'ESA." },
+  { id: "ind", nom: "Ventes de l'industrie spatiale européenne", src: "Eurospace",
+    pts: [[2024, 8.86, "C"], [2025, 10.9, "A"]], note: "2024 déduit de la hausse de 23 %." },
+  { id: "vc", nom: "Investissement privé dans le spatial européen", src: "ESA (2024-2025) ; Tech.eu (2026)",
+    pts: [[2024, 1.52, "C"], [2025, 1.4, "A"], [2026, 3.8, "A"]], note: "Méthodes différentes : l'ESA compte 1,4 Md€ en 2025, Tech.eu 1,1 Md€. 2026 : au 20 octobre, près de la moitié en dette." }
+];
+
+/* Contributions nationales à l'ESA (M€) */
+const CONTRIB = [
+  { p: "Allemagne", a: 2024, m: 1170, bc: "A" },
+  { p: "France", a: 2024, m: 1050, bc: "A" },
+  { p: "Italie", a: 2024, m: 881, bc: "A" }
+];
+
+Object.assign(SOURCES, {
+  esa25: ["European Spaceflight – Budget initial 2025 de l'ESA", "https://europeanspaceflight.com/?p=4201"],
+  esa26: ["Space Intel Report – Budget 2026 de l'ESA en hausse de 7,6 %", "https://www.spaceintelreport.com/?p=108992"],
+  ecoesa: ["Universe Space Tech – Rapport ESA sur l'économie spatiale 2026", "https://universemagazine.com/en/esa-report-shows-how-defense-is-changing-the-structure-of-space-budgets/"]
+});
+
 </script>
 <script>
 (function () {
@@ -1922,18 +2047,19 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
   const NOW = 2026.8;
 
   const VIEWS = [
-    ["mecanique", "Mécanique du marché"],
-    ["domaines", "Carte des domaines"],
-    ["fiches", "Fiches programmes"],
+    ["mecanique", "Mécanique"],
+    ["domaines", "Domaines"],
+    ["fiches", "Fiches"],
     ["acteurs", "Acteurs"],
-    ["frise", "Frise 1965-2045"],
+    ["frise", "Frise"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
-    ["industrie", "Lecture industrielle"],
-    ["glossaire", "Glossaire & sources"]
+    ["industrie", "Industrie"],
+    ["finances", "Finances"],
+    ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m" };
 
   function chip(id) {
     const p = byId[id];
@@ -2192,6 +2318,124 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
     document.getElementById("paysBars").innerHTML = rows.map(([p, n]) => `<button type="button" class="hbar pbar${state.apays === p ? " on" : ""}" data-apays="${p}"><span>${esc(PAYS[p] || p)}</span><span class="track"><i style="width:${n / max * 100}%;background:var(--accent)"></i></span><span class="val">${n}</span></button>`).join("");
   }
 
+
+  /* ================= VUE : FINANCES ================= */
+  const fmtM = v => v >= 1000 ? (v / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " Md€" : v.toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M€";
+  const entName = r => r.ent;
+  function finRows() {
+    const src = state.ds === "contrats" ? CONTRATS : LEVEES;
+    return src.filter(r => r.a >= state.y0 && r.a <= state.y1 &&
+      (!state.fams.length || state.fams.includes(r.fam)) &&
+      (state.ent === "all" || entName(r) === state.ent) &&
+      (state.ds !== "contrats" || state.finT === "all" || r.fin === state.finT) &&
+      (state.ds !== "levees" || state.ty === "all" || r.ty === state.ty));
+  }
+  function vFinances() {
+    return `<div class="view-head"><h2>Tableau de bord financier</h2>
+      <p>Trois jeux de données séparés, parce qu'ils ne mesurent pas la même chose : les contrats et engagements publics, les levées de fonds privées, et les grandes séries annuelles. Choisissez un jeu, puis filtrez : tous les graphiques se recalculent. Les montants sont ceux qui ont été publiés ; ce tableau de bord n'est pas un recensement complet du marché.</p></div>
+      <div class="seg" role="group" aria-label="Jeu de données" id="dsSeg">
+        ${[["contrats", "Contrats publics", CONTRATS.length], ["levees", "Levées de fonds", LEVEES.length], ["series", "Séries annuelles", SERIES.length]].map(([k, l, n]) =>
+          `<button type="button" data-ds="${k}" aria-pressed="${state.ds === k}">${l} <span class="mono">${n}</span></button>`).join("")}
+      </div>
+      <div id="finBody"></div>`;
+  }
+  function renderFin() {
+    const body = document.getElementById("finBody");
+    if (!body) return;
+    document.querySelectorAll("#dsSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.ds === state.ds));
+    if (state.ds === "series") { body.innerHTML = seriesHtml(); return; }
+    const src = state.ds === "contrats" ? CONTRATS : LEVEES;
+    const years = [...new Set(src.map(r => r.a))].sort();
+    const ents = [...new Set(src.map(entName))].sort((x, y) => x.localeCompare(y, "fr"));
+    const fams = [...new Set(src.map(r => r.fam))];
+    const rows = finRows();
+    const total = rows.reduce((t, r) => t + r.m, 0);
+    const big = rows.slice().sort((x, y) => y.m - x.m)[0];
+    const byEnt = groupSum(rows, entName), byYear = groupSum(rows, r => r.a), byFam = groupSum(rows, r => r.fam);
+    const topEnt = Object.entries(byEnt).sort((x, y) => y[1] - x[1])[0];
+    const yearOpts = sel => years.map(y => `<option value="${y}"${y === sel ? " selected" : ""}>${y}</option>`).join("");
+    const extra = state.ds === "contrats"
+      ? `<div><label class="note" for="finT">Financeur</label><select id="finT"><option value="all">Tous</option>${[...new Set(CONTRATS.map(r => r.fin))].map(f => `<option${state.finT === f ? " selected" : ""}>${esc(f)}</option>`).join("")}</select></div>`
+      : `<div><label class="note" for="fty">Type</label><select id="fty"><option value="all">Capital et dette</option>${["Capital", "Dette"].map(f => `<option${state.ty === f ? " selected" : ""}>${f}</option>`).join("")}</select></div>`;
+    body.innerHTML = `
+      <div class="fin-filters">
+        <div><label class="note" for="fy0">De</label><select id="fy0">${yearOpts(Math.max(state.y0, years[0]))}</select></div>
+        <div><label class="note" for="fy1">À</label><select id="fy1">${yearOpts(Math.min(state.y1, years[years.length - 1]))}</select></div>
+        <div><label class="note" for="fent">Entreprise</label><select id="fent"><option value="all">Toutes</option>${ents.map(e => `<option${state.ent === e ? " selected" : ""}>${esc(e)}</option>`).join("")}</select></div>
+        ${extra}
+        <div class="fin-fams"><span class="note">Secteurs</span><div class="fchips">${fams.map(f => `<button class="fchip" type="button" data-ffam="${f}" aria-pressed="${state.fams.includes(f)}"><span class="sw" style="background:${col(f)}"></span>${FAMILLES[f].court}</button>`).join("")}</div></div>
+        <div><span class="note">&nbsp;</span><button type="button" class="reset" data-freset="1">Réinitialiser</button></div>
+      </div>
+      <div class="fin-kpis">
+        <div class="kpi"><span>Total affiché</span><b class="mono">${fmtM(total)}</b></div>
+        <div class="kpi"><span>${state.ds === "contrats" ? "Contrats" : "Opérations"}</span><b class="mono">${rows.length}</b></div>
+        <div class="kpi"><span>Plus gros montant</span><b class="mono">${big ? fmtM(big.m) : "—"}</b><small>${big ? esc(entName(big)) + " · " + big.a : ""}</small></div>
+        <div class="kpi"><span>Premier bénéficiaire</span><b class="mono">${topEnt ? Math.round(topEnt[1] / total * 100) + " %" : "—"}</b><small>${topEnt ? esc(topEnt[0]) : ""}</small></div>
+      </div>
+      ${rows.length ? `<div class="fin-charts">
+        <div class="panel"><h3 class="ch-t">Par année</h3>${barsV(byYear)}</div>
+        <div class="panel"><h3 class="ch-t">Par secteur</h3>${barsH(Object.entries(byFam).sort((x, y) => y[1] - x[1]).map(([k, v]) => [FAMILLES[k].nom, v, col(k), null]))}</div>
+        <div class="panel wide"><h3 class="ch-t">Par bénéficiaire <span class="note">(un clic filtre)</span></h3>${barsH(Object.entries(byEnt).sort((x, y) => y[1] - x[1]).slice(0, 12).map(([k, v]) => [k, v, "var(--accent)", k]))}</div>
+      </div>
+      <div class="panel" style="margin-top:16px;overflow-x:auto">
+        <h3 class="ch-t">Détail des lignes</h3>
+        <table class="fin-table"><thead><tr>
+          <th><button type="button" data-fsort="a">Année</button></th><th>${state.ds === "contrats" ? "Objet" : "Entreprise"}</th><th>${state.ds === "contrats" ? "Bénéficiaire" : "Pays / type"}</th><th>Secteur</th>
+          <th class="num"><button type="button" data-fsort="m">Montant</button></th><th>Conf.</th></tr></thead><tbody>
+          ${rows.slice().sort((x, y) => state.sort === "a" ? y.a - x.a || y.m - x.m : y.m - x.m).map(r => `<tr>
+            <td class="mono">${r.a}</td>
+            <td>${state.ds === "contrats" ? (r.prog && byId[r.prog] ? `<button type="button" class="lnk" data-goto="${r.prog}">${esc(r.lib)}</button>` : esc(r.lib)) : esc(r.ent)}${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}</td>
+            <td>${state.ds === "contrats" ? esc(r.ent) + `<div class="note">${esc(r.fin)}</div>` : esc(PAYS[r.p] || r.p) + " · " + esc(r.ty)}</td>
+            <td><span class="sw" style="background:${col(r.fam)}"></span> ${FAMILLES[r.fam].court}</td>
+            <td class="num mono">${fmtM(r.m)}</td><td><span class="conf">${r.bc}</span></td></tr>`).join("")}
+        </tbody></table>
+      </div>` : `<p class="note" style="margin-top:16px">Aucune ligne ne correspond à ces filtres. Élargissez la période ou cliquez sur « Réinitialiser ».</p>`}`;
+  }
+  function groupSum(rows, key) { const o = {}; rows.forEach(r => { const k = key(r); o[k] = (o[k] || 0) + r.m; }); return o; }
+  function niceMax(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+  function barsV(obj, unit) {
+    const ks = Object.keys(obj).map(Number).sort((a, b) => a - b);
+    const all = []; for (let y = ks[0]; y <= ks[ks.length - 1]; y++) all.push(y);
+    const max = niceMax(Math.max(...Object.values(obj)));
+    const W = 560, H = 230, L = 52, B = 26, T = 14, bw = Math.min(34, (W - L - 10) / all.length - 6);
+    const x = i => L + 6 + i * ((W - L - 10) / all.length), y = v => T + (H - T - B) * (1 - v / max);
+    const fmt = unit === "Md" ? (v => v.toLocaleString("fr-FR") + " Md€") : fmtM;
+    let s = `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="Montants par année">`;
+    [0, .25, .5, .75, 1].forEach(f => { const v = max * f; s += `<line x1="${L}" x2="${W - 4}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${f ? .6 : 1}"></line><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">${unit === "Md" ? v.toLocaleString("fr-FR") : (v >= 1000 ? (v / 1000).toLocaleString("fr-FR") + " Md" : Math.round(v))}</text>`; });
+    const step = all.length > 12 ? 2 : 1;
+    all.forEach((yr, i) => {
+      const v = obj[yr] || 0, cx = x(i);
+      if (v) s += `<g class="bar"><path d="M${cx},${y(0)} V${y(v) + 4} q0,-4 4,-4 h${bw - 8} q4,0 4,4 V${y(0)} Z" fill="var(--accent)"></path><rect x="${cx - 3}" y="${T}" width="${bw + 6}" height="${H - T - B}" fill="transparent"><title>${yr} : ${fmt(v)}</title></rect></g>`;
+      if (i % step === 0) s += `<text x="${cx + bw / 2}" y="${H - 8}" text-anchor="middle" font-size="10.5" fill="var(--muted)" font-family="var(--font-mono)">${yr}</text>`;
+    });
+    return s + `</svg>`;
+  }
+  function barsH(items, unit) {
+    if (!items.length) return "";
+    const max = Math.max(...items.map(i => i[1]));
+    const fmt = unit === "Md" ? (v => v.toLocaleString("fr-FR") + " Md€") : fmtM;
+    return `<div class="hb-list">${items.map(([lab, v, c, filt]) => `
+      <${filt ? `button type="button" data-fent="${esc(filt)}"` : "div"} class="hb${filt && state.ent === filt ? " on" : ""}" title="${esc(lab)} : ${fmt(v)}">
+        <span class="hb-l">${esc(lab)}</span><span class="hb-t"><i style="width:${Math.max(1.5, v / max * 100)}%;background:${c}"></i></span><span class="hb-v mono">${fmt(v)}</span>
+      </${filt ? "button" : "div"}>`).join("")}</div>`;
+  }
+  function seriesHtml() {
+    const max = niceMax(Math.max(...SERIES.flatMap(s => s.pts.map(p => p[1]))));
+    const cards = SERIES.map(sr => {
+      const obj = Object.fromEntries(sr.pts.map(p => [p[0], p[1]]));
+      const last = sr.pts[sr.pts.length - 1];
+      return `<div class="panel"><h3 class="ch-t">${esc(sr.nom)}</h3>
+        <div class="kpi-inline"><b class="mono">${last[1].toLocaleString("fr-FR")} Md€</b><span class="note">en ${last[0]} <span class="conf">${last[2]}</span></span></div>
+        ${sr.pts.length > 3 ? barsV(obj, "Md") : barsH(sr.pts.map(p => [String(p[0]) + (p[2] === "C" ? " (déduit)" : ""), p[1], "var(--accent)", null]), "Md")}
+        <p class="note">${esc(sr.note)} Source : ${esc(sr.src)}.</p></div>`;
+    }).join("");
+    return `<p class="note" style="margin:14px 0">Quatre séries en milliards d'euros, présentées côte à côte et non superposées : elles mesurent des choses différentes (dépense publique, ventes industrielles, capital privé).</p>
+      <div class="fin-charts">${cards}
+        <div class="panel"><h3 class="ch-t">Contributions nationales à l'ESA en 2024</h3>${barsH(CONTRIB.map(c => [c.p, c.m, "var(--accent)", null]))}
+        <p class="note">Au CM25 (2026-2028), l'Allemagne passe à plus de 5 Md€ (23 % du total) et le Royaume-Uni recule à 1,7 Md€.</p></div>
+      </div>`;
+  }
+
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
     return `<div class="view-head"><h2>Frise 1965-2045</h2>
@@ -2358,7 +2602,7 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   function show(view, opts) {
@@ -2371,6 +2615,7 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
     if (view === "fiches") { renderList(); renderDetail(); }
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
+    if (view === "finances") renderFin();
 
     try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
@@ -2392,7 +2637,7 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
   }
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays]");
+    const t = e.target.closest("[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
     if (!t) return;
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
@@ -2406,6 +2651,11 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
       renderList();
     }
     else if (t.dataset.ctype) { state.convType = t.dataset.ctype; renderConv(); }
+    else if (t.dataset.ds) { state.ds = t.dataset.ds; state.ent = "all"; state.fams = []; renderFin(); }
+    else if (t.dataset.ffam) { const f = t.dataset.ffam; state.fams = state.fams.includes(f) ? state.fams.filter(x => x !== f) : state.fams.concat(f); renderFin(); }
+    else if (t.dataset.fent) { state.ent = state.ent === t.dataset.fent ? "all" : t.dataset.fent; renderFin(); }
+    else if (t.dataset.freset) { Object.assign(state, { y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all" }); renderFin(); }
+    else if (t.dataset.fsort) { state.sort = t.dataset.fsort; renderFin(); }
     else if (t.dataset.acat) { state.acat = t.dataset.acat; renderActeurs(); }
     else if (t.dataset.apays) { state.apays = state.apays === t.dataset.apays ? "all" : t.dataset.apays; const sel = document.getElementById("apays"); if (sel) sel.value = state.apays; renderActeurs(); }
   });
@@ -2417,6 +2667,11 @@ const PAYS = { EU: "Europe (organisation)", FR: "France", DE: "Allemagne", IT: "
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
     if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
+    if (e.target.id === "fy0") { state.y0 = +e.target.value; if (state.y1 < state.y0) state.y1 = state.y0; renderFin(); }
+    if (e.target.id === "fy1") { state.y1 = +e.target.value; if (state.y0 > state.y1) state.y0 = state.y1; renderFin(); }
+    if (e.target.id === "fent") { state.ent = e.target.value; renderFin(); }
+    if (e.target.id === "finT") { state.finT = e.target.value; renderFin(); }
+    if (e.target.id === "fty") { state.ty = e.target.value; renderFin(); }
   });
 
   header();
