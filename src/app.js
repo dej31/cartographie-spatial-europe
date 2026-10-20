@@ -20,7 +20,7 @@
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false };
 
   function chip(id) {
     const p = byId[id];
@@ -209,6 +209,8 @@
         ${field("Maître d'ouvrage", esc(p.moa))}
         ${field("Maître d'œuvre", esc(p.moe))}
         ${field("Plateforme", esc(p.plat))}
+        ${p.orb ? field("Orbite", esc(p.orb)) : ""}
+        ${parcField(p)}
         ${field("Instruments et partenaires", esc(p.instr), true)}
         ${field("Budget", `${esc(p.bud)} <span class="conf" title="Indice de confiance">${p.bc}</span>`, true)}
       </dl>
@@ -221,6 +223,7 @@
         <div><h4>Découle de</h4><div class="chips">${preds.length ? preds.map(chip).join("") : `<span class="note">Programme sans prédécesseur direct dans l'atlas.</span>`}</div></div>
         <div><h4>A donné naissance à</h4><div class="chips">${succs.concat(usedBy.map(q => q.id)).length ? succs.concat(usedBy.map(q => q.id)).map(chip).join("") : `<span class="note">Pas de successeur identifié à ce jour.</span>`}</div></div>
         ${convs.length ? `<div><h4>Convergences</h4>${convs.map(c => `<p class="conv-line"><b>${esc(c.titre)}</b> · ${esc(c.type)}. ${esc(c.txt)}</p>`).join("")}</div>` : ""}
+        ${suitesHtml(p)}
         ${liensHtml(p)}
       </div>
     </article>`;
@@ -480,6 +483,76 @@
       `<li><span class="lt lt-${t === "Industriel" ? "ind" : t === "Référence" ? "ref" : t === "Instrument" ? "ins" : "ag"}">${esc(t)}</span><a href="${esc(u)}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>`;
   }
 
+
+  /* ================= PARC & SUITES ================= */
+  const fmtN = v => v.toLocaleString("fr-FR");
+  function parcField(p) {
+    const c = typeof PARC !== "undefined" && PARC[p.id];
+    if (!c) return "";
+    const parts = [];
+    if (c.orb) parts.push(`${fmtN(c.orb)} mis en orbite`);
+    if (c.srv) parts.push(`${fmtN(c.srv)} en service`);
+    if (c.prv) parts.push(`${fmtN(c.prv)} prévu${c.prv > 1 ? "s" : ""}`);
+    const m = c.m ? ` · ≈ ${fmtN(c.m)} kg l'unité <span class="conf">${c.bc}</span>` : "";
+    return `<div class="field"><dt>Satellites</dt><dd>${parts.join(" · ") || "—"}${m}${c.lib ? `<div class="note">${esc(c.lib)}</div>` : ""}</dd></div>`;
+  }
+  function suitesHtml(p) {
+    if (typeof SUITES === "undefined") return "";
+    const L = SUITES.filter(x => x.de === p.id);
+    if (!L.length) return "";
+    return `<div><h4>Suites commerciales</h4>${L.map(x => `<p class="conv-line"><b>${esc(x.titre)}</b> · ${esc(x.type)}, ${x.annee}. ${esc(x.txt)} <span class="conf">${x.bc}</span></p>`).join("")}</div>`;
+  }
+  function suitesSection() {
+    if (typeof SUITES === "undefined") return "";
+    return `<h3 class="section-title">Du programme au produit commercial</h3>
+      <p class="note" style="margin-bottom:12px;max-width:75ch">Beaucoup de programmes publics ont donné naissance à un produit vendu ensuite : une société de commercialisation, une plateforme exportée, un service. C'est souvent là que se fait le retour sur investissement pour l'industrie.</p>
+      <div class="conv-grid">${SUITES.slice().sort((x, y) => x.annee - y.annee).map(x => `
+        <div class="conv"><span class="ty">${esc(x.type)} · ${x.annee}</span><h3>${esc(x.titre)}</h3><p>${esc(x.txt)}</p>
+        <div class="link-pair">${chip(x.de)} <span class="conf">${x.bc}</span></div></div>`).join("")}</div>`;
+  }
+  function parcSection() {
+    if (typeof PARC === "undefined") return "";
+    return `<h3 class="section-title" style="margin-top:0">Parc de satellites de l'atlas</h3>
+      <p class="note" style="margin-bottom:12px;max-width:80ch">Recensement des satellites des programmes de l'atlas, pas de tout le spatial européen. Les modules habités, les atterrisseurs et les instruments hébergés (Sentinel-4 et 5, EGNOS) ne sont pas comptés. Les masses sont des valeurs typiques au lancement, souvent des ordres de grandeur.</p>
+      <label class="toggle"><input type="checkbox" id="pcst"${state.pcst ? " checked" : ""}> Inclure les grandes constellations (OneWeb, Galileo, ICEYE, Kinéis, IRIS²)</label>
+      <div id="parcBody"></div>`;
+  }
+  function renderParc() {
+    const el = document.getElementById("parcBody");
+    if (!el) return;
+    const rows = Object.entries(PARC).filter(([id, c]) => byId[id] && (state.pcst || !c.cst));
+    const tot = k => rows.reduce((t, [, c]) => t + (c[k] || 0), 0);
+    const T = { orb: tot("orb"), srv: tot("srv"), prv: tot("prv") };
+    const byClass = CLASSES_MASSE.map(([lab, lo, hi]) => {
+      const r = rows.filter(([, c]) => c.m != null && c.m >= lo && c.m < hi);
+      return [lab, r.reduce((t, [, c]) => t + c.srv, 0), r.reduce((t, [, c]) => t + (c.orb - c.srv), 0), r.reduce((t, [, c]) => t + c.prv, 0)];
+    });
+    const unk = rows.filter(([, c]) => c.m == null).reduce((t, [, c]) => t + c.orb + c.prv, 0);
+    const byFam = Object.keys(FAMILLES).map(f => {
+      const r = rows.filter(([id]) => famOf(byId[id]) === f);
+      return [FAMILLES[f].nom, r.reduce((t, [, c]) => t + c.srv, 0), r.reduce((t, [, c]) => t + (c.orb - c.srv), 0), r.reduce((t, [, c]) => t + c.prv, 0), f];
+    }).filter(x => x[1] + x[2] + x[3] > 0);
+    const stack = list => {
+      const max = Math.max(1, ...list.map(x => x[1] + x[2] + x[3]));
+      return `<div class="hb-list">${list.map(([lab, a, b, c]) => `<div class="hb" title="${esc(lab)} : ${a} en service, ${b} hors service, ${c} prévus">
+        <span class="hb-l">${esc(lab)}</span>
+        <span class="hb-t stk">${a ? `<i style="width:${a / max * 100}%;background:var(--accent)"></i>` : ""}${b ? `<i style="width:${b / max * 100}%;background:var(--faint)"></i>` : ""}${c ? `<i style="width:${c / max * 100}%;background:var(--plan),var(--sunk);outline:1px solid var(--line)"></i>` : ""}</span>
+        <span class="hb-v mono">${fmtN(a + b + c)}</span></div>`).join("")}</div>`;
+    };
+    el.innerHTML = `
+      <div class="fin-kpis">
+        <div class="kpi"><span>Mis en orbite</span><b class="mono">${fmtN(T.orb)}</b></div>
+        <div class="kpi"><span>En service aujourd'hui</span><b class="mono">${fmtN(T.srv)}</b></div>
+        <div class="kpi"><span>Prévus ou en construction</span><b class="mono">${fmtN(T.prv)}</b></div>
+        <div class="kpi"><span>Programmes comptés</span><b class="mono">${rows.length}</b></div>
+      </div>
+      <div class="stack-key" style="margin-bottom:10px"><span><i class="sw" style="background:var(--accent)"></i> En service</span><span><i class="sw" style="background:var(--faint)"></i> Hors service</span><span><i class="sw" style="background:var(--plan),var(--sunk);outline:1px solid var(--line)"></i> Prévus</span></div>
+      <div class="fin-charts">
+        <div class="panel"><h3 class="ch-t">Par classe de masse</h3>${stack(byClass)}${unk ? `<p class="note">${fmtN(unk)} satellites prévus de masse inconnue (IRIS²) ne sont pas classés.</p>` : ""}</div>
+        <div class="panel"><h3 class="ch-t">Par famille</h3>${stack(byFam)}</div>
+      </div>`;
+  }
+
   /* ================= VUE 3 : FRISE ================= */
   function vFrise() {
     return `<div class="view-head"><h2>Frise 1965-2045</h2>
@@ -548,12 +621,13 @@
   function vGenealogie() {
     const mis = LIGNEES.filter(l => l.type === "mission"), pla = LIGNEES.filter(l => l.type === "plateforme");
     return `<div class="view-head"><h2>Qui découle de qui</h2>
-      <p>Deux lectures complémentaires. Les filiations de missions montrent comment un besoin se transmet de génération en génération. Les filiations de plateformes montrent comment un produit industriel est réutilisé d'un programme à l'autre, ce qui fait la compétitivité d'un industriel.</p></div>
+      <p>Trois lectures complémentaires. Les filiations de missions montrent comment un besoin se transmet de génération en génération. Les filiations de plateformes montrent comment un produit industriel est réutilisé d'un programme à l'autre, ce qui fait la compétitivité d'un industriel. Les suites commerciales, en bas de page, montrent ce qui a été vendu ensuite.</p></div>
       <div class="lin-cols">
         <div class="lin-grid"><h3 class="section-title" style="margin-top:0">Filiations de missions</h3>${mis.map(linHtml).join("")}</div>
         <div class="lin-grid"><h3 class="section-title" style="margin-top:0">Filiations de plateformes</h3>${pla.map(linHtml).join("")}
           <p class="note">Les étapes hachurées sont à venir. Un clic sur une étape ouvre la fiche du programme.</p></div>
-      </div>`;
+      </div>
+      ${suitesSection()}`;
   }
 
   /* ================= VUE 5 : CONVERGENCES ================= */
@@ -615,6 +689,8 @@
     ].map(([ty, t, d]) => `<div class="trend"><span class="ty">${esc(ty)}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
     return `<div class="view-head"><h2>Lecture industrielle</h2>
       <p>Trois maîtres d'œuvre se partagent l'essentiel des grands programmes institutionnels. Le compte ci-dessous porte sur les programmes de cet atlas, pas sur un chiffre d'affaires.</p></div>
+      ${parcSection()}
+      <h3 class="section-title">Qui construit</h3>
       <div class="ind-grid">
         <div class="panel">
           <h3 class="section-title" style="margin:0">Maîtrises d'œuvre dans l'atlas</h3>
@@ -660,6 +736,7 @@
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
     if (view === "finances") renderFin();
+    if (view === "industrie") renderParc();
 
     try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
@@ -710,6 +787,7 @@
   document.addEventListener("input", e => {
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
+    if (e.target.id === "pcst") { state.pcst = e.target.checked; renderParc(); }
     if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
     if (e.target.id === "fy0") { state.y0 = +e.target.value; if (state.y1 < state.y0) state.y1 = state.y0; renderFin(); }
     if (e.target.id === "fy1") { state.y1 = +e.target.value; if (state.y0 > state.y1) state.y0 = state.y1; renderFin(); }
