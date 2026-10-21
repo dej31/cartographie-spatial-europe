@@ -4,12 +4,13 @@ Cartographie interactive de l'écosystème spatial européen : observation de la
 
 Contenu (octobre 2026) :
 
-- **155 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
-- **190 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
-- **188 relations sourcées** :
+- **157 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
+- **191 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
+- **197 relations sourcées** :
   - entre organisations : groupe, filiale, coentreprise, consortium, acquisition, fusion ;
   - entre un acteur et un programme : maître d'œuvre, sous-traitant, fournisseur, opérateur, utilisateur, financeur, partenaire scientifique.
-- **191 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 47 convergences et 362 liens sources.
+- **191 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 50 convergences et 373 liens sources.
+- **47 opportunités industrielles** (MLI, harnais, structures), **42 événements commerciaux** datés et **11 établissements** documentés, chacun avec ses sources.
 - **49 fiches illustrées** : 32 photos libres de Wikimedia Commons, des dimensions et des masses sourcées, 30 schémas à l'échelle humaine.
 
 ## Les 13 vues
@@ -22,7 +23,7 @@ Contenu (octobre 2026) :
 | 3 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle, lien partageable |
 | 4 | Acteurs | Annuaire filtrable et fiche acteur complète : groupe, programmes et rôles, relations par nature, partenaires, concurrents potentiels (calcul indicatif), sources |
 | 5 | Réseau | Cartographie interactive : autour d'un acteur ou d'un programme, groupes et filiales, réseau complet ; liens typés capital, contrat, coopération ou participation ; filtres pays, domaine, type d'acteur, période |
-| 6 | Prospection | Programmes en développement ou en projet : acheteur, attributaire, jalons, budget, opportunités documentées ; export CSV |
+| 6 | Prospection | Deux modes. **Opportunités métiers** (par défaut) : MLI, harnais et structures, statut confirmée / probable / à surveiller, score explicable sur 18, filtres (métier, statut, pays, acteur, programme, phase, confiance), tri par échéance ou par score, prochaines actions, journal des événements, export CSV. **Programmes** : programmes en développement ou en projet, acheteur, attributaire, jalons, budget ; export CSV |
 | 7 | Frise | 1965-2045, réalisé et prévu, jalons |
 | 8 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
 | 9 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé, compétitions |
@@ -36,6 +37,7 @@ Contenu (octobre 2026) :
 - `#domaines`, `#fiches`, `#acteurs`, `#reseau`, `#prospection`… ouvrent une vue. Les boutons « précédent » et « suivant » du navigateur fonctionnent.
 - `#fiche/<identifiant>` ouvre une fiche programme, par exemple `#fiche/sterna`.
 - `#acteur/<identifiant>` ouvre la fiche d'un acteur, par exemple `#acteur/ohb-sweden`.
+- `#opp/<identifiant>` ouvre une opportunité, par exemple `#opp/galg2-lot2`.
 - `#reseau/A:<acteur>` ou `#reseau/P:<programme>` centre la cartographie, par exemple `#reseau/A:airbus-ds`.
 - Chaque fiche a un bouton « Copier le lien ».
 
@@ -57,7 +59,22 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
   - contrats reliés aux acteurs (`act`), avec leur stade (`eng`) ;
   - corrections et sources complémentaires.
 - `src/data9.js` (phase 3) : 18 programmes et 13 acteurs orientés prospection, champ `pros` (opportunités documentées), structure industrielle d'IRIS² et contrat ALADDIN, 39 fiches illustrées supplémentaires (`VISUELS`).
-- `src/data10.js` (phase 4) : finalistes M7 non retenus (M-MATISSE, THESEUS), statut « Non retenu »
+- `src/data10.js` (phase 4) : finalistes M7 non retenus (M-MATISSE, THESEUS), statut « Non retenu », OneSat et Space Inspire
+- `src/data11.js` (prospection par métier) : `OPPORTUNITES`, `EVENEMENTS`, `SITES`, référentiels `METIERS`, `PHASES`, `OPP_STATUTS`, `EVT_TYPES`, fonction `scoreOpp`, acteur Axon' Cable
+
+### Modèle des opportunités (`OPPORTUNITES`)
+
+`{ id, titre, prog, acheteur[], client, site, lot, metiers[], phase, ech{d, doc, lib}, qte{n, lib}, fab{mode, txt}, four[], valeur, statut, lotDoc, vol, bc, sources[{u, t, pub, verif}], action, note? }`
+
+- `statut` : `confirmee` (consultation ou besoin d'achat publié), `probable` (engin documenté en développement ou en production, sous-traitance non prouvée), `surveiller` (programme en amont, lot attribué ou fenêtre passée).
+- `ech` : prochaine échéance documentée ; `doc: false` signale une estimation.
+- `four` : fournisseurs actuels cités par une source.
+- `valeur` : toujours vide tant qu'aucune méthode défendable n'existe.
+- `sources` : date de publication (`pub`, `null` si non documentée) et date de vérification (`verif`).
+
+### Score (sur 18, six critères de 0 à 3, poids égaux)
+
+Adéquation technique, maturité industrielle, volume, proximité de la décision, accessibilité du donneur d'ordre, qualité et fraîcheur des sources. Le budget d'un programme n'entre jamais dans le score. L'accessibilité est un jugement commercial : « non évaluée » (0) par défaut, elle se saisit sur chaque fiche et n'est gardée que dans le navigateur de l'utilisateur. Le détail du calcul est affiché sous chaque opportunité et en bas de la vue.
 
 ### Modèle des relations (`RELATIONS`)
 
@@ -81,7 +98,7 @@ Ouvrir `index.html` dans un navigateur. La page est publiée par GitHub Pages de
 ```bash
 python3 build.py          # régénère index.html et dist/atlas.html
 node tools/check.js       # contrôles de cohérence (identifiants, références, doublons, sources)
-node tools/smoke.js       # test navigateur (Playwright) : 10 vues, liens directs, bureau et mobile
+node tools/smoke.js       # test navigateur (Playwright) : 13 vues, liens directs, opportunités, bureau et mobile
 ```
 
 `tools/check.js` s'arrête sur une erreur dès qu'une référence est cassée. Exemples : programme inexistant, acteur inconnu, relation sans source, identifiant en double.
@@ -102,4 +119,4 @@ node tools/smoke.js       # test navigateur (Playwright) : 10 vues, liens direct
 
 Les photos du pilote sont servies depuis Wikimedia Commons. Leurs licences sont libres ; le crédit et la licence figurent sur la page de chaque fichier.
 
-Données compilées en octobre 2026 à partir de sources publiques. Le détail des phases 2 à 4 est dans `audit/rapport_phase2.md`, `audit/rapport_phase3.md` et `audit/rapport_phase4.md`.
+Données compilées en octobre 2026 à partir de sources publiques. Le détail des phases 2 à 4 est dans `audit/rapport_phase2.md`, `audit/rapport_phase3.md` et `audit/rapport_phase4.md` ; la prospection par métier dans `audit/diagnostic_prospection_metiers.md` et `audit/rapport_prospection_metiers.md`.

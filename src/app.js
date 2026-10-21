@@ -23,7 +23,7 @@
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" };
 
   function chip(id) {
     const p = byId[id];
@@ -406,9 +406,14 @@
       .sort((a, b) => state.psort === "nom" ? a.p.n.localeCompare(b.p.n, "fr") : ((a.j ? a.j[0] : 9999) - (b.j ? b.j[0] : 9999)) || a.p.n.localeCompare(b.p.n, "fr"));
   }
   function vProspection() {
+    const modes = `<div class="pmodes" role="group" aria-label="Mode"><button type="button" class="pmode" data-pmode="opp" aria-pressed="${state.pmode === "opp"}">Opportunités métiers</button><button type="button" class="pmode" data-pmode="prog" aria-pressed="${state.pmode === "prog"}">Programmes</button></div>`;
+    return state.pmode === "opp" ? vOpp(modes) : vProsProg(modes);
+  }
+  function renderPros() { if (state.pmode === "opp") renderOpp(); else renderProsProg(); }
+  function vProsProg(modes) {
     const fch = [["all", "Toutes", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
       .map(([k, l, c]) => `<button class="fchip" type="button" data-pfam="${k}" aria-pressed="${state.pfam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
-    return `<div class="view-head"><h2>Prospection</h2>
+    return `<div class="view-head"><h2>Prospection</h2>${modes}
       <p>Les programmes en développement ou en projet, avec l'acheteur, l'attributaire connu, le prochain jalon et les opportunités documentées. Un programme dont le maître d'œuvre n'est pas encore attribué ou publié est signalé : c'est souvent là que les marchés restent à prendre. Tout vient des fiches et de leurs sources ; rien n'est extrapolé.</p></div>
       <div class="filters">
         <div class="fchips" id="pfams">${fch}</div>
@@ -423,7 +428,7 @@
       <div class="pros-tools"><button type="button" class="reset" data-preset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
       <div id="plistp"></div>`;
   }
-  function renderPros() {
+  function renderProsProg() {
     const el = document.getElementById("plistp");
     if (!el) return;
     const rows = prosRows();
@@ -459,6 +464,142 @@
     const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = "atlas-prospection.csv";
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  /* ================= PROSPECTION : OPPORTUNITÉS MÉTIERS ================= */
+  const oppById = Object.fromEntries(OPPORTUNITES.map(o => [o.id, o]));
+  const OST_ORDER = { confirmee: 0, probable: 1, surveiller: 2 };
+  let ACC = {};
+  try { ACC = JSON.parse(localStorage.getItem("atlas-acc") || "{}") || {}; } catch (e) { ACC = {}; }
+  const saveAcc = () => { try { localStorage.setItem("atlas-acc", JSON.stringify(ACC)); } catch (e) {} };
+  const oppActs = o => o.acheteur.concat(o.four || [], o.client ? [o.client] : []).filter(id => actById[id]);
+  const oppPays = o => [...new Set(o.acheteur.map(id => actById[id] && actById[id].p).concat(o.site ? [SITES.find(x => x.id === o.site).p] : []).filter(Boolean))];
+  const oScore = o => scoreOpp(o, ACC[o.id] == null ? null : +ACC[o.id]);
+  const ostTag = st => `<span class="ost ${st} st-${st}">${esc(OPP_STATUTS[st].nom)}</span>`;
+  const mTags = ms => ms.map(m => `<span class="mtag mt-${m}">${esc(METIERS[m].court)}</span>`).join("");
+  const actLink = id => actById[id] ? `<button type="button" class="lnk" data-actor="${id}">${esc(actById[id].n)}</button>` : esc(id);
+  const fmtD = d => { if (!d) return "non documentée"; const [y, m, j] = d.split("-"); const mois = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]; return (j ? +j + " " : "") + (m ? mois[+m - 1] + " " : "") + y; };
+  function oppRows() {
+    const q = state.oq.trim().toLowerCase();
+    return OPPORTUNITES.map(o => ({ o, sc: oScore(o), pays: oppPays(o) }))
+      .filter(({ o, pays }) => (state.om === "all" || o.metiers.includes(state.om)) && (state.ost === "all" || o.statut === state.ost) &&
+        (state.opays === "all" || pays.includes(state.opays)) && (state.oact === "all" || oppActs(o).includes(state.oact)) &&
+        (state.oprog === "all" || o.prog === state.oprog) && (state.ophase === "all" || o.phase === state.ophase) && (state.obc === "all" || o.bc === state.obc) &&
+        (!q || [o.titre, o.lot, o.fab.txt, o.action, o.note || "", byId[o.prog] ? byId[o.prog].n : "", oppActs(o).map(id => actById[id].n).join(" ")].join(" ").toLowerCase().includes(q)))
+      .sort((a, b) => state.osort === "score" ? (b.sc.total - a.sc.total) || (OST_ORDER[a.o.statut] - OST_ORDER[b.o.statut])
+        : ((a.o.ech ? a.o.ech.d : "9999").localeCompare(b.o.ech ? b.o.ech.d : "9999")) || (b.sc.total - a.sc.total));
+  }
+  function vOpp(modes) {
+    const opt = (id, lab, list, cur) => `<div><label class="note" for="${id}">${lab}</label><select id="${id}">${list.map(([v, l]) => `<option value="${esc(v)}"${cur === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`;
+    const paysL = [...new Set(OPPORTUNITES.flatMap(oppPays))].sort((a, b) => (PAYS[a] || a).localeCompare(PAYS[b] || b, "fr"));
+    const actL = [...new Set(OPPORTUNITES.flatMap(oppActs))].sort((a, b) => actById[a].n.localeCompare(actById[b].n, "fr"));
+    const progL = [...new Set(OPPORTUNITES.map(o => o.prog).filter(id => byId[id]))].sort((a, b) => byId[a].n.localeCompare(byId[b].n, "fr"));
+    const mch = [["all", "Tous les métiers"]].concat(Object.entries(METIERS).map(([k, m]) => [k, m.court]))
+      .map(([k, l]) => `<button class="fchip" type="button" data-om="${k}" aria-pressed="${state.om === k}">${k !== "all" ? `<span class="sw" style="background:var(--m-${k})"></span>` : ""}${esc(l)}</button>`).join("");
+    const sch = [["all", "Tous les statuts"]].concat(Object.entries(OPP_STATUTS).map(([k, s]) => [k, s.nom]))
+      .map(([k, l]) => `<button class="fchip" type="button" data-ost="${k}" aria-pressed="${state.ost === k}">${k !== "all" ? `<span class="sw st-${k}" style="background:var(--sc)"></span>` : ""}${esc(l)}</button>`).join("");
+    return `<div class="view-head"><h2>Prospection</h2>${modes}
+      <p>Opportunités industrielles pour trois métiers : MLI et isolation thermique, harnais électriques, structures et panneaux. Chaque fiche dit qui achète, ce qui est documenté et ce qui ne l'est pas. Aucune valeur de marché n'est estimée et le budget d'un programme n'entre pas dans le score. Sources vérifiées le ${fmtD(DATE_VERIF)}.</p></div>
+      <div class="opp-legend">${Object.entries(OPP_STATUTS).map(([k, s]) => `<div class="st-${k}">${ostTag(k)} <span class="note">${esc(s.def)}</span></div>`).join("")}</div>
+      <div class="filters">
+        <div class="fchips" id="oms">${mch}</div>
+        <div class="fchips" id="osts" style="margin-top:8px">${sch}</div>
+        <div class="opp-search">
+          <div><label class="note" for="oq">Rechercher</label><input id="oq" type="search" placeholder="ex. Toulouse, radar, coiffe…" value="${esc(state.oq)}"></div>
+          ${opt("opays", "Pays", [["all", "Tous les pays"]].concat(paysL.map(p => [p, PAYS[p] || p])), state.opays)}
+          ${opt("oact", "Acteur", [["all", "Tous les acteurs"]].concat(actL.map(a => [a, actById[a].n])), state.oact)}
+          ${opt("oprog", "Programme", [["all", "Tous les programmes"]].concat(progL.map(p => [p, byId[p].n])), state.oprog)}
+          ${opt("ophase", "Phase", [["all", "Toutes les phases"]].concat(Object.entries(PHASES).map(([k, p]) => [k, p.nom])), state.ophase)}
+          ${opt("obc", "Confiance", [["all", "Toutes"], ["A", "A : vérifiée"], ["B", "B : publiée"], ["C", "C : estimation"]], state.obc)}
+          ${opt("osort", "Trier par", [["ech", "Échéance"], ["score", "Score"]], state.osort)}
+        </div>
+      </div>
+      <div class="fin-kpis" id="okpis"></div>
+      <div class="pros-tools"><button type="button" class="reset" data-oreset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="ocsv">Télécharger les opportunités (CSV)</button></div>
+      <div id="olist"></div>
+      <section class="opp-sec"><h3>Prochaines actions</h3><p class="note">Pour les opportunités affichées, par score décroissant. Ce sont des pistes de démarche, pas des engagements.</p><ol class="act-list" id="oacts"></ol></section>
+      <section class="opp-sec"><h3>Journal des événements commerciaux</h3>
+        <div class="opp-search" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">${opt("etype", "Type d'événement", [["all", "Tous les types"]].concat(Object.entries(EVT_TYPES)), state.etype)}<div><span class="note">Filtres appliqués</span><span class="note">Métier, pays, acteur et programme ci-dessus</span></div></div>
+        <ul class="evt-list" id="oevts" style="margin-top:10px"></ul></section>
+      <section class="opp-sec"><h3>Comment le score est calculé</h3>
+        <p class="note">Six critères à poids égal, notés de 0 à 3, soit 18 points au plus. Adéquation technique : 3 si une source cite le lot ou son fournisseur, 2 pour un engin complet en fabrication, 1 si le matériel de vol est prévu, 0 sinon. Maturité : 3 en production série, 2 en réalisation (C/D), 1 en phase B, 0 en étude. Volume : 3 au-delà de 20 unités, 2 de 5 à 20, 1 de 2 à 4, 0 pour une seule ou une quantité inconnue. Proximité : 3 si l'échéance documentée tombe dans les 12 mois, 2 dans les 24 mois, 1 au-delà ou si la date est estimée, 0 si elle est inconnue. Accessibilité : jugement commercial à saisir sur chaque fiche, enregistré seulement dans ce navigateur. Qualité : 3 pour une confiance A vérifiée depuis moins de 6 mois, 2 pour A ou B, 1 pour C, 0 si la source la plus récente a plus de 2 ans.</p></section>`;
+  }
+  function oppCard({ o, sc }) {
+    const p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
+    const rows = SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("");
+    const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
+    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}">
+      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4>${ostTag(o.statut)}</div>
+      <div>${mTags(o.metiers)}</div>
+      <div class="score" title="Score explicable sur 18"><b>${sc.total}</b><span class="note">/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span></div>
+      <dl>
+        ${p ? `<dt>Programme</dt><dd><button type="button" class="lnk" data-goto="${p.id}">${esc(p.n)}</button></dd>` : ""}
+        <dt>Acheteur</dt><dd>${o.acheteur.map(actLink).join(", ")}${o.client && !o.acheteur.includes(o.client) ? ` <span class="note">· client final : ${actLink(o.client)}</span>` : ""}</dd>
+        <dt>Site</dt><dd>${site ? `${esc(site.n)} <span class="note">(${esc(site.txt)})</span>` : '<span class="note">Non documenté</span>'}</dd>
+        <dt>Lot</dt><dd>${esc(o.lot)}</dd>
+        <dt>Phase</dt><dd>${esc((PHASES[o.phase] || PHASES.nd).nom)}</dd>
+        <dt>Échéance</dt><dd>${o.ech ? `<span class="mono">${esc(fmtD(o.ech.d))}</span> ${esc(o.ech.lib)}${o.ech.doc ? "" : ' <span class="libre">estimation</span>'}` : '<span class="note">Non documentée</span>'}</dd>
+        <dt>Quantité</dt><dd>${esc(o.qte.lib)}</dd>
+        <dt>Fabrication</dt><dd>${esc({ interne: "Interne", externe: "Externe", mixte: "Mixte", inconnu: "Interne ou externe : non documenté" }[o.fab.mode])}. ${esc(o.fab.txt)}${(o.four || []).length ? ` <span class="note">Fournisseurs cités : ${o.four.map(actLink).join(", ")}</span>` : ""}</dd>
+        <dt>Valeur</dt><dd>${o.valeur ? esc(o.valeur) : '<span class="note">Non estimée (aucune méthode défendable)</span>'}</dd>
+        <dt>Confiance</dt><dd><span class="conf">${o.bc}</span></dd>
+      </dl>
+      ${o.note ? `<p class="opp-note">${esc(o.note)}</p>` : ""}
+      <p class="opp-act"><b>Prochaine action.</b> ${esc(o.action)}</p>
+      <details><summary>Détail du score et accessibilité</summary>
+        <table class="sc-tab">${rows}</table>
+        <p class="note" style="margin-top:6px"><label>Accessibilité du donneur d'ordre (votre appréciation, gardée dans ce navigateur) : <select class="oacc" data-oid="${o.id}"><option value=""${acc === "" ? " selected" : ""}>non évaluée</option>${[0, 1, 2, 3].map(n => `<option value="${n}"${acc === String(n) ? " selected" : ""}>${n}</option>`).join("")}</select></label></p>
+      </details>
+      <details><summary>${o.sources.filter(Boolean).length} source${o.sources.filter(Boolean).length > 1 ? "s" : ""}</summary><ul class="opp-src">${o.sources.filter(Boolean).map(s => `<li><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)} ↗</a> <span class="note">publiée : ${esc(fmtD(s.pub))} · vérifiée : ${esc(fmtD(s.verif))}</span></li>`).join("")}</ul></details>
+      <p class="note"><button type="button" class="lnk" data-share="opp/${o.id}">Copier le lien de cette opportunité</button></p>
+    </article>`;
+  }
+  function renderOpp() {
+    const el = document.getElementById("olist");
+    if (!el) return;
+    const rows = oppRows();
+    document.querySelectorAll("#oms .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.om === state.om));
+    document.querySelectorAll("#osts .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.ost === state.ost));
+    const n = st => rows.filter(r => r.o.statut === st).length;
+    document.getElementById("okpis").innerHTML = [
+      ["Opportunités affichées", rows.length], ["Confirmées", n("confirmee")], ["Probables", n("probable")], ["À surveiller", n("surveiller")],
+      ["Échéance dans les 12 mois", rows.filter(r => r.o.ech && r.o.ech.doc && moisEntre(DATE_VERIF, r.o.ech.d) >= 0 && moisEntre(DATE_VERIF, r.o.ech.d) <= 12).length]
+    ].map(([l, v]) => `<div class="kpi"><span>${l}</span><b class="mono">${v}</b></div>`).join("");
+    el.innerHTML = rows.length ? `<div class="pros-grid">${rows.map(oppCard).join("")}</div>` : `<p class="note">Aucune opportunité ne correspond. Élargissez les filtres.</p>`;
+    document.getElementById("oacts").innerHTML = rows.slice().sort((a, b) => b.sc.total - a.sc.total).map(({ o, sc }) =>
+      `<li class="st-${o.statut}"><span class="mono">${sc.total}/18</span> · <button type="button" class="lnk" data-opp="${o.id}">${esc(o.titre)}</button> ${ostTag(o.statut)}<br>${esc(o.action)}</li>`).join("") || `<li class="note">Aucune action pour ces filtres.</li>`;
+    const ok = new Set(rows.map(r => r.o.id));
+    const fil = state.om !== "all" || state.opays !== "all" || state.oact !== "all" || state.oprog !== "all" || state.ost !== "all" || state.ophase !== "all" || state.obc !== "all" || state.oq.trim();
+    const evs = EVENEMENTS.filter(e => (state.etype === "all" || e.type === state.etype) &&
+      (!fil || (e.opp && ok.has(e.opp)) || (state.oact !== "all" && e.act === state.oact) || (state.oprog !== "all" && e.prog === state.oprog)))
+      .filter(e => state.om === "all" || !e.metiers.length || e.metiers.includes(state.om) || (e.opp && ok.has(e.opp)))
+      .sort((a, b) => b.d.localeCompare(a.d));
+    document.getElementById("oevts").innerHTML = evs.map(e => `<li${e.opp && oppById[e.opp] ? ` class="st-${oppById[e.opp].statut}"` : ""}><span class="ed">${esc(fmtD(e.d))}</span><span class="evt-ty">${esc(EVT_TYPES[e.type])}</span>${esc(e.txt)}
+      <span class="note">${actById[e.act] ? " · " + actLink(e.act) : ""}${e.prog && byId[e.prog] ? ` · <button type="button" class="lnk" data-goto="${e.prog}">${esc(byId[e.prog].n)}</button>` : ""}${e.opp && oppById[e.opp] ? ` · <button type="button" class="lnk" data-opp="${e.opp}">voir l'opportunité</button>` : ""} · ${e.src ? `<a href="${esc(e.src.u)}" target="_blank" rel="noopener">source ↗</a> (vérifiée le ${esc(fmtD(e.src.verif))})` : "source non documentée"} <span class="conf">${e.bc}</span></span></li>`).join("") || `<li class="note">Aucun événement pour ces filtres.</li>`;
+  }
+  function gotoOpp(id, opts) {
+    opts = opts || {};
+    if (!oppById[id]) return;
+    if (!oppRows().some(r => r.o.id === id)) Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "" });
+    state.pmode = "opp"; rendered.prospection = false;
+    show("prospection", { noHash: true, keepScroll: true });
+    if (!opts.noHash) setHash("opp/" + id, opts.replace);
+    const el = document.getElementById("opp-" + id);
+    if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1800); }
+  }
+  function oppCsv() {
+    const rows = oppRows();
+    const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+    const head = ["Opportunité", "Statut", "Métiers", "Programme", "Acheteur", "Client final", "Pays", "Site", "Lot", "Phase", "Échéance", "Échéance (libellé)", "Échéance estimée", "Quantité", "Fabrication", "Fournisseurs cités", "Valeur", "Confiance", "Score /18"].concat(SCORE_CRITERES.map(c => c[1])).concat(["Prochaine action", "Remarque", "Sources (URL | publiée | vérifiée)"]);
+    const lines = [head.map(cell).join(";")].concat(rows.map(({ o, sc, pays }) => [o.titre, OPP_STATUTS[o.statut].nom, o.metiers.map(m => METIERS[m].court).join(", "), byId[o.prog] ? byId[o.prog].n : "",
+      o.acheteur.map(id => actById[id] ? actById[id].n : id).join(", "), o.client && actById[o.client] ? actById[o.client].n : "", pays.map(p => PAYS[p] || p).join(", "),
+      o.site ? SITES.find(x => x.id === o.site).n : "", o.lot, (PHASES[o.phase] || PHASES.nd).nom, o.ech ? o.ech.d : "", o.ech ? o.ech.lib : "", o.ech && !o.ech.doc ? "oui" : "non",
+      o.qte.lib, o.fab.txt, (o.four || []).map(id => actById[id].n).join(", "), o.valeur || "non estimée", o.bc, sc.total].concat(SCORE_CRITERES.map(([k]) => sc[k][0] + " – " + sc[k][1]))
+      .concat([o.action, o.note || "", o.sources.filter(Boolean).map(s => `${s.u} | ${s.pub || "non documentée"} | ${s.verif}`).join(" ; ")]).map(cell).join(";")));
+    const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "atlas-opportunites.csv";
     document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
   }
 
@@ -983,9 +1124,10 @@
     PROGRAMMES.map(p => ({ k: "prog", id: p.id, t: p.n, s: `${FAMILLES[famOf(p)].court} · ${STATUTS[p.st]}`, q: norm([p.n, p.sub, p.id].join(" ")) })),
     ACTEURS.map(a => ({ k: a.c === "lab" ? "lab" : "act", id: a.id, t: a.n, s: `${CAT_ACTEURS[a.c]} · ${PAYS[a.p] || a.p}`, q: norm([a.n, a.v, a.id].join(" ")) })),
     Object.entries(PAYS).map(([c, n]) => ({ k: "pays", id: c, t: n, s: `${ACTEURS.filter(a => a.p === c).length} acteurs`, q: norm(n + " " + c) })),
-    GLOSSAIRE.map(([t, d]) => ({ k: "glo", id: t, t, s: "Glossaire", q: norm(t) }))
+    GLOSSAIRE.map(([t, d]) => ({ k: "glo", id: t, t, s: "Glossaire", q: norm(t) })),
+    OPPORTUNITES.map(o => ({ k: "opp", id: o.id, t: o.titre, s: `${OPP_STATUTS[o.statut].nom} · ${o.metiers.map(m => METIERS[m].court).join(", ")}`, q: norm([o.titre, o.lot, o.id].join(" ")) }))
   );
-  const KLAB = { prog: "Programme", act: "Acteur", lab: "Laboratoire", pays: "Pays", glo: "Sigle" };
+  const KLAB = { prog: "Programme", act: "Acteur", lab: "Laboratoire", pays: "Pays", glo: "Sigle", opp: "Opportunité" };
   let gsel = 0, gres = [];
   function gsearch(v) {
     const q = norm(v.trim());
@@ -1005,6 +1147,7 @@
     if (x.k === "prog") goto(x.id);
     else if (x.k === "act" || x.k === "lab") gotoActor(x.id);
     else if (x.k === "pays") { state.apays = x.id; state.acat = "all"; state.aq = ""; state.asel = null; rendered.acteurs = false; show("acteurs"); }
+    else if (x.k === "opp") gotoOpp(x.id);
     else if (x.k === "glo") { show("glossaire"); const el = [...document.querySelectorAll("#v-glossaire dt, #v-glossaire b, #v-glossaire strong")].find(e => e.textContent.trim() === x.id); if (el) el.scrollIntoView({ block: "center" }); }
   }
   function searchUi() {
@@ -1047,7 +1190,7 @@
         ${entry("fiches", "Un programme", "Fiche détaillée : qui paie, qui construit, quand, combien")}
         ${entry("acteurs", "Un acteur", "Annuaire, fiche, groupe, programmes et relations")}
         ${entry("reseau", "Qui travaille avec qui", "Cartographie des groupes, contrats et coopérations")}
-        ${entry("prospection", "Des marchés à prendre", "Programmes en développement, prochains jalons, export CSV")}
+        ${entry("prospection", "Des marchés à prendre", "Opportunités MLI, harnais et structures ; programmes en développement ; export CSV")}
       </div>
       <div class="ov-grid">
         <div class="panel"><h3 class="ch-t">Programmes par famille</h3>
@@ -1346,6 +1489,11 @@
     const rcat = e.target.closest("[data-rcat]"); if (rcat) { const k = rcat.dataset.rcat; R.cats = R.cats.includes(k) ? R.cats.filter(x => x !== k) : R.cats.concat(k); renderReseau(); return; }
     const rz = e.target.closest("[data-rz]"); if (rz) { zoomBy(+rz.dataset.rz); return; }
     if (e.target.closest("[data-rreset]")) { Object.assign(R, { depth: 1, nats: { capital: true, contrat: true, coop: true, part: true }, pays: "all", fam: "all", cats: [], y0: 1990, y1: 2040, zoom: 1, px: 0, py: 0 }); rendered.reseau = false; show("reseau", { noHash: true, keepScroll: true }); return; }
+    const pm = e.target.closest("[data-pmode]"); if (pm) { state.pmode = pm.dataset.pmode; rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    const om = e.target.closest("[data-om]"); if (om) { state.om = om.dataset.om; renderOpp(); return; }
+    const ost = e.target.closest("[data-ost]"); if (ost) { state.ost = ost.dataset.ost; renderOpp(); return; }
+    const op = e.target.closest("[data-opp]"); if (op) { gotoOpp(op.dataset.opp); return; }
+    if (e.target.closest("[data-oreset]")) { Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-preset]")) { Object.assign(state, { pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-fireset]")) { state.q = ""; state.fam = "all"; rendered.fiches = false; show("fiches", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-areset]")) { Object.assign(state, { acat: "all", apays: "all", aq: "", asel: null }); rendered.acteurs = false; show("acteurs", { noHash: true, keepScroll: true }); return; }
@@ -1396,6 +1544,10 @@
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
     if (e.target.id === "pq") { state.pq = e.target.value; renderPros(); }
+    if (e.target.id === "oq") { state.oq = e.target.value; renderOpp(); }
+    const osel = { opays: "opays", oact: "oact", oprog: "oprog", ophase: "ophase", obc: "obc", osort: "osort", etype: "etype" }[e.target.id];
+    if (osel) { state[osel] = e.target.value; renderOpp(); }
+    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; }
     if (e.target.id === "gq") gsearch(e.target.value);
     if (e.target.id === "rdepth") { R.depth = +e.target.value; renderReseau(); }
     if (e.target.id === "rpays") { R.pays = e.target.value; renderReseau(); }
@@ -1422,6 +1574,7 @@
     lastHash = location.hash;
     if (v === "fiche" && byId[id]) { if (state.view === "fiches" && rendered.fiches && !initial) { state.sel = id; renderList(); renderDetail(); } else goto(id, o); return true; }
     if (v === "acteur" && actById[id]) { gotoActor(id, o); return true; }
+    if (v === "opp" && oppById[id]) { gotoOpp(id, o); return true; }
     if (v === "reseau" && resolveNode(id)) { gotoReseau(id, o); return true; }
     if (RENDER[v]) { if (v !== state.view || initial) show(v, o); return true; }
     return false;
@@ -1429,7 +1582,7 @@
   const onNav = () => { if (location.hash !== lastHash) fromHash(false); };
   window.addEventListener("popstate", onNav);
   window.addEventListener("hashchange", onNav);
-  document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); });
+  document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); if (e.target.id === "ocsv") oppCsv(); });
 
   header();
   searchUi();

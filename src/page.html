@@ -290,6 +290,55 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
 .libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
 @media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
+/* Prospection par métier */
+:root { --st-conf: #15803D; --st-prob: #B45309; --st-surv: #64748B; --m-mli: #C2410C; --m-harnais: #2563EB; --m-structure: #047857; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --st-conf: #4ADE80; --st-prob: #FBBF24; --st-surv: #94A3B8; --m-mli: #FB923C; --m-harnais: #60A5FA; --m-structure: #34D399; } }
+:root[data-theme="dark"] { --st-conf: #4ADE80; --st-prob: #FBBF24; --st-surv: #94A3B8; --m-mli: #FB923C; --m-harnais: #60A5FA; --m-structure: #34D399; }
+.pmodes { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 12px; }
+.pmode { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.pmode[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.opp-search { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.opp-search > div { display: grid; gap: 2px; min-width: 0; }
+.opp-search select, .opp-search input { width: 100%; min-width: 0; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+#okpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) { #okpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.opp-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 14px; font-size: 13px; }
+.opp-legend div { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--sc); border-radius: var(--r); padding: 8px 10px; }
+.ost { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .03em; padding: 1px 7px; border-radius: 3px; white-space: nowrap; color: var(--sc); border: 1px solid var(--sc); }
+.ost.confirmee { background: var(--sc); color: var(--surface); }
+.ost.surveiller { border-style: dashed; }
+.st-confirmee { --sc: var(--st-conf); } .st-probable { --sc: var(--st-prob); } .st-surveiller { --sc: var(--st-surv); }
+.mtag { display: inline-block; font-size: 11.5px; padding: 0 7px; border-radius: 999px; border: 1px solid var(--mc); color: var(--mc); margin: 0 4px 2px 0; }
+.mt-mli { --mc: var(--m-mli); } .mt-harnais { --mc: var(--m-harnais); } .mt-structure { --mc: var(--m-structure); }
+.opp { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--sc); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.opp.surveiller { border-left-style: dashed; }
+.opp.flash { box-shadow: 0 0 0 3px var(--accent); }
+.opp-h { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.opp-t { font-family: var(--font-display); font-size: 16px; font-weight: 700; line-height: 1.3; margin: 0; }
+.opp dl { margin: 0; display: grid; grid-template-columns: minmax(96px, auto) minmax(0, 1fr); gap: 4px 10px; font-size: 13.5px; }
+.opp dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+.opp dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.opp-act { background: var(--sunk); padding: 6px 9px; border-radius: 4px; font-size: 13.5px; }
+.opp-note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 8px; }
+.score { display: flex; align-items: center; gap: 8px; }
+.score b { font-family: var(--font-mono); font-size: 15px; }
+.score .track { flex: 1; height: 6px; background: var(--sunk); border-radius: 3px; overflow: hidden; }
+.score .track i { display: block; height: 100%; background: var(--sc); }
+.opp details summary { cursor: pointer; font-size: 13px; color: var(--accent); }
+.sc-tab { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 6px; }
+.sc-tab td { border-top: 1px solid var(--line); padding: 3px 4px; vertical-align: top; }
+.sc-tab td.n { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+.oacc { font: inherit; font-size: 12.5px; padding: 1px 4px; }
+.opp-src { margin: 0; padding-left: 16px; font-size: 12.5px; display: grid; gap: 2px; }
+.opp-src .note { font-size: 11.5px; }
+.opp-sec { margin-top: 22px; }
+.opp-sec h3 { font-size: 18px; margin-bottom: 8px; }
+.act-list, .evt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.act-list li, .evt-list li { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--sc, var(--line)); border-radius: var(--r); padding: 8px 12px; font-size: 13.5px; }
+.evt-list .ed { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-right: 6px; }
+.evt-ty { font-family: var(--font-mono); font-size: 11px; background: var(--sunk); padding: 0 6px; border-radius: 3px; margin-right: 6px; }
+@media (max-width: 900px) { .opp-search { grid-template-columns: repeat(2, minmax(0, 1fr)); } .opp-legend { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .opp-search { grid-template-columns: minmax(0, 1fr); } .opp dl { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -525,6 +574,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 /*__DATA8__*/
 /*__DATA9__*/
 /*__DATA10__*/
+/*__DATA11__*/
 </script>
 <script>
 /*__APP__*/

@@ -290,6 +290,55 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
 .libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
 @media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
+/* Prospection par métier */
+:root { --st-conf: #15803D; --st-prob: #B45309; --st-surv: #64748B; --m-mli: #C2410C; --m-harnais: #2563EB; --m-structure: #047857; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --st-conf: #4ADE80; --st-prob: #FBBF24; --st-surv: #94A3B8; --m-mli: #FB923C; --m-harnais: #60A5FA; --m-structure: #34D399; } }
+:root[data-theme="dark"] { --st-conf: #4ADE80; --st-prob: #FBBF24; --st-surv: #94A3B8; --m-mli: #FB923C; --m-harnais: #60A5FA; --m-structure: #34D399; }
+.pmodes { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 12px; }
+.pmode { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.pmode[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.opp-search { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.opp-search > div { display: grid; gap: 2px; min-width: 0; }
+.opp-search select, .opp-search input { width: 100%; min-width: 0; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+#okpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) { #okpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.opp-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 14px; font-size: 13px; }
+.opp-legend div { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--sc); border-radius: var(--r); padding: 8px 10px; }
+.ost { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .03em; padding: 1px 7px; border-radius: 3px; white-space: nowrap; color: var(--sc); border: 1px solid var(--sc); }
+.ost.confirmee { background: var(--sc); color: var(--surface); }
+.ost.surveiller { border-style: dashed; }
+.st-confirmee { --sc: var(--st-conf); } .st-probable { --sc: var(--st-prob); } .st-surveiller { --sc: var(--st-surv); }
+.mtag { display: inline-block; font-size: 11.5px; padding: 0 7px; border-radius: 999px; border: 1px solid var(--mc); color: var(--mc); margin: 0 4px 2px 0; }
+.mt-mli { --mc: var(--m-mli); } .mt-harnais { --mc: var(--m-harnais); } .mt-structure { --mc: var(--m-structure); }
+.opp { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--sc); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.opp.surveiller { border-left-style: dashed; }
+.opp.flash { box-shadow: 0 0 0 3px var(--accent); }
+.opp-h { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.opp-t { font-family: var(--font-display); font-size: 16px; font-weight: 700; line-height: 1.3; margin: 0; }
+.opp dl { margin: 0; display: grid; grid-template-columns: minmax(96px, auto) minmax(0, 1fr); gap: 4px 10px; font-size: 13.5px; }
+.opp dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+.opp dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.opp-act { background: var(--sunk); padding: 6px 9px; border-radius: 4px; font-size: 13.5px; }
+.opp-note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 8px; }
+.score { display: flex; align-items: center; gap: 8px; }
+.score b { font-family: var(--font-mono); font-size: 15px; }
+.score .track { flex: 1; height: 6px; background: var(--sunk); border-radius: 3px; overflow: hidden; }
+.score .track i { display: block; height: 100%; background: var(--sc); }
+.opp details summary { cursor: pointer; font-size: 13px; color: var(--accent); }
+.sc-tab { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 6px; }
+.sc-tab td { border-top: 1px solid var(--line); padding: 3px 4px; vertical-align: top; }
+.sc-tab td.n { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+.oacc { font: inherit; font-size: 12.5px; padding: 1px 4px; }
+.opp-src { margin: 0; padding-left: 16px; font-size: 12.5px; display: grid; gap: 2px; }
+.opp-src .note { font-size: 11.5px; }
+.opp-sec { margin-top: 22px; }
+.opp-sec h3 { font-size: 18px; margin-bottom: 8px; }
+.act-list, .evt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.act-list li, .evt-list li { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--sc, var(--line)); border-radius: var(--r); padding: 8px 12px; font-size: 13.5px; }
+.evt-list .ed { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-right: 6px; }
+.evt-ty { font-family: var(--font-mono); font-size: 11px; background: var(--sunk); padding: 0 6px; border-radius: 3px; margin-right: 6px; }
+@media (max-width: 900px) { .opp-search { grid-template-columns: repeat(2, minmax(0, 1fr)); } .opp-legend { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { .opp-search { grid-template-columns: minmax(0, 1fr); } .opp dl { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -5621,6 +5670,563 @@ CONVERGENCES.push(
   { type: "Compétition", a: "onesat", b: "spaceinspire", titre: "OneSat contre Space Inspire", txt: "Les deux maîtres d'œuvre européens se disputent le marché des satellites géostationnaires reconfigurables ; selon le CNES, ils ont remporté tous les contrats ouverts jusqu'ici (13 satellites : 7 pour Airbus, 6 pour Thales Alenia Space)." }
 );
 
+/* ============================================================
+   Atlas du spatial européen — prospection par métier (21 octobre 2026)
+   Opportunités industrielles MLI, harnais et structures,
+   événements commerciaux datés, établissements documentés.
+
+   Règles appliquées sans exception :
+   - aucune opportunité « confirmée » sans document d'achat publié ;
+   - « probable » : engin documenté en développement ou en production,
+     qui contient nécessairement ces sous-ensembles ; le recours à la
+     sous-traitance n'est pas prouvé ;
+   - « à surveiller » : programme en amont, lot déjà attribué ou
+     fenêtre d'achat probablement passée ;
+   - aucune valeur de marché estimée : le champ valeur reste vide ;
+   - le budget d'un programme n'entre jamais dans le score.
+   ============================================================ */
+
+const DATE_VERIF = "2026-10-21";
+const S = (u, t, pub, verif) => ({ u, t, pub: pub || null, verif: verif || DATE_VERIF });
+
+const METIERS = {
+  mli: { nom: "MLI et isolation thermique", court: "MLI", c: "#c2410c" },
+  harnais: { nom: "Harnais électriques", court: "Harnais", c: "#2563eb" },
+  structure: { nom: "Structures mécaniques et panneaux", court: "Structures", c: "#059669" }
+};
+const PHASES = {
+  etude: { nom: "Étude (phase 0/A)", m: 0 },
+  devb: { nom: "Définition et début de réalisation (phase B)", m: 1 },
+  cd: { nom: "Réalisation (phase C/D)", m: 2 },
+  serie: { nom: "Production série", m: 3 },
+  nd: { nom: "Non documentée", m: 0 }
+};
+const OPP_STATUTS = {
+  confirmee: { nom: "Confirmée", def: "Consultation, appel d'offres ou besoin d'achat publié." },
+  probable: { nom: "Probable", def: "Engin documenté en développement ou en production, qui contient ces sous-ensembles. La sous-traitance n'est pas prouvée." },
+  surveiller: { nom: "À surveiller", def: "Programme en amont, lot déjà attribué ou fenêtre d'achat probablement passée." }
+};
+const EVT_TYPES = {
+  contrat: "Attribution d'un contrat",
+  tranche: "Nouvelle tranche ou génération",
+  production: "Passage en production",
+  cadence: "Augmentation de cadence",
+  site: "Ouverture ou extension de site",
+  constellation: "Lancement de constellation",
+  charge: "Nouvelle charge utile ou plateforme",
+  fournisseur: "Fournisseur documenté",
+  consultation: "Consultation ou appel d'offres"
+};
+
+/* ---------- Sources partagées ---------- */
+const SRC = {
+  ow229: S("https://www.airbus.com/en/newsroom/press-releases/2026-09-eutelsat-orders-229-additional-oneweb-satellites-from-airbus", "Airbus – Eutelsat commande 229 satellites OneWeb supplémentaires", "2026-09-10"),
+  ow340: S("https://www.satellitetoday.com/connectivity/2026/01/12/airbus-defence-and-space-wins-eutelsat-order-for-340-more-oneweb-satellites/", "Via Satellite – Airbus remporte la commande de 340 satellites OneWeb", "2026-01-12"),
+  ow340b: S("https://europeanspaceflight.com/eutelsat-taps-airbus-to-build-340-oneweb-satellites/", "European Spaceflight – Eutelsat confie 340 satellites OneWeb à Airbus", "2026-01-12"),
+  rl: S("https://rocketlabcorp.com/updates/airbus-awards-rocket-lab-contract-to-power-next-gen-oneweb-constellation-for-eutelsat/", "Rocket Lab – Panneaux solaires de 100 satellites OneWeb pour Airbus", "2025-03-12"),
+  bgow: S("https://www.beyondgravity.com/en/node/86", "Beyond Gravity – Distributeur, structure et MLI des satellites OneWeb", "2022-10-24"),
+  axon: S("https://aeromorning.com/axon-cable-connecte-la-constellation-oneweb/", "AeroMorning – Axon' Cable connecte la constellation OneWeb", "2019-03-04"),
+  hemh: S("https://www.hemeria-group.com/produit/harnais/", "Hemeria – Harnais (capacités et programmes)", null),
+  hemmli: S("https://satsearch.co/products/hemeria-mli-thermal-protection", "satsearch – Hemeria, protection thermique MLI", null),
+  bgmli: S("https://www.beyondgravity.com/de/node/158", "Beyond Gravity – Isolation multicouche (MLI)", null),
+  bgjuice: S("https://www.unternehmerweb.at/?p=24265", "Unternehmerweb – Beyond Gravity Berndorf isole la sonde JUICE", "2023-04-11"),
+  hps: S("https://satsearch.co/products/hps-gmbh-space-telescope-mli", "satsearch – HPS, MLI sur mesure (Allemagne, Portugal)", "2018-07-13"),
+  iris2ab: S("https://www.airbus.com/en/newsroom/press-releases/2026-09-airbus-starts-the-development-of-iris2-satellites-on-behalf-of-eutelsat", "Airbus – Début du développement des satellites IRIS² pour Eutelsat", "2026-09-10"),
+  iris2es: S("https://europeanspaceflight.com/?p=7006", "European Spaceflight – Aerospacelab et Thales Alenia Space : 5,4 Md€ de contrats IRIS²", "2026-09-10"),
+  iris2tas: S("https://satnews.com/2026/09/10/thales-alenia-space-secures-e500-million-initial-tranche-to-manufacture-digital-payloads-for-330-iris%C2%B2-leo-satellites/", "SatNews – Thales Alenia Space : 500 M€ pour 330 charges utiles IRIS²", "2026-09-10"),
+  iris2bt: S("https://www.brusselstimes.com/2312132/charleroi-based-firm-wins-e2-4-billion-contract-to-build-eu-satellite-platforms", "Brussels Times – Aerospacelab remporte 2,4 Md€ pour 264 plateformes IRIS²", "2026-09-10"),
+  a24: S("https://www.aviation24.be/space/aerospacelab/belgiums-aerospacelab-wins-landmark-iris%c2%b2-contract-to-help-build-europes-sovereign-satellite-constellation/amp/", "Aviation24 – Aerospacelab, un des quatre industriels d'IRIS²", "2026-08-07"),
+  aslmf: S("https://belganewsagency.eu/aerospacelab-to-build-megafactory-in-charleroi-producing-500-satellites-per-year", "Belga – « Megafactory » d'Aerospacelab à Charleroi, 500 satellites par an", null),
+  tasrome: S("https://www.airforce-technology.com/news/thales-alenia-space-manufacturing-rome/", "Airforce Technology – Space Smart Factory de Thales Alenia Space à Rome", "2025-10-08"),
+  galb2: S("https://auftragone.com/notices/procurement-of-additional-galileo-navigation-satellites", "Avis de planification ESA (relayé par auftragone) – Satellites Galileo supplémentaires, lot 2 G2G", "2026-03-01"),
+  galg2: S("https://www.airbus.com/en/newsroom/press-releases/2023-12-airbus-starts-galileo-second-generation-satellite-production", "Airbus – Début de la production des satellites Galileo 2e génération", "2023-12"),
+  bgcoiffes: S("https://ariane.group/en/news/arianegroup-and-beyond-gravity-sign-major-contract-securing-the-long-term-supply-of-ariane-6-payload-fairings", "ArianeGroup – Contrat de long terme avec Beyond Gravity pour les coiffes d'Ariane 6", "2026-07-08"),
+  mta6: S("https://mt-aerospace.de/news-details-en/mt-aerospace-ag-receives-order-for-series-production-of-structural-components-and-tanks-for-the-industrial-ramp-up-of-ariane-6.html", "MT Aerospace – Production série de structures et réservoirs d'Ariane 6", "2025-09-26"),
+  a6cad: S("https://www.altagrove.com/grovewire-news/arianespace-7-8-ariane-6-missions-in-2026-including-2-3-amazon-leo-launches-starting-in-february", "Arianespace : 7 à 8 missions Ariane 6 en 2026, 9 à 10 par an visées dès 2027", null),
+  sterna: S("https://www.ohb-sweden.se/news-and-media/ohb-sweden-signs-eps-sterna-satellite-constellation-contract", "OHB Sweden – Contrat de la constellation EPS-Sterna", "2026-03-18"),
+  iceye: S("https://www.defensenews.com/global/europe/2026/06/25/iceye-to-double-radar-satellite-capacity-by-late-2027-as-demand-surges/", "Defense News – ICEYE veut doubler sa production d'ici fin 2027", "2026-06-25"),
+  spock: S("https://www.rheinmetall.com/en/media/news-watch/news/2025/12/2025-12-18-rheinmetall-and-iceye-win-billion-euro-contract-for-space-reconnaissance", "Rheinmetall – Contrat SPOCK avec ICEYE", "2025-12-18"),
+  uspace: S("https://europeanspaceflight.com/?p=5505", "European Spaceflight – U-Space lève 24 M€ et vise un satellite par semaine en 2027", "2025-11-12"),
+  ocos300: S("https://thenextweb.com/news/open-cosmos-300m-satellite-manufacturing-europe", "The Next Web – Open Cosmos lève 300 M€ pour ses quatre usines européennes", "2026-09-14"),
+  ocosdcd: S("https://datacenterdynamics.com/en/news/open-cosmos-to-launch-192-leo-satellites-for-connectedcosmos-constellation-after-300m-series-c", "DatacenterDynamics – Constellation ConnectedCosmos d'Open Cosmos", "2026-10-06"),
+  satcomjv: S("https://esut.de/2026/06/meldungen/71796/ohb-und-rheinmetall-gruenden-joint-venture-fuer-satcombw-4/", "ESUT – OHB et Rheinmetall créent une coentreprise pour SATCOMBw 4", "2026-06"),
+  satcomb: S("https://www.boerse-express.com/news/articles/ohb-aktie-grossauftrag-winkt-873909", "Börse Express – SATCOMBw 4 : au moins 100 satellites, consortium envisagé", "2026-03-08"),
+  de35: S("https://satnews.com/2026/02/28/germany-commits-e35-billion-to-leo-resilience-and-non-kinetic-deterrence/", "SatNews – L'Allemagne engage 35 Md€ dans ses capacités spatiales", "2026-02-28"),
+  irisdga: S("https://www.opex360.com/2026/09/30/le-ministere-des-armees-serait-sur-le-point-de-commander-les-deux-nouveaux-satellites-dobservation-du-programme-iris/", "Opex360 – Commande imminente des deux satellites IRIS", "2026-09-30")
+};
+/* Source extraite des liens d'une fiche (avec date de publication si elle figure dans l'adresse ou la source) */
+const SL = (prog, i, pub) => { const l = (LIENS[prog] || [])[i]; return l ? S(l[2], l[1], pub) : null; };
+
+/* ---------- Établissements documentés ---------- */
+const SITES = [
+  { id: "airbus-tls", act: "airbus-ds", n: "Airbus Defence and Space – Toulouse", v: "Toulouse", p: "FR", txt: "Usine de production en série rapatriée en Europe : nouveaux satellites OneWeb, puis première couche d'IRIS² (au moins 66 satellites).", src: SRC.iris2ab },
+  { id: "airbus-getafe", act: "airbus-ds", n: "Airbus Defence and Space – Getafe", v: "Getafe", p: "ES", txt: "Maître d'œuvre de PAZ 2, à la tête d'un consortium de plus de 15 entreprises espagnoles.", src: S("https://www.airbus.com/en/newsroom/press-releases/2025-07-airbus-awarded-hisdesat-contract-to-build-paz-2-satellites-reinforcing-spains-sovereign-space", "Airbus – Contrat PAZ 2", "2025-07") },
+  { id: "tas-rome", act: "tas", n: "Thales Alenia Space – Space Smart Factory", v: "Rome", p: "IT", txt: "Usine inaugurée en octobre 2025 : plus de 100 satellites par an (environ deux par semaine). Programmes visés : SICRAL 3, Galileo, Copernicus (ROSE-L, CIMR).", src: SRC.tasrome },
+  { id: "asl-charleroi", act: "aerospacelab", n: "Aerospacelab – megafactory", v: "Charleroi", p: "BE", txt: "16 000 m², jusqu'à 500 satellites par an ; mise en service annoncée pour 2026. Siège à Mont-Saint-Guibert.", src: SRC.aslmf },
+  { id: "uspace-tls", act: "u-space", n: "U-Space – U-Zine", v: "Toulouse", p: "FR", txt: "Moyens de production de la société ; objectif d'un satellite par semaine en 2027, un par jour à terme.", src: SRC.uspace },
+  { id: "hemeria-tls", act: "hemeria", n: "Hemeria – Toulouse", v: "Toulouse", p: "FR", txt: "Plus de 4 000 m² de salles propres ISO 8 (dont une zone ISO 5) ; environ 20 000 connecteurs câblés et 550 km de fil coupés par an ; intégration de satellites jusqu'à la classe 500 kg.", src: SRC.hemh },
+  { id: "ohbs-kista", act: "ohb-sweden", n: "OHB Sweden – Kista", v: "Kista", p: "SE", txt: "Maître d'œuvre des 20 satellites d'EPS-Sterna.", src: SRC.sterna },
+  { id: "mt-augsburg", act: "mt-aerospace", n: "MT Aerospace – Augsbourg", v: "Augsbourg", p: "DE", txt: "Structures et réservoirs d'Ariane 6 en série (modèles de vol 16 à 42).", src: SRC.mta6 },
+  { id: "bg-berndorf", act: "beyond-gravity", n: "Beyond Gravity Austria – Berndorf", v: "Berndorf", p: "AT", txt: "Isolation thermique multicouche : JUICE (ESA), satellites OneWeb ; environ 800 satellites équipés selon l'entreprise.", src: SRC.bgjuice },
+  { id: "bg-linkoping", act: "beyond-gravity", n: "Beyond Gravity Sweden – Linköping", v: "Linköping", p: "SE", txt: "Distributeurs de satellites (OneWeb).", src: SRC.bgow },
+  { id: "axon-montmirail", act: "axon-cable", n: "Axon' Cable – Montmirail", v: "Montmirail", p: "FR", txt: "Gestion de projet, conception et fabrication des liaisons des satellites OneWeb (génération 1) ; harnais produits sur plusieurs sites du groupe.", src: SRC.axon }
+];
+
+/* ---------- Acteur ajouté, données d'acteurs complétées ---------- */
+ACTEURS.push(
+  { id: "axon-cable", n: "Axon' Cable", c: "equip", p: "FR", v: "Montmirail", t: "Entreprise industrielle", y: null,
+    m: "Câbles, connecteurs et harnais. Choisi en 2019 par la coentreprise Airbus OneWeb Satellites pour câbler les satellites OneWeb de première génération.", k: "", kb: "", pr: ["eutelsat"], u: "https://aeromorning.com/axon-cable-connecte-la-constellation-oneweb/" }
+);
+(function () {
+  const h = ACTEURS.find(a => a.id === "hemeria");
+  if (h) { h.m += " Harnais (label PME du CNES depuis 2021 ; environ 20 000 connecteurs par an), structures et MLI ; harnais cités pour Iridium NEXT, OneWeb, la case à équipements d'Ariane 5 et le rover MMX."; if (!h.u) h.u = "https://www.hemeria-group.com/produit/harnais/"; }
+  const b = ACTEURS.find(a => a.id === "beyond-gravity");
+  if (b && !b.pr.includes("eutelsat")) b.pr.push("eutelsat");
+})();
+RELATIONS.push(
+  { de: "axon-cable", vers: "eutelsat", type: "fournisseur", a: 2019, txt: "Câblage des satellites OneWeb de première génération, pour la coentreprise Airbus OneWeb Satellites.", bc: "B", src: SRC.axon.u },
+  { de: "beyond-gravity", vers: "eutelsat", type: "fournisseur", txt: "Satellites OneWeb de première génération : structure (Titusville), MLI (Autriche), distributeurs (Linköping).", bc: "B", src: SRC.bgow.u },
+  { de: "hemeria", vers: "eutelsat", type: "fournisseur", txt: "Harnais OneWeb cités par Hemeria parmi ses programmes.", bc: "B", src: SRC.hemh.u }
+);
+
+/* ---------- Opportunités ----------
+   acheteur : acteurs qui achètent les sous-ensembles (souvent le maître d'œuvre)
+   four : fournisseurs actuels documentés
+   ech : prochaine échéance documentée liée à l'achat ou à la production (doc:false = estimation signalée)
+   lotDoc : une source cite le lot métier ou son fournisseur sur ce programme
+   vol : le programme produit du matériel de vol à ce stade */
+const OPPORTUNITES = [
+  { id: "ow-serie", titre: "OneWeb nouvelle génération : 669 satellites en série à Toulouse", prog: "eutelsat", acheteur: ["airbus-ds"], client: "eutelsat-group", site: "airbus-tls",
+    lot: "Sous-ensembles de plateforme : structure, harnais, isolation thermique", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: { d: "2026-12", doc: true, lib: "Premières livraisons fin 2026 ; autorisation de démarrer (ATP) pour 229 satellites supplémentaires signée le 10 sept. 2026" },
+    qte: { n: 669, lib: "669 satellites commandés à Airbus (100 en 2024, 340 en janv. 2026, 229 en sept. 2026)" },
+    fab: { mode: "mixte", txt: "Première génération : structure et MLI Beyond Gravity, harnais Axon' Cable ; Hemeria cite aussi des harnais OneWeb. Nouvelle génération : seuls les panneaux solaires (Rocket Lab, États-Unis) sont publiés." },
+    four: ["beyond-gravity", "axon-cable", "hemeria"], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.ow229, SRC.ow340, SRC.rl, SRC.bgow, SRC.axon, SRC.hemh],
+    action: "Identifier l'acheteur de la ligne série de Toulouse pour chaque lot ; vérifier si les fournisseurs de la première génération sont reconduits sur les 229 nouveaux satellites." },
+  { id: "iris2-airbus", titre: "IRIS² : au moins 66 satellites Airbus sur la ligne série de Toulouse", prog: "iris2", acheteur: ["airbus-ds"], client: "eutelsat-group", site: "airbus-tls",
+    lot: "Plateformes de la première couche en orbite basse", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2029", doc: true, lib: "Livraison de la première couche en 2029 ; Airbus annonce augmenter sa capacité industrielle" },
+    qte: { n: 66, lib: "Au moins 66 satellites" },
+    fab: { mode: "inconnu", txt: "Airbus fabrique les plateformes et intègre les charges utiles de Thales Alenia Space. Fournisseurs de sous-ensembles non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.iris2ab, SRC.iris2es],
+    action: "Se présenter tôt : le développement a commencé en septembre 2026 et la ligne de Toulouse va s'agrandir. Demander le calendrier des consultations de sous-ensembles." },
+  { id: "iris2-asl", titre: "IRIS² : 264 plateformes Aerospacelab (megafactory de Charleroi)", prog: "iris2", acheteur: ["aerospacelab"], client: "eutelsat-group", site: "asl-charleroi",
+    lot: "Plateformes de satellites portant des charges utiles Ku/Ka", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2029", doc: true, lib: "Premiers lancements à partir de 2029 (Brussels Times) ou de 2030 (European Spaceflight) : les sources divergent" },
+    qte: { n: 264, lib: "264 plateformes (contrat de 2,4 Md€)" },
+    fab: { mode: "inconnu", txt: "Usine de 500 satellites par an. Part fabriquée en interne non publiée." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.iris2es, SRC.iris2bt, SRC.a24, SRC.aslmf],
+    action: "Identifier les achats de la megafactory ; savoir quels sous-ensembles Aerospacelab fabrique lui-même et lesquels il achète." },
+  { id: "iris2-tas", titre: "IRIS² : 330 charges utiles numériques Thales Alenia Space", prog: "iris2", acheteur: ["tas"], client: "eutelsat-group", site: null,
+    lot: "Charges utiles gouvernementales (Ka pour 66 satellites, Ku/Ka pour 264)", metiers: ["harnais", "mli", "structure"], phase: "devb",
+    ech: { d: "2029", doc: true, lib: "Charges utiles à livrer aux intégrateurs (Airbus, Aerospacelab) avant les premiers lancements" },
+    qte: { n: 330, lib: "330 charges utiles ; tranche initiale d'environ 500 M€, plus de 3 Md€ au total" },
+    fab: { mode: "inconnu", txt: "Sites de production non précisés par les sources." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.iris2tas, SRC.iris2es],
+    action: "Savoir quels sites de Thales Alenia Space produiront les charges utiles et qui y achète harnais et protections thermiques." },
+  { id: "iris2-meo", titre: "IRIS² : couche de 18 satellites en orbite moyenne", prog: "iris2", acheteur: ["ses"], client: "ses", site: null,
+    lot: "Satellites de la couche en orbite moyenne", metiers: ["structure", "harnais", "mli"], phase: "nd",
+    ech: null, qte: { n: 18, lib: "18 satellites en orbite moyenne" },
+    fab: { mode: "inconnu", txt: "Constructeur non publié dans les sources consultées. OHB est cité parmi les quatre industriels du programme, sans rôle précisé ; sa filiale Antwerp Space est citée comme partenaire." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "C",
+    sources: [SRC.a24, SRC.iris2bt],
+    action: "Confirmer le constructeur de la couche en orbite moyenne et le rôle exact d'OHB." },
+  { id: "galg2-lot2", titre: "Galileo 2e génération, lot 2 : consultation ESA annoncée", prog: "galg2", acheteur: ["esa", "commission"], client: "commission", site: null,
+    lot: "Satellites complets (le besoin publié ne détaille pas les sous-ensembles)", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2026-12", doc: true, lib: "Lancement de la procédure prévu au 4e trimestre 2026 ; début du contrat en 2028" },
+    qte: { n: null, lib: "Quantité fixée après les revues système" },
+    fab: { mode: "inconnu", txt: "Lot 1 : Airbus Allemagne et Thales Alenia Space Italie (deux lots de 6). Les candidats du lot 2 ne sont pas publiés." },
+    four: [], valeur: null, statut: "confirmee", lotDoc: false, vol: true, bc: "B",
+    note: "Besoin publié au niveau des satellites complets : les lots MLI, harnais et structure relèveront des maîtres d'œuvre retenus. Avis lu sur un site relais ; la référence officielle n'y est pas visible.",
+    sources: [SRC.galb2, SRC.galg2],
+    action: "S'inscrire aux notifications du portail de l'ESA ; prendre contact avec les candidats probables, à commencer par les titulaires du lot 1." },
+  { id: "galg2-lot1", titre: "Galileo 2e génération, lot 1 : 12 satellites en réalisation", prog: "galg2", acheteur: ["airbus-ds", "tas"], client: "esa", site: "tas-rome",
+    lot: "Plateformes et intégration", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: null, qte: { n: 12, lib: "Deux lots de 6 satellites" },
+    fab: { mode: "inconnu", txt: "Production démarrée chez Airbus fin 2023. La Space Smart Factory de Rome cite Galileo parmi ses programmes." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: true, bc: "B",
+    note: "Achats de sous-ensembles probablement déjà passés : intérêt surtout pour préparer le lot 2.",
+    sources: [SRC.galg2, SRC.tasrome],
+    action: "Recueillir le retour d'expérience des fournisseurs du lot 1 avant la consultation du lot 2." },
+  { id: "a6-coiffes", titre: "Ariane 6 : coiffes attribuées à Beyond Gravity (modèles de vol 16 à 42)", prog: "ariane6", acheteur: ["arianegroup"], client: "arianegroup", site: null,
+    lot: "Coiffes en composite carbone (20 longues de 20 m, 7 courtes de 14 m)", metiers: ["structure"], phase: "serie",
+    ech: null, qte: { n: 27, lib: "27 coiffes" },
+    fab: { mode: "externe", txt: "Beyond Gravity (12 sites dans six pays). Contrat de la phase d'exploitation à partir de fin 2026." },
+    four: ["beyond-gravity"], valeur: null, statut: "surveiller", lotDoc: true, vol: true, bc: "A",
+    note: "Lot attribué : opportunité seulement en sous-traitance de rang 2, ou au-delà du modèle de vol 42.",
+    sources: [SRC.bgcoiffes],
+    action: "Explorer la sous-traitance de rang 2 chez Beyond Gravity (pièces, outillages, panneaux)." },
+  { id: "a6-mt", titre: "Ariane 6 : structures et réservoirs attribués à MT Aerospace (modèles de vol 16 à 42)", prog: "ariane6", acheteur: ["arianegroup"], client: "arianegroup", site: "mt-augsburg",
+    lot: "Composants structuraux et réservoirs", metiers: ["structure"], phase: "serie",
+    ech: null, qte: { n: 27, lib: "27 lanceurs" },
+    fab: { mode: "externe", txt: "MT Aerospace, Augsbourg (contrat signé le 25 sept. 2025)." },
+    four: ["mt-aerospace"], valeur: null, statut: "surveiller", lotDoc: true, vol: true, bc: "A",
+    note: "Lot attribué : opportunité seulement en sous-traitance de rang 2.",
+    sources: [SRC.mta6],
+    action: "Identifier les besoins de rang 2 de MT Aerospace liés à la montée en cadence." },
+  { id: "a6-cadence", titre: "Ariane 6 : montée en cadence, harnais et protections thermiques", prog: "ariane6", acheteur: ["arianegroup"], client: "arianespace", site: null,
+    lot: "Harnais et isolation des étages et de la case à équipements", metiers: ["harnais", "mli"], phase: "serie",
+    ech: { d: "2027-01", doc: true, lib: "Cadence de 9 à 10 lancements par an visée à partir de 2027 (7 à 8 en 2026)" },
+    qte: { n: 10, lib: "9 à 10 lanceurs par an" },
+    fab: { mode: "inconnu", txt: "Fournisseurs d'Ariane 6 non publiés pour ces lots. Hemeria indique avoir fourni les harnais de la case à équipements de toutes les Ariane 5." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SRC.a6cad, SRC.bgcoiffes, SRC.hemh],
+    action: "Cartographier les fournisseurs actuels de harnais et d'isolation d'Ariane 6 ; repérer les goulots d'étranglement de la montée en cadence." },
+  { id: "onesat", titre: "OneSat : 10 satellites géostationnaires reconfigurables", prog: "onesat", acheteur: ["airbus-ds"], client: null, site: null,
+    lot: "Plateformes et charges utiles", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Mise en service visée des GX7 à 9 (Viasat)" },
+    qte: { n: 10, lib: "10 satellites sous contrat (nov. 2025)" },
+    fab: { mode: "inconnu", txt: "Fournisseurs non publiés. Programme en retard (Optus-11, logiciel)." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("onesat", 0, "2025-11-24"), SL("onesat", 1, "2026-07-16")],
+    action: "Calendrier sous tension jusqu'en 2028 : vérifier les besoins de capacité supplémentaire ou de seconde source." },
+  { id: "spaceinspire", titre: "Space Inspire : 6 satellites géostationnaires, premier lancement en 2027", prog: "spaceinspire", acheteur: ["tas"], client: null, site: null,
+    lot: "Plateforme et charge utile, plus de 10 fournisseurs français", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Premier lancement prévu" },
+    qte: { n: 6, lib: "6 satellites de la gamme commandés" },
+    fab: { mode: "mixte", txt: "Partenaires cités par le CNES : Liebherr Aerospace, Saft, Coredux, Hemeria ; fournisseur ArianeGroup. Rôle de chacun non détaillé." },
+    four: ["hemeria"], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("spaceinspire", 0), SL("spaceinspire", 1)],
+    action: "Préciser le périmètre du partenariat Hemeria et les lots encore ouverts sur les satellites suivants." },
+  { id: "satcombw4", titre: "SATCOMBw étape 4 : au moins 100 satellites militaires allemands", prog: "satcombw4", acheteur: ["baainbw"], client: "baainbw", site: null,
+    lot: "Constellation en orbite basse : fabrication en série", metiers: ["structure", "harnais", "mli"], phase: "etude",
+    ech: { d: "2027-01", doc: true, lib: "Attribution attendue au tournant 2026-2027" },
+    qte: { n: 100, lib: "Au moins 100 satellites" },
+    fab: { mode: "inconnu", txt: "Candidats : coentreprise OHB Rheinmetall Space Networks ; Airbus a envisagé un consortium avec Rheinmetall et OHB." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "B",
+    sources: [SRC.satcomjv, SRC.satcomb, SRC.de35],
+    action: "Rencontrer les groupements candidats avant l'attribution pour figurer dans leurs offres." },
+  { id: "spock", titre: "SPOCK : 40 satellites radar pour la Bundeswehr (ICEYE et Rheinmetall)", prog: "spock", acheteur: ["iceye", "rheinmetall"], client: "baainbw", site: null,
+    lot: "Satellites radar", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: null, qte: { n: 40, lib: "40 satellites" },
+    fab: { mode: "inconnu", txt: "Répartition de la fabrication entre ICEYE et Rheinmetall non publiée." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.spock, SRC.iceye],
+    action: "Savoir si une partie de la fabrication sera faite en Allemagne et par qui." },
+  { id: "iceye-cad", titre: "ICEYE : production doublée, 100 satellites radar par an fin 2027", prog: "iceye", acheteur: ["iceye"], client: null, site: null,
+    lot: "Satellites radar de série", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: { d: "2027-12", doc: true, lib: "Objectif de 100 satellites par an fin 2027 (environ 50 aujourd'hui)" },
+    qte: { n: 100, lib: "≈ 50 par an aujourd'hui, 100 par an visés" },
+    fab: { mode: "inconnu", txt: "Sites de fabrication et part sous-traitée non précisés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.iceye],
+    action: "Identifier les achats liés à l'agrandissement de la ligne de production." },
+  { id: "sterna", titre: "EPS-Sterna : 20 petits satellites météo d'OHB Sweden", prog: "sterna", acheteur: ["ohb-sweden"], client: "eumetsat", site: "ohbs-kista",
+    lot: "Plateformes de petits satellites", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2029", doc: true, lib: "6 premiers satellites construits et lancés en 2029, 14 de remplacement ensuite" },
+    qte: { n: 20, lib: "20 satellites" },
+    fab: { mode: "inconnu", txt: "Charge utile AAC Omnisys ; une trentaine d'entreprises dans l'équipe d'OHB Sweden, non détaillées." },
+    four: ["aac-clyde-space"], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.sterna],
+    action: "Contacter les achats d'OHB Sweden sur les 14 satellites de remplacement." },
+  { id: "iris-dga", titre: "IRIS (successeur de CSO) : 2 satellites d'observation militaires", prog: "csosuite", acheteur: ["dga"], client: "dga", site: null,
+    lot: "Satellites d'observation", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2026-12", doc: true, lib: "Commande d'environ 1 Md€ annoncée comme imminente (sept. 2026)" },
+    qte: { n: 2, lib: "2 satellites" },
+    fab: { mode: "inconnu", txt: "Études confiées à Airbus et à Thales Alenia Space ; commande non notifiée au 30 sept. 2026." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "B",
+    sources: [SRC.irisdga],
+    action: "Suivre la notification et l'attributaire ; programme de défense, accès sous conditions." },
+  { id: "co2m", titre: "CO2M (Sentinel-7) : 3 satellites OHB System", prog: "co2m", acheteur: ["ohb-system"], client: "esa", site: null,
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Satellite A prévu en 2027, B en 2028, C en 2029" },
+    qte: { n: 3, lib: "3 satellites" },
+    fab: { mode: "inconnu", txt: "Charge utile du troisième satellite : Thales Alenia Space." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("co2m", 0), SL("co2m", 1)],
+    action: "Vérifier les besoins restants pour les satellites B et C." },
+  { id: "lstm", titre: "LSTM (Sentinel-8) : 2 satellites Airbus Espagne", prog: "lstm", acheteur: ["airbus-ds"], client: "esa", site: null,
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2028", doc: true, lib: "Satellite A prévu en 2028, B en 2030" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("lstm", 0, "2020-11"), SL("lstm", 1)],
+    action: "Contacter les achats d'Airbus Espagne pour le satellite B." },
+  { id: "cristal", titre: "CRISTAL (Sentinel-9) : 2 satellites Airbus Allemagne", prog: "cristal", acheteur: ["airbus-ds"], client: "esa", site: null,
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2028", doc: true, lib: "Satellite A prévu en 2028, B en 2034" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "Fabrication démarrée en octobre 2024 ; fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("cristal", 0, "2024-10"), SL("cristal", 1)],
+    action: "Viser le satellite B, prévu en 2034." },
+  { id: "chime", titre: "CHIME (Sentinel-10) : 2 satellites Thales Alenia Space France", prog: "chime", acheteur: ["tas"], client: "esa", site: null,
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2029", doc: true, lib: "Satellite A prévu en 2029, B en 2031" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("chime", 0), SL("chime", 1)],
+    action: "Identifier l'établissement de Thales Alenia Space en charge et ses achats." },
+  { id: "cimr", titre: "CIMR (Sentinel-11) : 2 satellites Thales Alenia Space Italie", prog: "cimr", acheteur: ["tas"], client: "esa", site: "tas-rome",
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2029", doc: true, lib: "Satellite A prévu en 2029, B en 2035" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "La Space Smart Factory de Rome cite CIMR parmi ses programmes." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("cimr", 0), SRC.tasrome],
+    action: "Contacter les achats de la Space Smart Factory de Rome." },
+  { id: "rosel", titre: "ROSE-L (Sentinel-12) : 2 satellites radar Thales Alenia Space Italie", prog: "rosel", acheteur: ["tas"], client: "esa", site: "tas-rome",
+    lot: "Plateformes", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2029", doc: true, lib: "Satellite A prévu en 2029, B en 2031" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "La Space Smart Factory de Rome cite ROSE-L parmi ses programmes." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("rosel", 0), SRC.tasrome],
+    action: "Contacter les achats de la Space Smart Factory de Rome." },
+  { id: "s1ng", titre: "Sentinel-1 nouvelle génération : Thales Alenia Space Italie", prog: "sng", acheteur: ["tas"], client: "esa", site: null,
+    lot: "Plateformes ; radars Airbus Allemagne", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2033", doc: true, lib: "Satellite 1NG A prévu en 2033" },
+    qte: { n: null, lib: "Nombre de satellites 1NG non précisé dans l'atlas" },
+    fab: { mode: "inconnu", txt: "Contrat de juin 2026 ; fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("sng", 0)],
+    action: "Programme long : se faire référencer pendant la phase de conception." },
+  { id: "s2ng3ng", titre: "Sentinel-2 et 3 nouvelle génération : réalisation non attribuée", prog: "sng", acheteur: ["esa"], client: "esa", site: null,
+    lot: "Satellites complets", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2034", doc: true, lib: "Premiers satellites prévus de 2034 (3NG topographie) à 2035 (2NG)" },
+    qte: { n: null, lib: "Non documentée" },
+    fab: { mode: "inconnu", txt: "2NG : phase A/B confiée à deux industriels en parallèle, dont OHB System. 3NG : non attribué publiquement." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "B",
+    sources: [SL("sng", 2), SL("sng", 1)],
+    action: "Suivre le choix des maîtres d'œuvre de réalisation." },
+  { id: "harmony", titre: "Harmony : 2 satellites OHB System, consortium de 45 entreprises", prog: "harmony", acheteur: ["ohb-system"], client: "esa", site: null,
+    lot: "Plateformes ; radars Thales Alenia Space Italie", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2029", doc: true, lib: "Lancement prévu" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "mixte", txt: "Consortium de 45 entreprises de 15 pays, composition non détaillée ici." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("harmony", 1), SL("harmony", 2)],
+    action: "Vérifier si les lots structure, harnais et MLI sont déjà pourvus dans le consortium." },
+  { id: "wivern", titre: "WIVERN (11e Earth Explorer) : maître d'œuvre à choisir", prog: "wivern", acheteur: ["esa"], client: "esa", site: null,
+    lot: "Satellite complet", metiers: ["structure", "harnais", "mli"], phase: "etude",
+    ech: null, qte: { n: 1, lib: "1 satellite" }, fab: { mode: "inconnu", txt: "Non attribué publiquement (sélection du 23 sept. 2025)." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "A",
+    sources: [SL("wivern", 0)],
+    action: "Suivre l'appel d'offres de réalisation." },
+  { id: "plasma", titre: "Plasma Observatory (M7) : 7 engins, décision en novembre 2026", prog: "plasma", acheteur: ["esa"], client: "esa", site: null,
+    lot: "Constellation scientifique (7 engins)", metiers: ["structure", "harnais", "mli"], phase: "etude",
+    ech: { d: "2026-11", doc: true, lib: "Décision finale attendue en novembre 2026 ; appels d'offres industriels ensuite" },
+    qte: { n: 7, lib: "7 engins" }, fab: { mode: "inconnu", txt: "Non attribué." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "A",
+    sources: [SL("plasma", 0), SL("plasma", 1)],
+    action: "Préparer une offre pour les industriels candidats dès la décision." },
+  { id: "newathena", titre: "NewAthena : adoption prévue en 2027", prog: "newathena", acheteur: ["esa"], client: "esa", site: null,
+    lot: "Grand observatoire X", metiers: ["structure", "harnais", "mli"], phase: "etude",
+    ech: { d: "2027", doc: true, lib: "Adoption prévue, puis choix du maître d'œuvre" },
+    qte: { n: 1, lib: "1 satellite" }, fab: { mode: "inconnu", txt: "Maître d'œuvre à désigner." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "B",
+    sources: [SL("newathena", 0), SL("newathena", 1)],
+    action: "Suivre l'adoption et la consultation de maîtrise d'œuvre." },
+  { id: "envision", titre: "EnVision : sous-traitance de la sonde en constitution", prog: "envision", acheteur: ["tas"], client: "esa", site: null,
+    lot: "Sonde vénusienne", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: null, qte: { n: 1, lib: "1 sonde" }, fab: { mode: "inconnu", txt: "Contrat de Thales Alenia Space du 28 janv. 2025 ; sous-traitance en cours de constitution." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("envision", 0, "2025-01"), SL("envision", 1, "2025-01-28")],
+    action: "Demander à Thales Alenia Space l'état des consultations de la sonde." },
+  { id: "argonaut", titre: "Argonaut : atterrisseur lunaire de Thales Alenia Space Italie", prog: "argonaut", acheteur: ["tas"], client: "esa", site: null,
+    lot: "Élément de descente", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2030", doc: true, lib: "Première mission prévue (Ariane 64)" },
+    qte: { n: 2, lib: "2 missions prévues (2030, 2033)" }, fab: { mode: "inconnu", txt: "Consortium mené par Thales Alenia Space ; composition non détaillée ici." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("argonaut", 0), SL("argonaut", 1)],
+    action: "Identifier les lots encore ouverts dans le consortium." },
+  { id: "nyx", titre: "Nyx (ALADDIN) : capsule cargo de The Exploration Company", prog: "cargo", acheteur: ["the-exploration-company"], client: "esa", site: null,
+    lot: "Capsule et module de service", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2029", doc: true, lib: "Vol d'essai vers l'ISS visé" },
+    qte: { n: null, lib: "Démonstration puis service ; nombre de capsules non publié" },
+    fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("cargo", 2), SL("cargo", 0)],
+    action: "Contacter les achats de The Exploration Company (Munich, Bordeaux)." },
+  { id: "revalto", titre: "REVALTO : 2 démonstrateurs, puis constellation", prog: "revalto", acheteur: ["bwi", "hemeria"], client: "cnes", site: "hemeria-tls",
+    lot: "Plateforme (Hemeria)", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: null, qte: { n: 2, lib: "2 démonstrateurs ; constellation ensuite" },
+    fab: { mode: "mixte", txt: "Plateforme, intégration et opérations confiées à Hemeria, qui propose harnais, structures et MLI. Fabrication interne de ces lots non confirmée pour ce programme." },
+    four: ["hemeria"], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("revalto", 0), SL("revalto", 1, "2025-07"), SRC.hemh],
+    action: "Préparer l'industrialisation de la constellation après les démonstrateurs." },
+  { id: "swing", titre: "Swing : nanosatellite de météo de l'espace (Hemeria)", prog: "swing", acheteur: ["hemeria"], client: "esa", site: "hemeria-tls",
+    lot: "Nanosatellite", metiers: ["structure", "harnais"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Lancement prévu" },
+    qte: { n: 1, lib: "1 satellite" }, fab: { mode: "inconnu", txt: "Réseau d'équipementiers européens, non détaillé." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("swing", 1), SL("swing", 0)],
+    action: "Modèle pour les futures missions de météo de l'espace : capitaliser sur la réalisation." },
+  { id: "uspace", titre: "U-Space : un satellite par semaine en 2027", prog: "ares", acheteur: ["u-space"], client: null, site: "uspace-tls",
+    lot: "Petits satellites de série", metiers: ["structure", "harnais"], phase: "serie",
+    ech: { d: "2027", doc: true, lib: "Premier objectif : un satellite par semaine en 2027" },
+    qte: { n: 52, lib: "Environ 50 par an visés en 2027, un par jour à terme" },
+    fab: { mode: "inconnu", txt: "Fonds levés en partie pour le logiciel de production ; part sous-traitée non publiée." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.uspace, SL("ares", 2)],
+    action: "Proposer des sous-ensembles adaptés à la cadence de l'U-Zine." },
+  { id: "opencosmos", titre: "Open Cosmos : ConnectedCosmos et Constellation Atlantique", prog: "atlantic", acheteur: ["open-cosmos"], client: null, site: null,
+    lot: "Petits satellites de série", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: { d: "2027-06", doc: true, lib: "Lancements discutés entre fin 2026 et mi-2027 ; plus de 96 satellites visés fin 2028" },
+    qte: { n: 96, lib: "Plus de 96 satellites ConnectedCosmos d'ici fin 2028 (192 annoncés en titre) ; 8 satellites espagnols de la Constellation Atlantique" },
+    fab: { mode: "mixte", txt: "Quatre usines en Europe (lieux non précisés) ; étude d'un modèle coopératif avec d'autres sources européennes pour augmenter la capacité." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    note: "Le modèle coopératif annoncé est un signal favorable à la sous-traitance, pas un besoin publié.",
+    sources: [SRC.ocosdcd, SRC.ocos300, SL("atlantic", 0)],
+    action: "Se présenter comme source européenne dans le modèle coopératif annoncé." },
+  { id: "sateliot", titre: "Sateliot : 5 satellites Alén Space, plus de 100 visés", prog: "sateliotc", acheteur: ["alen-space"], client: "sateliot", site: null,
+    lot: "Nanosatellites", metiers: ["structure", "harnais"], phase: "serie",
+    ech: { d: "2026-12", doc: true, lib: "Lancement des 5 satellites suivants prévu en 2026" },
+    qte: { n: 5, lib: "5 satellites commandés ; plus de 100 visés" }, fab: { mode: "inconnu", txt: "Fabrication par Alén Space (Nigrán)." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("sateliotc", 0, "2025-07-03")],
+    action: "Suivre l'extension de la constellation et la stratégie de fabrication." },
+  { id: "hummingsat", titre: "HummingSat (SWISSto12) : petits satellites géostationnaires", prog: "hummingsat", acheteur: ["swissto12"], client: null, site: null,
+    lot: "Plateforme compacte", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Premier lancement visé (Intelsat)" },
+    qte: { n: 4, lib: "4 satellites prévus" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("hummingsat", 0), SL("hummingsat", 1)],
+    action: "Contacter les achats de SWISSto12 (Renens)." },
+  { id: "istari", titre: "ISTARI : satellites militaires britanniques (SSTL, Airbus)", prog: "istari", acheteur: ["sstl", "airbus-ds"], client: "ukspacecommand", site: null,
+    lot: "Juno (SSTL), Oberon (Airbus, 2 satellites radar)", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Lancements de Juno et d'Oberon prévus ; constellation appelée à grandir jusqu'en 2031" },
+    qte: { n: 3, lib: "3 satellites en préparation" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("istari", 0, "2025-02-11")],
+    action: "Suivre les nouvelles commandes jusqu'en 2031 ; programme de défense." },
+  { id: "paz2", titre: "PAZ 2 : 2 satellites radar Airbus Espagne", prog: "paz2", acheteur: ["airbus-ds"], client: "hisdesat", site: "airbus-getafe",
+    lot: "Satellites radar", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2031", doc: true, lib: "Premier satellite en service visé à la mi-2031" },
+    qte: { n: 2, lib: "2 satellites" }, fab: { mode: "mixte", txt: "Consortium de plus de 15 entreprises espagnoles, non détaillé." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("paz2", 0, "2025-07")],
+    action: "Vérifier si des lots restent ouverts hors du consortium espagnol." },
+  { id: "sicral3", titre: "SICRAL 3 : 2 satellites militaires italiens", prog: "sicral3", acheteur: ["tas"], client: null, site: "tas-rome",
+    lot: "Segment spatial", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: null, qte: { n: 2, lib: "2 satellites" }, fab: { mode: "inconnu", txt: "Premier projet de la Space Smart Factory de Rome." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SRC.tasrome, SL("sicral3", 0)],
+    action: "Programme de défense italien : accès sous conditions." },
+  { id: "celeste", titre: "Celeste : 9 satellites de navigation en orbite basse à lancer", prog: "celeste", acheteur: ["tas", "gmv"], client: "esa", site: null,
+    lot: "Satellites de démonstration", metiers: ["structure", "harnais"], phase: "cd",
+    ech: { d: "2027", doc: true, lib: "Lancements suivants prévus" },
+    qte: { n: 9, lib: "9 satellites" }, fab: { mode: "inconnu", txt: "Deux contrats parallèles : GMV (avec OHB) et Thales Alenia Space Italie." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("celeste", 0), SL("celeste", 1)],
+    action: "Suivre la suite opérationnelle après la démonstration." },
+  { id: "eogs", titre: "EOGS : service gouvernemental d'observation de l'UE en définition", prog: "ersres", acheteur: ["esa"], client: "commission", site: null,
+    lot: "Architecture (segments spatial, sol, traitement)", metiers: ["structure", "harnais", "mli"], phase: "etude",
+    ech: null, qte: { n: null, lib: "Non documentée" }, fab: { mode: "inconnu", txt: "Études d'architecture confiées à ICEYE et à Leonardo (sept. 2026)." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "A",
+    sources: [SL("ersres", 0, "2026-09"), SL("ersres", 2)],
+    action: "Suivre les résultats des études et les premiers achats de satellites." },
+  { id: "maia", titre: "Maia : lanceur de MaiaSpace, vol inaugural en 2027", prog: "maiaspace", acheteur: ["maiaspace"], client: null, site: null,
+    lot: "Structures et harnais du lanceur", metiers: ["structure", "harnais"], phase: "devb",
+    ech: { d: "2027", doc: true, lib: "Vol inaugural visé" },
+    qte: { n: null, lib: "Cadence non publiée" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("maiaspace", 0), SL("maiaspace", 1)],
+    action: "Contacter les achats de MaiaSpace (Vernon)." },
+  { id: "spacerider", titre: "Space Rider : vol inaugural prévu en 2028", prog: "spacerider", acheteur: ["tas", "avio"], client: "esa", site: null,
+    lot: "Module de rentrée (Thales Alenia Space), module de service (Avio)", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2028", doc: true, lib: "Vol inaugural prévu au 1er trimestre" },
+    qte: { n: 1, lib: "1 véhicule réutilisable" }, fab: { mode: "inconnu", txt: "Fournisseurs non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "B",
+    sources: [SL("spacerider", 1), SL("spacerider", 0)],
+    action: "Viser les besoins de remise en état entre deux vols." },
+  { id: "aeolus2", titre: "Aeolus-2 : contrat initial à Airbus", prog: "aeolus2", acheteur: ["airbus-ds"], client: "esa", site: null,
+    lot: "Satellite et lidar", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: null, qte: { n: 1, lib: "1 satellite" }, fab: { mode: "inconnu", txt: "Contrat initial seulement (juil. 2026) ; sous-traitance à venir." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    sources: [SL("aeolus2", 0), SL("aeolus2", 1)],
+    action: "Se faire connaître d'Airbus pendant la constitution de l'équipe industrielle." },
+  { id: "nggm", titre: "NGGM : maîtrise d'œuvre à suivre", prog: "nggm", acheteur: ["esa"], client: "esa", site: null,
+    lot: "Satellites de gravimétrie", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2032", doc: true, lib: "Lancement visé" },
+    qte: { n: null, lib: "Non documentée" }, fab: { mode: "inconnu", txt: "Maître d'œuvre non publié dans les sources consultées." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: false, bc: "B",
+    sources: [SL("nggm", 0), SL("nggm", 1)],
+    action: "Suivre les phases B2/C et le choix du maître d'œuvre." }
+];
+
+/* ---------- Événements commerciaux datés ---------- */
+const EVENEMENTS = [
+  { d: "2026-10-06", type: "constellation", act: "open-cosmos", prog: "atlantic", metiers: ["structure", "harnais", "mli"], txt: "Open Cosmos vise plus de 96 satellites ConnectedCosmos d'ici fin 2028 et étudie un modèle coopératif avec d'autres sources européennes.", src: SRC.ocosdcd, bc: "A", opp: "opencosmos" },
+  { d: "2026-09-30", type: "tranche", act: "dga", prog: "csosuite", metiers: [], txt: "Commande des deux satellites IRIS, successeurs de CSO, annoncée comme imminente (environ 1 Md€).", src: SRC.irisdga, bc: "B", opp: "iris-dga" },
+  { d: "2026-09-14", type: "cadence", act: "open-cosmos", prog: null, metiers: [], txt: "Open Cosmos lève 300 M€ ; capacité théorique d'un satellite par jour sur quatre usines européennes.", src: SRC.ocos300, bc: "A", opp: "opencosmos" },
+  { d: "2026-09-10", type: "tranche", act: "eutelsat-group", prog: "eutelsat", metiers: ["structure", "harnais", "mli"], txt: "Eutelsat commande 229 satellites OneWeb supplémentaires à Airbus (autorisation de démarrer) : 669 au total, fabriqués à Toulouse.", src: SRC.ow229, bc: "A", opp: "ow-serie" },
+  { d: "2026-09-10", type: "contrat", act: "airbus-ds", prog: "iris2", metiers: ["structure", "harnais", "mli"], txt: "Airbus démarre le développement d'au moins 66 satellites IRIS² sur sa ligne série de Toulouse ; livraison en 2029.", src: SRC.iris2ab, bc: "A", opp: "iris2-airbus" },
+  { d: "2026-09-10", type: "contrat", act: "aerospacelab", prog: "iris2", metiers: ["structure", "harnais", "mli"], txt: "Aerospacelab obtient 264 plateformes IRIS² pour 2,4 Md€.", src: SRC.iris2es, bc: "A", opp: "iris2-asl" },
+  { d: "2026-09-10", type: "contrat", act: "tas", prog: "iris2", metiers: ["harnais", "mli"], txt: "Thales Alenia Space : tranche initiale d'environ 500 M€ pour les charges utiles des 330 satellites en orbite basse.", src: SRC.iris2tas, bc: "A", opp: "iris2-tas" },
+  { d: "2026-09-10", type: "constellation", act: "commission", prog: "iris2", metiers: [], txt: "Accord-cadre entre la Commission et SpaceRISE ; premiers lancements à partir de 2029.", src: SRC.iris2bt, bc: "A", opp: null },
+  { d: "2026-09", type: "contrat", act: "iceye", prog: "ersres", metiers: [], txt: "Études d'architecture du service EOGS confiées à ICEYE et à Leonardo.", src: SL("ersres", 0, "2026-09"), bc: "A", opp: "eogs" },
+  { d: "2026-09", type: "contrat", act: "the-exploration-company", prog: "cargo", metiers: [], txt: "Contrat ALADDIN de 760 M€ pour la capsule Nyx.", src: SL("cargo", 2), bc: "A", opp: "nyx" },
+  { d: "2026-08-07", type: "site", act: "aerospacelab", prog: "iris2", metiers: [], txt: "Mise en service de la megafactory de Charleroi prévue plus tard en 2026 (jusqu'à 500 satellites par an).", src: SRC.a24, bc: "B", opp: "iris2-asl" },
+  { d: "2026-07-08", type: "contrat", act: "beyond-gravity", prog: "ariane6", metiers: ["structure"], txt: "ArianeGroup confie à Beyond Gravity 27 coiffes d'Ariane 6 (modèles de vol 16 à 42).", src: SRC.bgcoiffes, bc: "A", opp: "a6-coiffes" },
+  { d: "2026-07-08", type: "cadence", act: "arianegroup", prog: "ariane6", metiers: [], txt: "Cadence d'Ariane 6 prévue de 9 à 10 missions par an.", src: SRC.bgcoiffes, bc: "A", opp: "a6-cadence" },
+  { d: "2026-07", type: "contrat", act: "airbus-ds", prog: "aeolus2", metiers: [], txt: "Contrat initial de conception et de construction d'Aeolus-2.", src: SL("aeolus2", 0), bc: "A", opp: "aeolus2" },
+  { d: "2026-06-25", type: "cadence", act: "iceye", prog: null, metiers: [], txt: "ICEYE veut passer d'environ 50 à 100 satellites par an d'ici fin 2027.", src: SRC.iceye, bc: "A", opp: "iceye-cad" },
+  { d: "2026-06-11", type: "charge", act: "esa", prog: "plasma", metiers: [], txt: "Plasma Observatory recommandée comme mission M7 ; décision finale attendue en novembre.", src: SL("plasma", 0), bc: "A", opp: "plasma" },
+  { d: "2026-06", type: "contrat", act: "tas", prog: "sng", metiers: [], txt: "Contrat de réalisation de Sentinel-1 nouvelle génération (radars Airbus Allemagne).", src: SL("sng", 0), bc: "A", opp: "s1ng" },
+  { d: "2026-06", type: "contrat", act: "ohb-rheinmetall", prog: "satcombw4", metiers: [], txt: "OHB et Rheinmetall créent une coentreprise pour répondre à SATCOMBw étape 4.", src: SRC.satcomjv, bc: "A", opp: "satcombw4" },
+  { d: "2026-03-28", type: "constellation", act: "esa", prog: "celeste", metiers: [], txt: "Lancement des deux premiers satellites Celeste ; neuf autres à partir de 2027.", src: SL("celeste", 0), bc: "A", opp: "celeste" },
+  { d: "2026-03-18", type: "contrat", act: "ohb-sweden", prog: "sterna", metiers: [], txt: "OHB Sweden signe le contrat des 20 satellites d'EPS-Sterna.", src: SRC.sterna, bc: "A", opp: "sterna" },
+  { d: "2026-03-08", type: "consultation", act: "baainbw", prog: "satcombw4", metiers: [], txt: "SATCOMBw étape 4 : au moins 100 satellites ; Airbus envisage un consortium avec Rheinmetall et OHB.", src: SRC.satcomb, bc: "B", opp: "satcombw4" },
+  { d: "2026-03-01", type: "consultation", act: "esa", prog: "galg2", metiers: [], txt: "Avis de planification : achat de satellites Galileo 2e génération supplémentaires (lot 2), procédure au 4e trimestre 2026.", src: SRC.galb2, bc: "B", opp: "galg2-lot2" },
+  { d: "2026-02-28", type: "constellation", act: "baainbw", prog: "satcombw4", metiers: [], txt: "L'Allemagne annonce 35 Md€ pour ses capacités spatiales militaires.", src: SRC.de35, bc: "A", opp: "satcombw4" },
+  { d: "2026-01-12", type: "tranche", act: "eutelsat-group", prog: "eutelsat", metiers: ["structure", "harnais", "mli"], txt: "Eutelsat commande 340 satellites OneWeb supplémentaires à Airbus.", src: SRC.ow340, bc: "A", opp: "ow-serie" },
+  { d: "2025-12-18", type: "contrat", act: "iceye", prog: "spock", metiers: [], txt: "ICEYE et Rheinmetall remportent SPOCK (40 satellites radar).", src: SRC.spock, bc: "A", opp: "spock" },
+  { d: "2025-11-24", type: "contrat", act: "airbus-ds", prog: "onesat", metiers: [], txt: "OmanSat-1, 10e satellite OneSat sous contrat.", src: SL("onesat", 0, "2025-11-24"), bc: "A", opp: "onesat" },
+  { d: "2025-11-12", type: "cadence", act: "u-space", prog: null, metiers: [], txt: "U-Space lève 24 M€ ; objectif d'un satellite par semaine en 2027.", src: SRC.uspace, bc: "A", opp: "uspace" },
+  { d: "2025-10-08", type: "site", act: "tas", prog: "sicral3", metiers: [], txt: "Inauguration de la Space Smart Factory de Rome : plus de 100 satellites par an.", src: SRC.tasrome, bc: "A", opp: "sicral3" },
+  { d: "2025-09-25", type: "production", act: "mt-aerospace", prog: "ariane6", metiers: ["structure"], txt: "MT Aerospace : production série des structures et réservoirs d'Ariane 6 (modèles de vol 16 à 42).", src: SRC.mta6, bc: "A", opp: "a6-mt" },
+  { d: "2025-09-23", type: "charge", act: "esa", prog: "wivern", metiers: [], txt: "WIVERN sélectionnée comme 11e mission Earth Explorer.", src: SL("wivern", 0), bc: "A", opp: "wivern" },
+  { d: "2025-07-03", type: "contrat", act: "alen-space", prog: "sateliotc", metiers: [], txt: "Sateliot commande 5 satellites à Alén Space.", src: SL("sateliotc", 0, "2025-07-03"), bc: "A", opp: "sateliot" },
+  { d: "2025-07", type: "contrat", act: "airbus-ds", prog: "paz2", metiers: [], txt: "Hisdesat confie PAZ 2 à Airbus Espagne.", src: SL("paz2", 0, "2025-07"), bc: "A", opp: "paz2" },
+  { d: "2025-06-26", type: "contrat", act: "bwi", prog: "revalto", metiers: [], txt: "BWI remporte l'appel d'offres du CNES pour REVALTO ; plateforme Hemeria.", src: SL("revalto", 1, "2025-07"), bc: "A", opp: "revalto" },
+  { d: "2025-03-12", type: "fournisseur", act: "airbus-ds", prog: "eutelsat", metiers: [], txt: "Rocket Lab fournira 200 panneaux solaires pour 100 satellites OneWeb de nouvelle génération.", src: SRC.rl, bc: "A", opp: "ow-serie" },
+  { d: "2025-02-11", type: "contrat", act: "airbus-ds", prog: "istari", metiers: [], txt: "Contrat Oberon (2 satellites radar) pour le UK Space Command.", src: SL("istari", 0, "2025-02-11"), bc: "A", opp: "istari" },
+  { d: "2025-01-28", type: "contrat", act: "tas", prog: "envision", metiers: [], txt: "Contrat de réalisation de la sonde EnVision.", src: SL("envision", 1, "2025-01-28"), bc: "A", opp: "envision" },
+  { d: "2024-10", type: "production", act: "airbus-ds", prog: "cristal", metiers: [], txt: "Début de la fabrication de CRISTAL.", src: SL("cristal", 0, "2024-10"), bc: "A", opp: "cristal" },
+  { d: "2024-10", type: "contrat", act: "ohb-system", prog: "harmony", metiers: [], txt: "Contrat Harmony à OHB System, consortium de 45 entreprises.", src: SL("harmony", 1), bc: "A", opp: "harmony" },
+  { d: "2023-12", type: "production", act: "airbus-ds", prog: "galg2", metiers: [], txt: "Début de la production des satellites Galileo 2e génération.", src: SRC.galg2, bc: "B", opp: "galg2-lot1" },
+  { d: "2023-04-11", type: "fournisseur", act: "beyond-gravity", prog: "juice", metiers: ["mli"], txt: "Beyond Gravity Berndorf fournit l'isolation thermique de la sonde JUICE.", src: SRC.bgjuice, bc: "B", opp: null },
+  { d: "2022-10-24", type: "fournisseur", act: "beyond-gravity", prog: "eutelsat", metiers: ["structure", "mli"], txt: "Beyond Gravity fournit structure, MLI et distributeurs des satellites OneWeb de première génération.", src: SRC.bgow, bc: "B", opp: "ow-serie" },
+  { d: "2019-03-04", type: "fournisseur", act: "axon-cable", prog: "eutelsat", metiers: ["harnais"], txt: "Axon' Cable choisi pour câbler les satellites OneWeb de première génération.", src: SRC.axon, bc: "B", opp: "ow-serie" }
+];
+
+/* ---------- Score explicable sur 18 (6 critères de 0 à 3, poids égaux) ----------
+   L'accessibilité du donneur d'ordre est un jugement commercial : non évaluée
+   par défaut (0), elle peut être saisie dans le navigateur. */
+const SCORE_CRITERES = [
+  ["adq", "Adéquation technique"], ["mat", "Maturité industrielle"], ["vol", "Volume ou récurrence"],
+  ["prox", "Proximité de la décision"], ["acc", "Accessibilité du donneur d'ordre"], ["qual", "Qualité et fraîcheur des sources"]
+];
+function moisEntre(a, b) { // a, b : "AAAA", "AAAA-MM" ou "AAAA-MM-JJ"
+  const p = s => { const [y, m] = String(s).split("-"); return +y * 12 + (m ? +m - 1 : 11); };
+  return p(b) - p(a);
+}
+function scoreOpp(o, acc) {
+  const r = {};
+  r.adq = o.lotDoc ? [3, "Lot ou fournisseur cité par une source"] : o.vol && (o.phase === "cd" || o.phase === "serie") ? [2, "Engin complet en fabrication, lot non documenté"] : o.vol ? [1, "Matériel de vol prévu, sous-ensembles incertains"] : [0, "Pas encore de matériel de vol"];
+  const ph = PHASES[o.phase] || PHASES.nd;
+  r.mat = [ph.m, ph.nom];
+  const n = o.qte && o.qte.n;
+  r.vol = n == null ? [0, "Quantité non documentée"] : n > 20 ? [3, n + " unités (plus de 20)"] : n >= 5 ? [2, n + " unités (5 à 20)"] : n >= 2 ? [1, n + " unités (2 à 4)"] : [0, "Unité seule"];
+  if (!o.ech) r.prox = [0, "Échéance inconnue"];
+  else {
+    const m = moisEntre(DATE_VERIF, o.ech.d);
+    const lib = (o.ech.doc ? "" : "estimation : ") + (m < 0 ? "échéance passée" : `dans ${m} mois environ`);
+    r.prox = m < 0 ? [0, lib] : !o.ech.doc ? [1, lib] : m <= 12 ? [3, lib] : m <= 24 ? [2, lib] : [1, lib];
+  }
+  r.acc = acc == null ? [0, "Non évalué (à saisir)"] : [acc, "Saisi par l'utilisateur"];
+  const pubs = o.sources.filter(s => s && s.pub).map(s => s.pub).sort();
+  const last = pubs.length ? pubs[pubs.length - 1] : null;
+  const age = last ? moisEntre(last, DATE_VERIF) : null;
+  const vf = o.sources.filter(s => s).every(s => moisEntre(s.verif, DATE_VERIF) <= 6);
+  r.qual = age != null && age > 24 ? [0, "Source la plus récente de plus de 2 ans"]
+    : o.bc === "A" && vf ? [3, "Confiance A, vérifiée il y a moins de 6 mois" + (last ? "" : " (date de publication non documentée)")]
+    : o.bc === "A" || o.bc === "B" ? [2, "Confiance " + o.bc] : [1, "Confiance C"];
+  r.total = SCORE_CRITERES.reduce((s, [k]) => s + r[k][0], 0);
+  return r;
+}
+
 </script>
 <script>
 (function () {
@@ -5648,7 +6254,7 @@ CONVERGENCES.push(
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" };
 
   function chip(id) {
     const p = byId[id];
@@ -6031,9 +6637,14 @@ CONVERGENCES.push(
       .sort((a, b) => state.psort === "nom" ? a.p.n.localeCompare(b.p.n, "fr") : ((a.j ? a.j[0] : 9999) - (b.j ? b.j[0] : 9999)) || a.p.n.localeCompare(b.p.n, "fr"));
   }
   function vProspection() {
+    const modes = `<div class="pmodes" role="group" aria-label="Mode"><button type="button" class="pmode" data-pmode="opp" aria-pressed="${state.pmode === "opp"}">Opportunités métiers</button><button type="button" class="pmode" data-pmode="prog" aria-pressed="${state.pmode === "prog"}">Programmes</button></div>`;
+    return state.pmode === "opp" ? vOpp(modes) : vProsProg(modes);
+  }
+  function renderPros() { if (state.pmode === "opp") renderOpp(); else renderProsProg(); }
+  function vProsProg(modes) {
     const fch = [["all", "Toutes", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
       .map(([k, l, c]) => `<button class="fchip" type="button" data-pfam="${k}" aria-pressed="${state.pfam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
-    return `<div class="view-head"><h2>Prospection</h2>
+    return `<div class="view-head"><h2>Prospection</h2>${modes}
       <p>Les programmes en développement ou en projet, avec l'acheteur, l'attributaire connu, le prochain jalon et les opportunités documentées. Un programme dont le maître d'œuvre n'est pas encore attribué ou publié est signalé : c'est souvent là que les marchés restent à prendre. Tout vient des fiches et de leurs sources ; rien n'est extrapolé.</p></div>
       <div class="filters">
         <div class="fchips" id="pfams">${fch}</div>
@@ -6048,7 +6659,7 @@ CONVERGENCES.push(
       <div class="pros-tools"><button type="button" class="reset" data-preset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
       <div id="plistp"></div>`;
   }
-  function renderPros() {
+  function renderProsProg() {
     const el = document.getElementById("plistp");
     if (!el) return;
     const rows = prosRows();
@@ -6084,6 +6695,142 @@ CONVERGENCES.push(
     const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = "atlas-prospection.csv";
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  /* ================= PROSPECTION : OPPORTUNITÉS MÉTIERS ================= */
+  const oppById = Object.fromEntries(OPPORTUNITES.map(o => [o.id, o]));
+  const OST_ORDER = { confirmee: 0, probable: 1, surveiller: 2 };
+  let ACC = {};
+  try { ACC = JSON.parse(localStorage.getItem("atlas-acc") || "{}") || {}; } catch (e) { ACC = {}; }
+  const saveAcc = () => { try { localStorage.setItem("atlas-acc", JSON.stringify(ACC)); } catch (e) {} };
+  const oppActs = o => o.acheteur.concat(o.four || [], o.client ? [o.client] : []).filter(id => actById[id]);
+  const oppPays = o => [...new Set(o.acheteur.map(id => actById[id] && actById[id].p).concat(o.site ? [SITES.find(x => x.id === o.site).p] : []).filter(Boolean))];
+  const oScore = o => scoreOpp(o, ACC[o.id] == null ? null : +ACC[o.id]);
+  const ostTag = st => `<span class="ost ${st} st-${st}">${esc(OPP_STATUTS[st].nom)}</span>`;
+  const mTags = ms => ms.map(m => `<span class="mtag mt-${m}">${esc(METIERS[m].court)}</span>`).join("");
+  const actLink = id => actById[id] ? `<button type="button" class="lnk" data-actor="${id}">${esc(actById[id].n)}</button>` : esc(id);
+  const fmtD = d => { if (!d) return "non documentée"; const [y, m, j] = d.split("-"); const mois = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]; return (j ? +j + " " : "") + (m ? mois[+m - 1] + " " : "") + y; };
+  function oppRows() {
+    const q = state.oq.trim().toLowerCase();
+    return OPPORTUNITES.map(o => ({ o, sc: oScore(o), pays: oppPays(o) }))
+      .filter(({ o, pays }) => (state.om === "all" || o.metiers.includes(state.om)) && (state.ost === "all" || o.statut === state.ost) &&
+        (state.opays === "all" || pays.includes(state.opays)) && (state.oact === "all" || oppActs(o).includes(state.oact)) &&
+        (state.oprog === "all" || o.prog === state.oprog) && (state.ophase === "all" || o.phase === state.ophase) && (state.obc === "all" || o.bc === state.obc) &&
+        (!q || [o.titre, o.lot, o.fab.txt, o.action, o.note || "", byId[o.prog] ? byId[o.prog].n : "", oppActs(o).map(id => actById[id].n).join(" ")].join(" ").toLowerCase().includes(q)))
+      .sort((a, b) => state.osort === "score" ? (b.sc.total - a.sc.total) || (OST_ORDER[a.o.statut] - OST_ORDER[b.o.statut])
+        : ((a.o.ech ? a.o.ech.d : "9999").localeCompare(b.o.ech ? b.o.ech.d : "9999")) || (b.sc.total - a.sc.total));
+  }
+  function vOpp(modes) {
+    const opt = (id, lab, list, cur) => `<div><label class="note" for="${id}">${lab}</label><select id="${id}">${list.map(([v, l]) => `<option value="${esc(v)}"${cur === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`;
+    const paysL = [...new Set(OPPORTUNITES.flatMap(oppPays))].sort((a, b) => (PAYS[a] || a).localeCompare(PAYS[b] || b, "fr"));
+    const actL = [...new Set(OPPORTUNITES.flatMap(oppActs))].sort((a, b) => actById[a].n.localeCompare(actById[b].n, "fr"));
+    const progL = [...new Set(OPPORTUNITES.map(o => o.prog).filter(id => byId[id]))].sort((a, b) => byId[a].n.localeCompare(byId[b].n, "fr"));
+    const mch = [["all", "Tous les métiers"]].concat(Object.entries(METIERS).map(([k, m]) => [k, m.court]))
+      .map(([k, l]) => `<button class="fchip" type="button" data-om="${k}" aria-pressed="${state.om === k}">${k !== "all" ? `<span class="sw" style="background:var(--m-${k})"></span>` : ""}${esc(l)}</button>`).join("");
+    const sch = [["all", "Tous les statuts"]].concat(Object.entries(OPP_STATUTS).map(([k, s]) => [k, s.nom]))
+      .map(([k, l]) => `<button class="fchip" type="button" data-ost="${k}" aria-pressed="${state.ost === k}">${k !== "all" ? `<span class="sw st-${k}" style="background:var(--sc)"></span>` : ""}${esc(l)}</button>`).join("");
+    return `<div class="view-head"><h2>Prospection</h2>${modes}
+      <p>Opportunités industrielles pour trois métiers : MLI et isolation thermique, harnais électriques, structures et panneaux. Chaque fiche dit qui achète, ce qui est documenté et ce qui ne l'est pas. Aucune valeur de marché n'est estimée et le budget d'un programme n'entre pas dans le score. Sources vérifiées le ${fmtD(DATE_VERIF)}.</p></div>
+      <div class="opp-legend">${Object.entries(OPP_STATUTS).map(([k, s]) => `<div class="st-${k}">${ostTag(k)} <span class="note">${esc(s.def)}</span></div>`).join("")}</div>
+      <div class="filters">
+        <div class="fchips" id="oms">${mch}</div>
+        <div class="fchips" id="osts" style="margin-top:8px">${sch}</div>
+        <div class="opp-search">
+          <div><label class="note" for="oq">Rechercher</label><input id="oq" type="search" placeholder="ex. Toulouse, radar, coiffe…" value="${esc(state.oq)}"></div>
+          ${opt("opays", "Pays", [["all", "Tous les pays"]].concat(paysL.map(p => [p, PAYS[p] || p])), state.opays)}
+          ${opt("oact", "Acteur", [["all", "Tous les acteurs"]].concat(actL.map(a => [a, actById[a].n])), state.oact)}
+          ${opt("oprog", "Programme", [["all", "Tous les programmes"]].concat(progL.map(p => [p, byId[p].n])), state.oprog)}
+          ${opt("ophase", "Phase", [["all", "Toutes les phases"]].concat(Object.entries(PHASES).map(([k, p]) => [k, p.nom])), state.ophase)}
+          ${opt("obc", "Confiance", [["all", "Toutes"], ["A", "A : vérifiée"], ["B", "B : publiée"], ["C", "C : estimation"]], state.obc)}
+          ${opt("osort", "Trier par", [["ech", "Échéance"], ["score", "Score"]], state.osort)}
+        </div>
+      </div>
+      <div class="fin-kpis" id="okpis"></div>
+      <div class="pros-tools"><button type="button" class="reset" data-oreset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="ocsv">Télécharger les opportunités (CSV)</button></div>
+      <div id="olist"></div>
+      <section class="opp-sec"><h3>Prochaines actions</h3><p class="note">Pour les opportunités affichées, par score décroissant. Ce sont des pistes de démarche, pas des engagements.</p><ol class="act-list" id="oacts"></ol></section>
+      <section class="opp-sec"><h3>Journal des événements commerciaux</h3>
+        <div class="opp-search" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">${opt("etype", "Type d'événement", [["all", "Tous les types"]].concat(Object.entries(EVT_TYPES)), state.etype)}<div><span class="note">Filtres appliqués</span><span class="note">Métier, pays, acteur et programme ci-dessus</span></div></div>
+        <ul class="evt-list" id="oevts" style="margin-top:10px"></ul></section>
+      <section class="opp-sec"><h3>Comment le score est calculé</h3>
+        <p class="note">Six critères à poids égal, notés de 0 à 3, soit 18 points au plus. Adéquation technique : 3 si une source cite le lot ou son fournisseur, 2 pour un engin complet en fabrication, 1 si le matériel de vol est prévu, 0 sinon. Maturité : 3 en production série, 2 en réalisation (C/D), 1 en phase B, 0 en étude. Volume : 3 au-delà de 20 unités, 2 de 5 à 20, 1 de 2 à 4, 0 pour une seule ou une quantité inconnue. Proximité : 3 si l'échéance documentée tombe dans les 12 mois, 2 dans les 24 mois, 1 au-delà ou si la date est estimée, 0 si elle est inconnue. Accessibilité : jugement commercial à saisir sur chaque fiche, enregistré seulement dans ce navigateur. Qualité : 3 pour une confiance A vérifiée depuis moins de 6 mois, 2 pour A ou B, 1 pour C, 0 si la source la plus récente a plus de 2 ans.</p></section>`;
+  }
+  function oppCard({ o, sc }) {
+    const p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
+    const rows = SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("");
+    const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
+    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}">
+      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4>${ostTag(o.statut)}</div>
+      <div>${mTags(o.metiers)}</div>
+      <div class="score" title="Score explicable sur 18"><b>${sc.total}</b><span class="note">/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span></div>
+      <dl>
+        ${p ? `<dt>Programme</dt><dd><button type="button" class="lnk" data-goto="${p.id}">${esc(p.n)}</button></dd>` : ""}
+        <dt>Acheteur</dt><dd>${o.acheteur.map(actLink).join(", ")}${o.client && !o.acheteur.includes(o.client) ? ` <span class="note">· client final : ${actLink(o.client)}</span>` : ""}</dd>
+        <dt>Site</dt><dd>${site ? `${esc(site.n)} <span class="note">(${esc(site.txt)})</span>` : '<span class="note">Non documenté</span>'}</dd>
+        <dt>Lot</dt><dd>${esc(o.lot)}</dd>
+        <dt>Phase</dt><dd>${esc((PHASES[o.phase] || PHASES.nd).nom)}</dd>
+        <dt>Échéance</dt><dd>${o.ech ? `<span class="mono">${esc(fmtD(o.ech.d))}</span> ${esc(o.ech.lib)}${o.ech.doc ? "" : ' <span class="libre">estimation</span>'}` : '<span class="note">Non documentée</span>'}</dd>
+        <dt>Quantité</dt><dd>${esc(o.qte.lib)}</dd>
+        <dt>Fabrication</dt><dd>${esc({ interne: "Interne", externe: "Externe", mixte: "Mixte", inconnu: "Interne ou externe : non documenté" }[o.fab.mode])}. ${esc(o.fab.txt)}${(o.four || []).length ? ` <span class="note">Fournisseurs cités : ${o.four.map(actLink).join(", ")}</span>` : ""}</dd>
+        <dt>Valeur</dt><dd>${o.valeur ? esc(o.valeur) : '<span class="note">Non estimée (aucune méthode défendable)</span>'}</dd>
+        <dt>Confiance</dt><dd><span class="conf">${o.bc}</span></dd>
+      </dl>
+      ${o.note ? `<p class="opp-note">${esc(o.note)}</p>` : ""}
+      <p class="opp-act"><b>Prochaine action.</b> ${esc(o.action)}</p>
+      <details><summary>Détail du score et accessibilité</summary>
+        <table class="sc-tab">${rows}</table>
+        <p class="note" style="margin-top:6px"><label>Accessibilité du donneur d'ordre (votre appréciation, gardée dans ce navigateur) : <select class="oacc" data-oid="${o.id}"><option value=""${acc === "" ? " selected" : ""}>non évaluée</option>${[0, 1, 2, 3].map(n => `<option value="${n}"${acc === String(n) ? " selected" : ""}>${n}</option>`).join("")}</select></label></p>
+      </details>
+      <details><summary>${o.sources.filter(Boolean).length} source${o.sources.filter(Boolean).length > 1 ? "s" : ""}</summary><ul class="opp-src">${o.sources.filter(Boolean).map(s => `<li><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)} ↗</a> <span class="note">publiée : ${esc(fmtD(s.pub))} · vérifiée : ${esc(fmtD(s.verif))}</span></li>`).join("")}</ul></details>
+      <p class="note"><button type="button" class="lnk" data-share="opp/${o.id}">Copier le lien de cette opportunité</button></p>
+    </article>`;
+  }
+  function renderOpp() {
+    const el = document.getElementById("olist");
+    if (!el) return;
+    const rows = oppRows();
+    document.querySelectorAll("#oms .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.om === state.om));
+    document.querySelectorAll("#osts .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.ost === state.ost));
+    const n = st => rows.filter(r => r.o.statut === st).length;
+    document.getElementById("okpis").innerHTML = [
+      ["Opportunités affichées", rows.length], ["Confirmées", n("confirmee")], ["Probables", n("probable")], ["À surveiller", n("surveiller")],
+      ["Échéance dans les 12 mois", rows.filter(r => r.o.ech && r.o.ech.doc && moisEntre(DATE_VERIF, r.o.ech.d) >= 0 && moisEntre(DATE_VERIF, r.o.ech.d) <= 12).length]
+    ].map(([l, v]) => `<div class="kpi"><span>${l}</span><b class="mono">${v}</b></div>`).join("");
+    el.innerHTML = rows.length ? `<div class="pros-grid">${rows.map(oppCard).join("")}</div>` : `<p class="note">Aucune opportunité ne correspond. Élargissez les filtres.</p>`;
+    document.getElementById("oacts").innerHTML = rows.slice().sort((a, b) => b.sc.total - a.sc.total).map(({ o, sc }) =>
+      `<li class="st-${o.statut}"><span class="mono">${sc.total}/18</span> · <button type="button" class="lnk" data-opp="${o.id}">${esc(o.titre)}</button> ${ostTag(o.statut)}<br>${esc(o.action)}</li>`).join("") || `<li class="note">Aucune action pour ces filtres.</li>`;
+    const ok = new Set(rows.map(r => r.o.id));
+    const fil = state.om !== "all" || state.opays !== "all" || state.oact !== "all" || state.oprog !== "all" || state.ost !== "all" || state.ophase !== "all" || state.obc !== "all" || state.oq.trim();
+    const evs = EVENEMENTS.filter(e => (state.etype === "all" || e.type === state.etype) &&
+      (!fil || (e.opp && ok.has(e.opp)) || (state.oact !== "all" && e.act === state.oact) || (state.oprog !== "all" && e.prog === state.oprog)))
+      .filter(e => state.om === "all" || !e.metiers.length || e.metiers.includes(state.om) || (e.opp && ok.has(e.opp)))
+      .sort((a, b) => b.d.localeCompare(a.d));
+    document.getElementById("oevts").innerHTML = evs.map(e => `<li${e.opp && oppById[e.opp] ? ` class="st-${oppById[e.opp].statut}"` : ""}><span class="ed">${esc(fmtD(e.d))}</span><span class="evt-ty">${esc(EVT_TYPES[e.type])}</span>${esc(e.txt)}
+      <span class="note">${actById[e.act] ? " · " + actLink(e.act) : ""}${e.prog && byId[e.prog] ? ` · <button type="button" class="lnk" data-goto="${e.prog}">${esc(byId[e.prog].n)}</button>` : ""}${e.opp && oppById[e.opp] ? ` · <button type="button" class="lnk" data-opp="${e.opp}">voir l'opportunité</button>` : ""} · ${e.src ? `<a href="${esc(e.src.u)}" target="_blank" rel="noopener">source ↗</a> (vérifiée le ${esc(fmtD(e.src.verif))})` : "source non documentée"} <span class="conf">${e.bc}</span></span></li>`).join("") || `<li class="note">Aucun événement pour ces filtres.</li>`;
+  }
+  function gotoOpp(id, opts) {
+    opts = opts || {};
+    if (!oppById[id]) return;
+    if (!oppRows().some(r => r.o.id === id)) Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "" });
+    state.pmode = "opp"; rendered.prospection = false;
+    show("prospection", { noHash: true, keepScroll: true });
+    if (!opts.noHash) setHash("opp/" + id, opts.replace);
+    const el = document.getElementById("opp-" + id);
+    if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1800); }
+  }
+  function oppCsv() {
+    const rows = oppRows();
+    const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+    const head = ["Opportunité", "Statut", "Métiers", "Programme", "Acheteur", "Client final", "Pays", "Site", "Lot", "Phase", "Échéance", "Échéance (libellé)", "Échéance estimée", "Quantité", "Fabrication", "Fournisseurs cités", "Valeur", "Confiance", "Score /18"].concat(SCORE_CRITERES.map(c => c[1])).concat(["Prochaine action", "Remarque", "Sources (URL | publiée | vérifiée)"]);
+    const lines = [head.map(cell).join(";")].concat(rows.map(({ o, sc, pays }) => [o.titre, OPP_STATUTS[o.statut].nom, o.metiers.map(m => METIERS[m].court).join(", "), byId[o.prog] ? byId[o.prog].n : "",
+      o.acheteur.map(id => actById[id] ? actById[id].n : id).join(", "), o.client && actById[o.client] ? actById[o.client].n : "", pays.map(p => PAYS[p] || p).join(", "),
+      o.site ? SITES.find(x => x.id === o.site).n : "", o.lot, (PHASES[o.phase] || PHASES.nd).nom, o.ech ? o.ech.d : "", o.ech ? o.ech.lib : "", o.ech && !o.ech.doc ? "oui" : "non",
+      o.qte.lib, o.fab.txt, (o.four || []).map(id => actById[id].n).join(", "), o.valeur || "non estimée", o.bc, sc.total].concat(SCORE_CRITERES.map(([k]) => sc[k][0] + " – " + sc[k][1]))
+      .concat([o.action, o.note || "", o.sources.filter(Boolean).map(s => `${s.u} | ${s.pub || "non documentée"} | ${s.verif}`).join(" ; ")]).map(cell).join(";")));
+    const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "atlas-opportunites.csv";
     document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
   }
 
@@ -6608,9 +7355,10 @@ CONVERGENCES.push(
     PROGRAMMES.map(p => ({ k: "prog", id: p.id, t: p.n, s: `${FAMILLES[famOf(p)].court} · ${STATUTS[p.st]}`, q: norm([p.n, p.sub, p.id].join(" ")) })),
     ACTEURS.map(a => ({ k: a.c === "lab" ? "lab" : "act", id: a.id, t: a.n, s: `${CAT_ACTEURS[a.c]} · ${PAYS[a.p] || a.p}`, q: norm([a.n, a.v, a.id].join(" ")) })),
     Object.entries(PAYS).map(([c, n]) => ({ k: "pays", id: c, t: n, s: `${ACTEURS.filter(a => a.p === c).length} acteurs`, q: norm(n + " " + c) })),
-    GLOSSAIRE.map(([t, d]) => ({ k: "glo", id: t, t, s: "Glossaire", q: norm(t) }))
+    GLOSSAIRE.map(([t, d]) => ({ k: "glo", id: t, t, s: "Glossaire", q: norm(t) })),
+    OPPORTUNITES.map(o => ({ k: "opp", id: o.id, t: o.titre, s: `${OPP_STATUTS[o.statut].nom} · ${o.metiers.map(m => METIERS[m].court).join(", ")}`, q: norm([o.titre, o.lot, o.id].join(" ")) }))
   );
-  const KLAB = { prog: "Programme", act: "Acteur", lab: "Laboratoire", pays: "Pays", glo: "Sigle" };
+  const KLAB = { prog: "Programme", act: "Acteur", lab: "Laboratoire", pays: "Pays", glo: "Sigle", opp: "Opportunité" };
   let gsel = 0, gres = [];
   function gsearch(v) {
     const q = norm(v.trim());
@@ -6630,6 +7378,7 @@ CONVERGENCES.push(
     if (x.k === "prog") goto(x.id);
     else if (x.k === "act" || x.k === "lab") gotoActor(x.id);
     else if (x.k === "pays") { state.apays = x.id; state.acat = "all"; state.aq = ""; state.asel = null; rendered.acteurs = false; show("acteurs"); }
+    else if (x.k === "opp") gotoOpp(x.id);
     else if (x.k === "glo") { show("glossaire"); const el = [...document.querySelectorAll("#v-glossaire dt, #v-glossaire b, #v-glossaire strong")].find(e => e.textContent.trim() === x.id); if (el) el.scrollIntoView({ block: "center" }); }
   }
   function searchUi() {
@@ -6672,7 +7421,7 @@ CONVERGENCES.push(
         ${entry("fiches", "Un programme", "Fiche détaillée : qui paie, qui construit, quand, combien")}
         ${entry("acteurs", "Un acteur", "Annuaire, fiche, groupe, programmes et relations")}
         ${entry("reseau", "Qui travaille avec qui", "Cartographie des groupes, contrats et coopérations")}
-        ${entry("prospection", "Des marchés à prendre", "Programmes en développement, prochains jalons, export CSV")}
+        ${entry("prospection", "Des marchés à prendre", "Opportunités MLI, harnais et structures ; programmes en développement ; export CSV")}
       </div>
       <div class="ov-grid">
         <div class="panel"><h3 class="ch-t">Programmes par famille</h3>
@@ -6971,6 +7720,11 @@ CONVERGENCES.push(
     const rcat = e.target.closest("[data-rcat]"); if (rcat) { const k = rcat.dataset.rcat; R.cats = R.cats.includes(k) ? R.cats.filter(x => x !== k) : R.cats.concat(k); renderReseau(); return; }
     const rz = e.target.closest("[data-rz]"); if (rz) { zoomBy(+rz.dataset.rz); return; }
     if (e.target.closest("[data-rreset]")) { Object.assign(R, { depth: 1, nats: { capital: true, contrat: true, coop: true, part: true }, pays: "all", fam: "all", cats: [], y0: 1990, y1: 2040, zoom: 1, px: 0, py: 0 }); rendered.reseau = false; show("reseau", { noHash: true, keepScroll: true }); return; }
+    const pm = e.target.closest("[data-pmode]"); if (pm) { state.pmode = pm.dataset.pmode; rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    const om = e.target.closest("[data-om]"); if (om) { state.om = om.dataset.om; renderOpp(); return; }
+    const ost = e.target.closest("[data-ost]"); if (ost) { state.ost = ost.dataset.ost; renderOpp(); return; }
+    const op = e.target.closest("[data-opp]"); if (op) { gotoOpp(op.dataset.opp); return; }
+    if (e.target.closest("[data-oreset]")) { Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-preset]")) { Object.assign(state, { pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-fireset]")) { state.q = ""; state.fam = "all"; rendered.fiches = false; show("fiches", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-areset]")) { Object.assign(state, { acat: "all", apays: "all", aq: "", asel: null }); rendered.acteurs = false; show("acteurs", { noHash: true, keepScroll: true }); return; }
@@ -7021,6 +7775,10 @@ CONVERGENCES.push(
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
     if (e.target.id === "pq") { state.pq = e.target.value; renderPros(); }
+    if (e.target.id === "oq") { state.oq = e.target.value; renderOpp(); }
+    const osel = { opays: "opays", oact: "oact", oprog: "oprog", ophase: "ophase", obc: "obc", osort: "osort", etype: "etype" }[e.target.id];
+    if (osel) { state[osel] = e.target.value; renderOpp(); }
+    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; }
     if (e.target.id === "gq") gsearch(e.target.value);
     if (e.target.id === "rdepth") { R.depth = +e.target.value; renderReseau(); }
     if (e.target.id === "rpays") { R.pays = e.target.value; renderReseau(); }
@@ -7047,6 +7805,7 @@ CONVERGENCES.push(
     lastHash = location.hash;
     if (v === "fiche" && byId[id]) { if (state.view === "fiches" && rendered.fiches && !initial) { state.sel = id; renderList(); renderDetail(); } else goto(id, o); return true; }
     if (v === "acteur" && actById[id]) { gotoActor(id, o); return true; }
+    if (v === "opp" && oppById[id]) { gotoOpp(id, o); return true; }
     if (v === "reseau" && resolveNode(id)) { gotoReseau(id, o); return true; }
     if (RENDER[v]) { if (v !== state.view || initial) show(v, o); return true; }
     return false;
@@ -7054,7 +7813,7 @@ CONVERGENCES.push(
   const onNav = () => { if (location.hash !== lastHash) fromHash(false); };
   window.addEventListener("popstate", onNav);
   window.addEventListener("hashchange", onNav);
-  document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); });
+  document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); if (e.target.id === "ocsv") oppCsv(); });
 
   header();
   searchUi();
