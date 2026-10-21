@@ -4,7 +4,7 @@ const path = require("path");
 let chromium; try { ({ chromium } = require("playwright")); } catch (e) { ({ chromium } = require("/opt/npm-tools/node_modules/playwright")); }
 const out = process.argv[2];
 const url = "file://" + path.join(__dirname, "..", "index.html");
-const views = ["mecanique", "domaines", "fiches", "acteurs", "frise", "genealogie", "convergences", "industrie", "finances", "glossaire"];
+const views = ["mecanique", "domaines", "fiches", "acteurs", "prospection", "frise", "genealogie", "convergences", "industrie", "finances", "glossaire"];
 (async () => {
   const browser = await chromium.launch();
   const errors = [];
@@ -43,6 +43,17 @@ const views = ["mecanique", "domaines", "fiches", "acteurs", "frise", "genealogi
     await page.evaluate(() => { location.hash = "acteur/kda"; }); await page.waitForTimeout(200);
     const kda = await page.evaluate(() => document.getElementById("act-kda") && document.getElementById("act-kda").textContent);
     if (!kda || !/KSAT/.test(kda)) errors.push(`${label} : fiche KDA`);
+    await page.evaluate(() => { location.hash = "prospection"; }); await page.waitForTimeout(200);
+    const np = await page.evaluate(() => document.querySelectorAll("#plistp .pros").length);
+    await page.click("#pnon"); await page.waitForTimeout(150);
+    const nlib = await page.evaluate(() => document.querySelectorAll("#plistp .pros").length);
+    if (!np || !nlib || nlib >= np) errors.push(`${label} : vue Prospection (${np} programmes, ${nlib} sans maître d'œuvre)`);
+    const dl = page.waitForEvent("download", { timeout: 3000 }).catch(() => null);
+    await page.click("#pcsv"); const d = await dl;
+    if (!d) errors.push(`${label} : export CSV de la prospection`);
+    if (out) await page.screenshot({ path: path.join(out, `${label}-prospection.png`) });
+    await page.click("#pnon"); await page.waitForTimeout(100);
+    console.log(`${label} : prospection ${np} programmes, dont ${nlib} sans maître d'œuvre attribué`);
     await page.evaluate(() => { location.hash = "finances"; }); await page.waitForTimeout(200);
     const lnk = await page.evaluate(() => document.querySelectorAll("#finBody [data-actor]").length);
     if (!lnk) errors.push(`${label} : pas de lien acteur dans les contrats`);

@@ -276,6 +276,20 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .struct h4 { margin: 0; font-size: 14.5px; }
 .struct ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; font-size: 13.5px; }
 .eng { font-family: var(--font-mono); font-size: 11px; }
+.pros-search { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); margin-top: 10px; }
+.pnon { display: flex; gap: 8px; align-items: center; font-size: 13.5px; margin-top: 10px; }
+.pnon input { width: auto; flex: none; margin: 0; }
+.pros-tools { margin: 4px 0 14px; display: flex; justify-content: flex-end; }
+.pros-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.pros { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--fc); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.pros-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.pros-t { font-family: var(--font-display); font-size: 16.5px; font-weight: 700; color: var(--ink); }
+.pros dl { margin: 0; display: grid; grid-template-columns: minmax(90px, auto) minmax(0, 1fr); gap: 4px 10px; font-size: 13.5px; }
+.pros dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+.pros dd { margin: 0; }
+.pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
+.libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
+@media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1000px) { .act-top { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .kpis, .act-search { grid-template-columns: minmax(0, 1fr); } .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -408,6 +422,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>
     <section id="v-acteurs" data-view hidden></section>
+    <section id="v-prospection" data-view hidden></section>
     <section id="v-frise" data-view hidden></section>
     <section id="v-genealogie" data-view hidden></section>
     <section id="v-convergences" data-view hidden></section>
@@ -433,6 +448,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 /*__DATA6__*/
 /*__DATA7__*/
 /*__DATA8__*/
+/*__DATA9__*/
 </script>
 <script>
 /*__APP__*/

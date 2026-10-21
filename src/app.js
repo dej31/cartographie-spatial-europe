@@ -12,6 +12,7 @@
     ["domaines", "Domaines"],
     ["fiches", "Fiches"],
     ["acteurs", "Acteurs"],
+    ["prospection", "Prospection"],
     ["frise", "Frise"],
     ["genealogie", "Généalogie"],
     ["convergences", "Convergences"],
@@ -20,7 +21,7 @@
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" };
 
   function chip(id) {
     const p = byId[id];
@@ -32,7 +33,7 @@
   /* ---- Acteurs et relations (phase 2) ---- */
   const REL = typeof RELATIONS !== "undefined" ? RELATIONS : [];
   const actById = Object.fromEntries(ACTEURS.map(a => [a.id, a]));
-  const ROLES_PROG = ["maître d'œuvre", "maître d'ouvrage", "sous-traitant", "fournisseur", "opérateur", "utilisateur", "financeur", "partenaire scientifique", "partenaire", "bénéficiaire", "consortium"];
+  const ROLES_PROG = ["maître d'œuvre", "maître d'ouvrage", "sous-traitant", "fournisseur", "opérateur", "utilisateur", "financeur", "partenaire scientifique", "partenaire", "bénéficiaire", "candidat", "consortium"];
   const ORG_TYPES = ["filiale", "participation", "coentreprise", "consortium", "partenariat", "acquisition", "fusion", "projet de fusion", "essaimage", "fournisseur"];
   const ENG = { annonce: "Annoncé", signe: "Signé", verse: "Versé" };
   function actChip(id, extra) {
@@ -164,7 +165,7 @@
     const fch = [["all", "Tous", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
       .map(([k, l, c]) => `<button class="fchip" type="button" data-fam="${k}" aria-pressed="${state.fam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
     return `<div class="view-head"><h2>Fiches programmes</h2>
-      <p>Même grille pour chaque programme, avec des liens vers les pages de l'industriel et de l'agence. Les chiffres portent un indice de confiance : A vérifié en octobre 2026, B publié mais non revérifié, C estimation ou donnée non publique. Le symbole ◧ signale les dix fiches pilotes avec visuel et schéma à l'échelle.</p></div>
+      <p>Même grille pour chaque programme, avec des liens vers les pages de l'industriel et de l'agence. Les chiffres portent un indice de confiance : A vérifié en octobre 2026, B publié mais non revérifié, C estimation ou donnée non publique. Le symbole ◧ signale les fiches qui ont une photo, des dimensions ou un schéma à l'échelle (${Object.keys(typeof VISUELS !== "undefined" ? VISUELS : {}).length} fiches).</p></div>
       <div class="fiches">
         <div>
           <div class="filters">
@@ -355,6 +356,83 @@
     document.getElementById("paysBars").innerHTML = rows.map(([p, n]) => `<button type="button" class="hbar pbar${state.apays === p ? " on" : ""}" data-apays="${p}"><span>${esc(PAYS[p] || p)}</span><span class="track"><i style="width:${n / max * 100}%;background:var(--accent)"></i></span><span class="val">${n}</span></button>`).join("");
   }
 
+
+  /* ================= VUE : PROSPECTION ================= */
+  const NON_ATTR = /non attribu|non publi|à définir|à vérifier|non retenu|candidat/i;
+  function prochainJalon(p) {
+    const y = Math.floor(NOW);
+    const f = p.jal.filter(j => j[0] > y).sort((a, b) => a[0] - b[0]);
+    return f.length ? f[0] : null;
+  }
+  function dernierJalon(p) {
+    const f = p.jal.filter(j => j[0] <= Math.floor(NOW)).sort((a, b) => b[0] - a[0]);
+    return f.length ? f[0] : null;
+  }
+  function prosRows() {
+    const q = state.pq.trim().toLowerCase();
+    return PROGRAMMES.filter(p => (p.st === "dev" || p.st === "plan" || (p.pros && p.st !== "fin" && p.st !== "ann")))
+      .map(p => ({ p, j: prochainJalon(p), libre: NON_ATTR.test(p.moe), acts: ACTEURS.filter(a => a.pr.includes(p.id)).length }))
+      .filter(r => (state.pfam === "all" || famOf(r.p) === state.pfam) && (!state.pnon || r.libre) &&
+        (state.phz === "all" || (r.j && r.j[0] <= +state.phz)) &&
+        (!q || [r.p.n, r.p.sub, r.p.moe, r.p.moa, r.p.fin, r.p.pros || "", r.p.app].join(" ").toLowerCase().includes(q)))
+      .sort((a, b) => state.psort === "nom" ? a.p.n.localeCompare(b.p.n, "fr") : ((a.j ? a.j[0] : 9999) - (b.j ? b.j[0] : 9999)) || a.p.n.localeCompare(b.p.n, "fr"));
+  }
+  function vProspection() {
+    const fch = [["all", "Toutes", null]].concat(Object.entries(FAMILLES).map(([k, f]) => [k, f.court, k]))
+      .map(([k, l, c]) => `<button class="fchip" type="button" data-pfam="${k}" aria-pressed="${state.pfam === k}">${c ? `<span class="sw" style="background:${col(c)}"></span>` : ""}${l}</button>`).join("");
+    return `<div class="view-head"><h2>Prospection</h2>
+      <p>Les programmes en développement ou en projet, avec l'acheteur, l'attributaire connu, le prochain jalon et les opportunités documentées. Un programme dont le maître d'œuvre n'est pas encore attribué ou publié est signalé : c'est souvent là que les marchés restent à prendre. Tout vient des fiches et de leurs sources ; rien n'est extrapolé.</p></div>
+      <div class="filters">
+        <div class="fchips" id="pfams">${fch}</div>
+        <div class="act-search pros-search">
+          <div><label class="note" for="pq">Rechercher</label><input id="pq" type="search" placeholder="ex. radar, Airbus, constellation…" value="${esc(state.pq)}"></div>
+          <div><label class="note" for="phz">Prochain jalon</label><select id="phz">${[["all", "Tous horizons"], ["2027", "D'ici fin 2027"], ["2028", "D'ici fin 2028"], ["2030", "D'ici fin 2030"]].map(([v, l]) => `<option value="${v}"${state.phz === v ? " selected" : ""}>${l}</option>`).join("")}</select></div>
+          <div><label class="note" for="psort">Trier par</label><select id="psort"><option value="jal"${state.psort === "jal" ? " selected" : ""}>Prochain jalon</option><option value="nom"${state.psort === "nom" ? " selected" : ""}>Nom</option></select></div>
+        </div>
+        <label class="pnon"><input type="checkbox" id="pnon"${state.pnon ? " checked" : ""}> Seulement les programmes sans maître d'œuvre attribué ou publié</label>
+      </div>
+      <div class="fin-kpis" id="pkpis"></div>
+      <div class="pros-tools"><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
+      <div id="plistp"></div>`;
+  }
+  function renderPros() {
+    const el = document.getElementById("plistp");
+    if (!el) return;
+    const rows = prosRows();
+    document.querySelectorAll("#pfams .fchip").forEach(b => b.setAttribute("aria-pressed", b.dataset.pfam === state.pfam));
+    const y = Math.floor(NOW);
+    document.getElementById("pkpis").innerHTML = [
+      ["Programmes affichés", rows.length],
+      ["Sans maître d'œuvre attribué", rows.filter(r => r.libre).length],
+      [`Prochain jalon en ${y + 1}`, rows.filter(r => r.j && r.j[0] <= y + 1).length],
+      ["Avec opportunités documentées", rows.filter(r => r.p.pros).length]
+    ].map(([l, v]) => `<div class="kpi"><span>${l}</span><b class="mono">${v}</b></div>`).join("");
+    el.innerHTML = rows.length ? `<div class="pros-grid">${rows.map(({ p, j, libre, acts }) => `
+      <article class="pros" style="--fc:${col(famOf(p))}">
+        <div class="pros-h"><button type="button" class="lnk pros-t" data-goto="${p.id}">${esc(p.n)}</button>${pill(p.st)}</div>
+        <p class="note">${esc(FAMILLES[famOf(p)].court)} · ${esc(DOMAINES[p.d].nom)}</p>
+        <dl>
+          <dt>Acheteur</dt><dd>${esc(p.moa)}</dd>
+          <dt>Attribution</dt><dd>${libre ? '<span class="libre">À attribuer ou non publié</span> ' : ""}${esc(p.moe)}</dd>
+          ${(() => { const d = dernierJalon(p); return d ? `<dt>Dernier jalon</dt><dd><span class="mono">${d[0]}</span> ${esc(d[1])}</dd>` : ""; })()}
+          <dt>Prochain jalon</dt><dd>${j ? `<span class="mono">${j[0]}</span> ${esc(j[1])}` : '<span class="note">Non publié</span>'}</dd>
+          <dt>Budget</dt><dd>${esc(p.bud)} <span class="conf">${p.bc}</span></dd>
+          ${p.pros ? `<dt>Opportunités</dt><dd class="pros-o">${esc(p.pros)}</dd>` : ""}
+        </dl>
+        <p class="note">${acts} acteur${acts > 1 ? "s" : ""} impliqué${acts > 1 ? "s" : ""} · ${(LIENS[p.id] || []).length} source${(LIENS[p.id] || []).length > 1 ? "s" : ""}</p>
+      </article>`).join("")}</div>` : `<p class="note">Aucun programme ne correspond. Élargissez la famille ou l'horizon.</p>`;
+  }
+  function prosCsv() {
+    const rows = prosRows();
+    const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+    const head = ["Programme", "Famille", "Domaine", "Statut", "Acheteur", "Maître d'œuvre", "À attribuer", "Prochain jalon (année)", "Prochain jalon", "Budget", "Confiance", "Opportunités", "Acteurs impliqués", "Sources"];
+    const lines = [head.map(cell).join(";")].concat(rows.map(({ p, j, libre }) => [p.n, FAMILLES[famOf(p)].nom, DOMAINES[p.d].nom, STATUTS[p.st], p.moa, p.moe, libre ? "oui" : "non", j ? j[0] : "", j ? j[1] : "", p.bud, p.bc, p.pros || "",
+      ACTEURS.filter(a => a.pr.includes(p.id)).map(a => a.n).join(", "), (LIENS[p.id] || []).map(l => l[2]).join(" ")].map(cell).join(";")));
+    const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "atlas-prospection.csv";
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
 
   /* ================= VUE : FINANCES ================= */
   const fmtM = v => v >= 1000 ? (v / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " Md€" : v.toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M€";
@@ -792,7 +870,7 @@
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   function show(view, opts) {
@@ -805,6 +883,7 @@
     if (view === "fiches") { renderList(); renderDetail(); }
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
+    if (view === "prospection") renderPros();
     if (view === "finances") renderFin();
     if (view === "industrie") renderParc();
 
@@ -838,9 +917,10 @@
   }
 
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-actor],[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
+    const t = e.target.closest("[data-actor],[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-pfam],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
     if (!t) return;
     if (t.dataset.actor) { gotoActor(t.dataset.actor); return; }
+    if (t.dataset.pfam) { state.pfam = t.dataset.pfam; renderPros(); return; }
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
     else if (t.dataset.sel) {
@@ -868,6 +948,10 @@
   document.addEventListener("input", e => {
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
+    if (e.target.id === "pq") { state.pq = e.target.value; renderPros(); }
+    if (e.target.id === "phz") { state.phz = e.target.value; renderPros(); }
+    if (e.target.id === "psort") { state.psort = e.target.value; renderPros(); }
+    if (e.target.id === "pnon") { state.pnon = e.target.checked; renderPros(); }
     if (e.target.id === "pcst") { state.pcst = e.target.checked; renderParc(); }
     if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
     if (e.target.id === "fy0") { state.y0 = +e.target.value; if (state.y1 < state.y0) state.y1 = state.y0; renderFin(); }
@@ -886,6 +970,7 @@
     return false;
   }
   window.addEventListener("hashchange", fromHash);
+  document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); });
 
   header();
   if (fromHash()) return;

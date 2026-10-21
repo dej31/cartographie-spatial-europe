@@ -4,14 +4,15 @@ Cartographie interactive de l'écosystème spatial européen : observation de la
 
 Contenu (octobre 2026) :
 
-- **135 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
-- **177 acteurs**, dont 36 laboratoires et organismes de recherche, répartis dans 20 pays.
-- **132 relations sourcées** :
+- **153 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
+- **190 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
+- **188 relations sourcées** :
   - entre organisations : groupe, filiale, coentreprise, consortium, acquisition, fusion ;
   - entre un acteur et un programme : maître d'œuvre, sous-traitant, fournisseur, opérateur, utilisateur, financeur, partenaire scientifique.
-- **180 unités** (satellites et vols), 34 contrats publics, 17 levées de fonds, 36 lignées, 44 convergences et 318 liens sources.
+- **191 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 47 convergences et 362 liens sources.
+- **49 fiches illustrées** : 32 photos libres de Wikimedia Commons, des dimensions et des masses sourcées, 30 schémas à l'échelle humaine.
 
-## Les 10 vues
+## Les 11 vues
 
 | # | Vue | Contenu |
 |---|-----|---------|
@@ -19,16 +20,17 @@ Contenu (octobre 2026) :
 | 1 | Domaines | 7 familles, 21 domaines, tous les programmes |
 | 2 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle |
 | 3 | Acteurs | Annuaire filtrable (10 catégories dont « Laboratoires & recherche »), statut UE / ESA du pays, groupe, relations sourcées, structure industrielle, acquisitions et fusions |
-| 4 | Frise | 1965-2045, réalisé et prévu, jalons |
-| 5 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
-| 6 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé… |
-| 7 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
-| 8 | Finances | Contrats publics (reliés aux acteurs, avec le stade : annoncé, signé ou versé quand il est publié), levées de fonds, séries annuelles |
-| 9 | Glossaire | Sigles, indice de confiance, sources |
+| 4 | Prospection | Programmes en développement ou en projet : acheteur, attributaire, dernier et prochain jalons, budget, opportunités documentées ; filtre « sans maître d'œuvre attribué » ; export CSV |
+| 5 | Frise | 1965-2045, réalisé et prévu, jalons |
+| 6 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
+| 7 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé… |
+| 8 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
+| 9 | Finances | Contrats publics (reliés aux acteurs, avec le stade : annoncé, signé ou versé quand il est publié), levées de fonds, séries annuelles |
+| 10 | Glossaire | Sigles, indice de confiance, sources |
 
 ## Liens directs
 
-- `#domaines`, `#fiches`, `#acteurs`… ouvrent une vue. Le bouton « précédent » du navigateur fonctionne.
+- `#domaines`, `#fiches`, `#acteurs`, `#prospection`… ouvrent une vue. Le bouton « précédent » du navigateur fonctionne.
 - `#fiche/<identifiant>` ouvre une fiche programme, par exemple `#fiche/sterna`.
 - `#acteur/<identifiant>` ouvre un acteur, par exemple `#acteur/ohb-sweden`.
 
@@ -49,6 +51,7 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
   - liste `RELATIONS` ;
   - contrats reliés aux acteurs (`act`), avec leur stade (`eng`) ;
   - corrections et sources complémentaires.
+- `src/data9.js` (phase 3) : 18 programmes et 13 acteurs orientés prospection, champ `pros` (opportunités documentées), structure industrielle d'IRIS² et contrat ALADDIN, 39 fiches illustrées supplémentaires (`VISUELS`).
 
 ### Modèle des relations (`RELATIONS`)
 
@@ -93,4 +96,4 @@ node tools/smoke.js       # test navigateur (Playwright) : 10 vues, liens direct
 
 Les photos du pilote sont servies depuis Wikimedia Commons. Leurs licences sont libres ; le crédit et la licence figurent sur la page de chaque fichier.
 
-Données compilées en octobre 2026 à partir de sources publiques. Le détail de la phase 2 est dans `audit/rapport_phase2.md`.
+Données compilées en octobre 2026 à partir de sources publiques. Le détail des phases 2 et 3 est dans `audit/rapport_phase2.md` et `audit/rapport_phase3.md`.
