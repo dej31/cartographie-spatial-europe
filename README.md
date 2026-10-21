@@ -4,12 +4,12 @@ Cartographie interactive de l'écosystème spatial européen : observation de la
 
 Contenu (octobre 2026) :
 
-- **134 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
+- **135 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
 - **177 acteurs**, dont 36 laboratoires et organismes de recherche, répartis dans 20 pays.
-- **129 relations sourcées** :
+- **132 relations sourcées** :
   - entre organisations : groupe, filiale, coentreprise, consortium, acquisition, fusion ;
   - entre un acteur et un programme : maître d'œuvre, sous-traitant, fournisseur, opérateur, utilisateur, financeur, partenaire scientifique.
-- **179 unités** (satellites et vols), 33 contrats publics, 17 levées de fonds, 36 lignées, 43 convergences et 315 liens sources.
+- **180 unités** (satellites et vols), 34 contrats publics, 17 levées de fonds, 36 lignées, 44 convergences et 318 liens sources.
 
 ## Les 10 vues
 
@@ -44,7 +44,7 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
 - `src/data6.js` : unités de chaque série, NewAthena, Athena-Fidus
 - `src/data7.js` : orbites, parc de satellites, suites commerciales, SWISSto12 / HummingSat
 - `src/data8.js` (phase 2) :
-  - 23 programmes et 3 domaines, statut « Annulé » ;
+  - 24 programmes et 3 domaines, statut « Annulé » ;
   - 84 acteurs, catégorie « Laboratoires & recherche », identifiants stables des acteurs, statut UE / ESA des pays ;
   - liste `RELATIONS` ;
   - contrats reliés aux acteurs (`act`), avec leur stade (`eng`) ;

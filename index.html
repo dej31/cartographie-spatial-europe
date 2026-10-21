@@ -4156,6 +4156,17 @@ PROGRAMMES.push(
     st: "op", pred: [], succ: [],
     note: "Jusqu'à 100 images par jour d'environ 10 × 10 km. Durée de vie 7 ans, prolongeable de 3 ans." },
 
+  /* Météorologie de l'espace */
+  { id: "swing", n: "Swing", d: "msp", sub: "Premier nanosatellite de météo de l'espace de l'ESA",
+    fin: "ESA – programme Space Safety (bureau de la météo de l'espace)", moa: "ESA",
+    moe: "Hemeria (conception, intégration, lancement, mise en service, exploitation) ; centre d'opérations Planetek (Italie)", g: ["autre"], plat: "HP-IOT (Hemeria), environ 22 × 50 cm",
+    instr: "Moniteur de radiations DREAM (CNES, Steel Electronique) ; moniteur X XFM-NS (Isaware, Finlande) ; sonde de Langmuir m-NLP (EIDEL, Norvège) ; radio-occultation GNSS Aquila (Syntony)",
+    app: "Surveiller l'ionosphère, dont dépendent les télécommunications et la navigation par satellite.",
+    bud: "Contrat Hemeria : 9,8 M€ (2024)", bc: "A",
+    y0: 2024, y1: 2031, jal: [[2024, "Contrat ESA à Hemeria (nov.)"], [2027, "Lancement prévu"], [2028, "Données de routine sur le portail météo de l'espace de l'ESA"]],
+    st: "dev", pred: [], succ: [],
+    note: "Le lancement, annoncé pour 2026 à la signature, est désormais prévu en 2027 selon l'ESA." },
+
   /* Météorologie */
   { id: "sterna", n: "EPS-Sterna", d: "met", sub: "Constellation de micro-satellites de sondage micro-ondes",
     fin: "États membres d'EUMETSAT", moa: "EUMETSAT (achat par l'ESA)",
@@ -4325,12 +4336,13 @@ Object.assign(ORBITES, {
   prisma: "Héliosynchrone (orbite basse)", atlantic: "Orbites basses", grece: "Orbites basses, héliosynchrones pour la plupart",
   mikroglob: "Héliosynchrone (orbite basse)", luxeosys: "Héliosynchrone, ≈ 450 km", sterna: "Orbites basses polaires",
   xmm: "Très elliptique (période ≈ 48 h)", cheops: "Héliosynchrone (orbite basse)", proba3: "Très elliptique (apogée ≈ 60 000 km)",
-  spacerider: "Orbite basse, puis retour et atterrissage"
+  spacerider: "Orbite basse, puis retour et atterrissage", swing: "Héliosynchrone, 500 à 600 km"
 });
 PROGRAMMES.forEach(p => { if (ORBITES[p.id] && !p.orb) p.orb = ORBITES[p.id]; });
 
 /* Parc : seulement les comptages documentés ; m: null = masse non publiée */
 Object.assign(PARC, {
+  swing: { orb: 0, srv: 0, prv: 1, m: null, bc: "A" },
   celeste: { orb: 2, srv: 2, prv: 9, m: null, bc: "A" },
   scouts: { orb: 2, srv: 2, prv: 0, m: null, bc: "A" },
   phisat: { orb: 2, srv: 1, prv: 0, m: null, bc: "B" },
@@ -4351,6 +4363,7 @@ Object.assign(PARC, {
 
 /* Unités : satellites et vols */
 Object.assign(UNITES, {
+  swing: [["Swing", "2027 (prévu)", "Non documenté", "dev", "Nanosatellite Hemeria, quatre instruments"]],
   celeste: [
     ["Celeste IOD-1", "28 mars 2026", "Electron (Nouvelle-Zélande)", "op", "Satellite GMV, avec OHB"],
     ["Celeste IOD-2", "28 mars 2026", "Electron (Nouvelle-Zélande)", "op", "Satellite Thales Alenia Space"],
@@ -4418,6 +4431,7 @@ LIGNEES.push(
 /* Convergences */
 CONVERGENCES.push(
   { type: "Complémentarité", a: "celeste", b: "galg2", titre: "Navigation en orbite basse en appui de Galileo", txt: "Celeste teste une couche de satellites en orbite basse qui renforcerait Galileo face au brouillage, sans le remplacer." },
+  { type: "Complémentarité", a: "swing", b: "vigil", titre: "Météo de l'espace : un nanosatellite et une sonde lointaine", txt: "Deux missions du programme Space Safety de l'ESA : Swing observe l'ionosphère depuis l'orbite basse, Vigil observera le Soleil depuis le point de Lagrange L5." },
   { type: "Complémentarité", a: "sterna", b: "metopsg", titre: "EPS-Sterna et MetOp-SG", txt: "Des micro-satellites rafraîchissent les sondages micro-ondes entre deux passages des grands satellites polaires." },
   { type: "Complémentarité", a: "mikroglob", b: "polsaris", titre: "Pologne : optique et radar", txt: "La Pologne achète séparément un volet optique (MikroGlob, Creotech) et un volet radar (MikroSAR, ICEYE)." },
   { type: "Public-privé", a: "atlantic", b: "iceye", titre: "Constellation Atlantique : NewSpace et fonds européens", txt: "Deux États montent une constellation avec des fonds de relance de l'UE et des fournisseurs NewSpace (Open Cosmos, Satlantis, ICEYE)." },
@@ -4627,7 +4641,7 @@ ACTEURS.push(
 /* Programmes nouvellement documentés pour des acteurs existants */
 (function () {
   const add = (id, ...prs) => { const a = ACTEURS.find(x => x.id === id); if (a) prs.forEach(p => { if (!a.pr.includes(p)) a.pr.push(p); }); };
-  add("esa", "celeste", "scouts", "xmm", "cheops", "proba3", "spacerider", "flpp", "boost");
+  add("esa", "swing", "celeste", "scouts", "xmm", "cheops", "proba3", "spacerider", "flpp", "boost");
   add("cnes", "swot", "microcarb");
   add("dlr", "enmap");
   add("asi", "prisma", "spacerider");
@@ -4703,6 +4717,9 @@ const RELATIONS = [
   { de: "planet", vers: "esa", type: "fournisseur", a: 2025, txt: "Contrat pluriannuel : PlanetScope devient mission contributrice de Copernicus.", bc: "A", src: "https://investors.planet.com/news/news-details/2025/Planet-Signs-Deal-with-European-Space-Agency-ESA-Joining-the-Copernicus-Contributing-Missions/default.aspx" },
 
   /* Rôles par programme */
+  { de: "hemeria", vers: "swing", type: "maître d'œuvre", txt: "Contrat ESA de 9,8 M€ (2024) : conception, instruments, intégration, lancement et exploitation.", bc: "A", src: "https://www.esa.int/Space_Safety/Hemeria_to_implement_ESA_s_first_space_weather_nanosatellite_mission" },
+  { de: "Planetek Italia", vers: "swing", type: "sous-traitant", txt: "Centre d'opérations de la mission et livraison des données traitées à l'ESA.", bc: "A", src: "https://www.esa.int/Space_Safety/Space_weather/Swing_mission_overview" },
+  { de: "cnes", vers: "swing", type: "fournisseur", txt: "Moniteur de radiations DREAM, avec Steel Electronique.", bc: "A", src: "https://www.esa.int/Space_Safety/Space_weather/Swing_mission_overview" },
   { de: "airbus-ds", vers: "forum", type: "maître d'œuvre", txt: "Airbus DS Royaume-Uni, contrat de 160 M€ (2022).", bc: "A", src: "https://www.esa.int/Space_in_Member_States/Czechia/Kontrakt_na_navrh_a_vyrobu_druzice_FORUM_pro_ESA" },
   { de: "ohb-se", vers: "forum", type: "fournisseur", txt: "Instrument de FORUM.", bc: "A", src: "https://www.esa.int/Space_in_Member_States/Czechia/Kontrakt_na_navrh_a_vyrobu_druzice_FORUM_pro_ESA" },
   { de: "sener", vers: "forum", type: "fournisseur", txt: "Mécanismes de balayage.", bc: "B", src: "https://www.satnow.com/news/details/414-sener-aeroespacial-will-supply-scanner-mechanisms-for-the-forum-mission" },
@@ -4828,6 +4845,7 @@ CONTRATS.push(
   { a: 2024, lib: "Harmony, deux satellites", ent: "OHB", act: "ohb-system", grp: "ohb", fin: "ESA", fam: "obs", m: 280, bc: "A", prog: "harmony", eng: "signe", note: "« Plus de 280 M€ »" },
   { a: 2024, lib: "Boost!, quatre extensions de contrats", ent: "HyImpulse, Isar, Orbex, RFA", act: ["hyimpulse", "isar", "orbex", "rfa"], grp: "autre", fin: "ESA", fam: "lan", m: 44.22, bc: "A", prog: "boost", eng: "signe", note: "Montant total des quatre extensions" },
   { a: 2024, lib: "MikroGlob, constellation optique", ent: "Creotech Instruments", act: "creotech", grp: "autre", fin: "Défense nationale", fam: "def", m: 128, bc: "C", prog: "mikroglob", eng: "signe", note: "550 M PLN, converti à environ 4,3 PLN par euro" },
+  { a: 2024, lib: "Swing, nanosatellite de météo de l'espace", ent: "Hemeria", act: "hemeria", grp: "autre", fin: "ESA", fam: "met", m: 9.8, bc: "A", prog: "swing", eng: "signe" },
   { a: 2026, lib: "EPS-Sterna, satellites", ent: "OHB Sweden", act: "ohb-sweden", grp: "ohb", fin: "EUMETSAT (via l'ESA)", fam: "met", m: 248, bc: "A", prog: "sterna", eng: "signe" }
 );
 
@@ -4878,6 +4896,9 @@ Object.assign(LIENS, {
     L("Agence", "ESA – Prometheus", "https://www.esa.int/Enabling_Support/Space_Transportation/Future_space_transportation/Prometheus")],
   astris: [L("Agence", "ESA – ASTRIS pour Ariane 6", "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane/Ariane_6_targets_new_missions_with_Astris_kick_stage"),
     L("Référence", "European Spaceflight – 100 M€ pour ASTRIS au CM25", "https://europeanspaceflight.com/?p=5740")],
+  swing: [L("Agence", "ESA – Présentation de la mission Swing", "https://www.esa.int/Space_Safety/Space_weather/Swing_mission_overview"),
+    L("Agence", "ESA – Hemeria réalise Swing", "https://www.esa.int/Space_Safety/Hemeria_to_implement_ESA_s_first_space_weather_nanosatellite_mission"),
+    L("Référence", "European Spaceflight – Contrat de 9,8 M€", "https://europeanspaceflight.com/?p=4042")],
   boost: [L("Agence", "ESA – Boost!", "https://www.esa.int/Enabling_Support/Space_Transportation/Boost/Committed_to_boosting_European_launch_services")]
 });
 const addLien = (id, l) => { LIENS[id] = (LIENS[id] || []).concat([l]); };

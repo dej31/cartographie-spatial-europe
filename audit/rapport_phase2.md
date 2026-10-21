@@ -31,7 +31,7 @@ Atlas du spatial européen · 20 octobre 2026 · dépôt local `dej31/cartograph
 
 Aucune fonctionnalité n'a été retirée. Aucune fiche n'a été simplifiée. Aucun identifiant de programme n'a changé.
 
-## 2. Programmes ajoutés (23)
+## 2. Programmes ajoutés (24)
 
 | Fiche | Domaine | Points clés (vérifié) |
 |---|---|---|
@@ -47,6 +47,7 @@ Aucune fonctionnalité n'a été retirée. Aucune fiche n'a été simplifiée. A
 | Programme grec de micro-satellites | Nationaux et bilatéraux | Fonds de relance de l'UE ; Hellenic Fire System (OroraTech, mai 2026), Hyperion GR-1 (Open Cosmos Aegean, juil. 2026), CubeSats |
 | MikroGlob | Observation militaire | Pologne ; Creotech ; 550 M PLN ; 4 satellites en orbite (oct. 2026) |
 | LUXEOSys | Observation militaire | Luxembourg ; OHB Italia ; lancé le 26 août 2025 |
+| Swing (ajout du 21 oct.) | Météorologie de l'espace | Premier nanosatellite de météo de l'espace de l'ESA ; Hemeria, contrat de 9,8 M€ (2024) ; centre d'opérations Planetek ; lancement prévu en 2027 |
 | EPS-Sterna | Météorologie | EUMETSAT ; OHB Sweden, contrat de 248 M€ (mars 2026) ; précurseur : Arctic Weather Satellite (2024) |
 | ScyLight | Liaisons optiques | Ligne ARTES ; démonstrateur HydRON (Thales Alenia Space) |
 | Space for 5G/6G et D2D | Télécoms UE & R&D | Ligne ARTES ; projets documentés d'OQ Technology et de Sateliot |
