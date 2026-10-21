@@ -402,6 +402,79 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
   .circuit li { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ---- Phase 4 : recherche, vue d'ensemble, réseau, fiches acteurs ---- */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tabs.has-search { display: block; }
+.gsearch { position: relative; width: min(100% - 32px, 1240px); margin: 0 auto; padding: 0 0 8px; }
+.gsearch input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+.gres { position: absolute; left: 0; right: 0; top: calc(100% - 4px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 10px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; }
+.gr { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; width: 100%; text-align: left; border: 0; background: none; padding: 8px 12px; cursor: pointer; color: var(--ink); font: inherit; font-size: 14px; }
+.gr.on, .gr:hover { background: var(--sunk); }
+.gk { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+.gt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs { white-space: nowrap; }
+@media (max-width: 560px) { .gr { grid-template-columns: minmax(0, 1fr); gap: 0; } .gs { white-space: normal; } }
+.entries { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px; margin: 18px 0; }
+.entry { text-align: left; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); padding: 14px 16px; cursor: pointer; display: grid; gap: 4px; color: var(--ink); font: inherit; }
+.entry b { font-family: var(--font-display); font-size: 16.5px; }
+.entry span { font-size: 13.5px; color: var(--muted); }
+.entry:hover { border-color: var(--accent); }
+.ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 14px; }
+.ov-list { margin: 0; padding-left: 16px; display: grid; gap: 4px; font-size: 13.5px; }
+.ov-fam .hb-t { display: flex; }
+.ov-fam .hb-t i { display: block; height: 100%; }
+.share { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; white-space: nowrap; }
+.share:hover { border-color: var(--accent); color: var(--accent); }
+.meta-act { margin-left: auto; display: inline-flex; gap: 6px; flex-wrap: wrap; }
+#toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; font-size: 13.5px; opacity: 0; transition: opacity .2s, transform .2s; z-index: 50; max-width: calc(100% - 32px); overflow-wrap: anywhere; pointer-events: none; }
+#toast.on { opacity: 1; transform: translate(-50%, 0); }
+.st-nr { color: var(--faint); border-style: dotted; }
+.adet { margin-bottom: 20px; border-left: 4px solid var(--accent); }
+.adet-h { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+.adet h3 { font-size: 22px; font-stretch: 106%; margin: 2px 0; }
+.adet .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.adet h4 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+.adet-act { display: flex; gap: 6px; flex-wrap: wrap; }
+.adet-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+.adet .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+@media (max-width: 800px) { .adet-g { grid-template-columns: minmax(0, 1fr); } }
+.act-t { color: var(--ink); font-weight: inherit; }
+.adet-src a { overflow-wrap: anywhere; }
+.relg { margin-bottom: 10px; }
+.relg h5 { margin: 0 0 4px; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.relg ul { margin: 0; padding-left: 16px; display: grid; gap: 4px; font-size: 13px; }
+.relg .src { font-size: 11.5px; color: var(--faint); }
+.nat-sw { display: inline-block; width: 18px; height: 0; border-top-width: 3px; border-top-color: var(--faint); border-top-style: dotted; vertical-align: middle; }
+.nat-capital { border-top-color: var(--f-nav); border-top-style: solid; }
+.nat-contrat { border-top-color: var(--f-tel); border-top-style: dashed; }
+.nat-coop { border-top-color: var(--f-obs); border-top-style: dotted; }
+.net-ctl { display: grid; gap: 10px; margin-bottom: 14px; }
+.net-f { display: grid; grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)); gap: 10px; }
+.net-f > div { display: grid; gap: 4px; }
+.net-f input, .net-f select { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+.net-per { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+.net-per select { min-width: 0; }
+.net { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 14px; align-items: start; }
+.net-map { padding: 10px; gap: 8px; }
+.net-tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.net-tools button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; min-width: 32px; padding: 4px 8px; cursor: pointer; font: inherit; }
+.net-tools label { display: inline-flex; gap: 4px; align-items: center; margin-left: 6px; }
+.net-tools label input { width: auto; margin: 0; }
+#rcount { margin-left: auto; }
+.net-svg { border: 1px solid var(--line); border-radius: var(--r); background: var(--sunk); overflow: hidden; touch-action: none; }
+.net-svg svg { display: block; width: 100%; height: auto; cursor: grab; }
+.nd-c { cursor: pointer; }
+.nd-c:hover circle, .nd-c:hover rect, .nd-c:focus circle, .nd-c:focus rect { stroke: var(--accent); stroke-width: 3; }
+.nl { font-family: var(--font-mono); font-size: 10.5px; fill: var(--ink); paint-order: stroke; stroke: var(--sunk); stroke-width: 3px; }
+.nl-f { font-size: 13px; font-weight: 600; }
+.net-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted); }
+.net-leg span { display: inline-flex; gap: 6px; align-items: center; }
+.net-side { max-height: 820px; overflow-y: auto; }
+.net-side h3 { margin: 0; font-size: 18px; }
+.side-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+@media (max-width: 1000px) { .net { grid-template-columns: minmax(0, 1fr); } .net-f { grid-template-columns: repeat(2, minmax(0, 1fr)); } .net-f > div:first-child { grid-column: 1 / -1; } .net-side { max-height: none; } }
+@media (max-width: 560px) { .net-f { grid-template-columns: minmax(0, 1fr); } .meta-act { margin-left: 0; } }
 </style>
 
 </head>
@@ -426,10 +499,12 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 
 <main>
   <div class="wrap">
+    <section id="v-accueil" data-view hidden></section>
     <section id="v-mecanique" data-view hidden></section>
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>
     <section id="v-acteurs" data-view hidden></section>
+    <section id="v-reseau" data-view hidden></section>
     <section id="v-prospection" data-view hidden></section>
     <section id="v-frise" data-view hidden></section>
     <section id="v-genealogie" data-view hidden></section>
@@ -5456,6 +5531,48 @@ GLOSSAIRE.push(
   ["EOGS", "Earth Observation Governmental Service : futur service gouvernemental d'observation de la Terre de l'UE, préparé par le programme ERS de l'ESA."]
 );
 
+/* ============================================================
+   Atlas du spatial européen — phase 4 (21 octobre 2026)
+   Missions finalistes non retenues ; hors vue Prospection.
+   ============================================================ */
+STATUTS.nr = "Non retenu";
+
+PROGRAMMES.push(
+  { id: "mmatisse", n: "M-MATISSE", d: "esc", sub: "Finaliste M7 non retenue : environnement de Mars",
+    fin: "ESA – programme scientifique (étude de phase A)", moa: "ESA",
+    moe: "Aucun (mission non retenue)", g: [], plat: "Deux satellites aux instruments identiques",
+    instr: "Mesures de particules et de champs autour de Mars",
+    app: "Comprendre comment le vent solaire agit sur l'atmosphère, l'ionosphère et la magnétosphère de Mars, pour éclairer son habitabilité et son évolution.",
+    bud: "Non documenté", bc: "C",
+    y0: 2022, y1: 2026, jal: [[2022, "Parmi les cinq concepts encore en lice (nov.)"], [2026, "Plasma Observatory recommandé à sa place (11 juin)"]],
+    st: "nr", pred: [], succ: [],
+    note: "Un des trois finalistes de la mission M7, avec THESEUS et Plasma Observatory. Non retenu : ce n'est pas un programme en cours." },
+  { id: "theseus", n: "THESEUS", d: "esc", sub: "Finaliste M7 non retenue : sursauts gamma et Univers lointain",
+    fin: "ESA – programme scientifique (étude de phase A)", moa: "ESA",
+    moe: "Aucun (mission non retenue)", g: [], plat: "Mission à plusieurs instruments",
+    instr: "Instruments de haute énergie",
+    app: "Étudier les événements brefs et très énergétiques du cosmos, surtout les sursauts gamma : les proches accompagnent des ondes gravitationnelles, les lointains renseignent sur les premières galaxies.",
+    bud: "Non documenté", bc: "C",
+    y0: 2022, y1: 2026, jal: [[2022, "Parmi les cinq concepts encore en lice (nov.)"], [2026, "Plasma Observatory recommandé à sa place (11 juin)"]],
+    st: "nr", pred: [], succ: [],
+    note: "Un des trois finalistes de la mission M7, avec M-MATISSE et Plasma Observatory. Non retenu : ce n'est pas un programme en cours." }
+);
+(function () {
+  const pl = PROGRAMMES.find(p => p.id === "plasma");
+  if (pl) pl.note += " Les deux autres finalistes, M-MATISSE et THESEUS, n'ont pas été retenus.";
+})();
+CONVERGENCES.push(
+  { type: "Compétition", a: "plasma", b: "mmatisse", titre: "Sélection M7 : Plasma Observatory contre M-MATISSE", txt: "Deux missions de physique des plasmas en concurrence pour le même créneau ; Plasma Observatory a été recommandé en juin 2026." },
+  { type: "Compétition", a: "plasma", b: "theseus", titre: "Sélection M7 : Plasma Observatory contre THESEUS", txt: "Le troisième finaliste, consacré aux sursauts gamma, n'a pas été retenu." }
+);
+Object.assign(LIENS, {
+  mmatisse: [L("Agence", "ESA – Les trois finalistes de la mission M7", "https://www.esa.int/Science_Exploration/Space_Science/Final_three_for_ESA_s_next_medium_science_mission"),
+    L("Agence", "ESA – Présentation publique des trois finalistes", "https://www.cosmos.esa.int/web/m7-public-presentation")],
+  theseus: [L("Agence", "ESA – Les trois finalistes de la mission M7", "https://www.esa.int/Science_Exploration/Space_Science/Final_three_for_ESA_s_next_medium_science_mission"),
+    L("Agence", "ESA – Présentation publique des trois finalistes", "https://www.cosmos.esa.int/web/m7-public-presentation")]
+});
+addLien("plasma", L("Agence", "ESA – Présentation publique des trois finalistes", "https://www.cosmos.esa.int/web/m7-public-presentation"));
+
 </script>
 <script>
 (function () {
@@ -5468,10 +5585,12 @@ GLOSSAIRE.push(
   const NOW = 2026.8;
 
   const VIEWS = [
+    ["accueil", "Vue d'ensemble"],
     ["mecanique", "Mécanique"],
     ["domaines", "Domaines"],
     ["fiches", "Fiches"],
     ["acteurs", "Acteurs"],
+    ["reseau", "Réseau"],
     ["prospection", "Prospection"],
     ["frise", "Frise"],
     ["genealogie", "Généalogie"],
@@ -5481,7 +5600,7 @@ GLOSSAIRE.push(
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" };
 
   function chip(id) {
     const p = byId[id];
@@ -5631,7 +5750,7 @@ GLOSSAIRE.push(
           <div class="filters">
             <label class="note" for="q">Rechercher un programme, un industriel, une application</label>
             <input id="q" type="search" placeholder="ex. OHB, radar, Toulouse…" value="${esc(state.q)}">
-            <div class="fchips" id="fchips">${fch}</div>
+            <div class="fchips" id="fchips">${fch}<button type="button" class="reset" data-fireset="1">Réinitialiser</button></div>
           </div>
           <div class="plist" id="plist"></div>
         </div>
@@ -5679,7 +5798,7 @@ GLOSSAIRE.push(
     const host = p.host && byId[p.host];
     el.innerHTML = `<article class="detail" style="--fc:${col(f)}">
       <div class="detail-head">
-        <div class="meta"><span>${esc(FAMILLES[f].nom)} · ${esc(DOMAINES[p.d].nom)}</span>${pill(p.st)}</div>
+        <div class="meta"><span>${esc(FAMILLES[f].nom)} · ${esc(DOMAINES[p.d].nom)}</span>${pill(p.st)}<span class="meta-act">${shareBtn("fiche/" + p.id)}<button type="button" class="share" data-reseau="P:${p.id}">Voir dans le réseau</button></span></div>
         <h3>${esc(p.n)}</h3>
         <p class="sub">${esc(p.sub)}</p>
       </div>
@@ -5730,6 +5849,7 @@ GLOSSAIRE.push(
     const pays = [...new Set(ACTEURS.map(a => a.p))].sort((x, y) => (PAYS[x] || x).localeCompare(PAYS[y] || y, "fr"));
     return `<div class="view-head"><h2>Acteurs</h2>
       <p>Institutions, grands groupes, équipementiers, opérateurs, NewSpace, laboratoires et organismes de recherche. Les acteurs non européens ne figurent qu'au titre d'une filiale ou d'une activité documentée en Europe. Les montants ne figurent que lorsqu'ils sont publiés et vérifiables ; un champ vide veut dire « non publié », pas « nul ». Cet annuaire couvre les acteurs qui comptent, il n'est pas exhaustif : l'Europe compte plusieurs centaines de jeunes entreprises spatiales.</p></div>
+      <div id="adetail"></div>
       <div class="act-top">
         <div class="panel">
           <h3 class="section-title" style="margin:0">Marché en chiffres</h3>
@@ -5749,6 +5869,7 @@ GLOSSAIRE.push(
         <div class="fchips" id="acats">${cats.map(([k, l]) => `<button class="fchip" type="button" data-acat="${k}" aria-pressed="${state.acat === k}">${esc(l)} <span class="mono" style="opacity:.6">${k === "all" ? ACTEURS.length : ACTEURS.filter(a => a.c === k).length}</span></button>`).join("")}</div>
         <div class="act-search">
           <div><label class="note" for="aq">Rechercher</label><input id="aq" type="search" placeholder="ex. radar, Toulouse, lanceur…" value="${esc(state.aq)}"></div>
+          <div><span class="note">&nbsp;</span><button type="button" class="reset" data-areset="1">Réinitialiser</button></div>
           <div><label class="note" for="apays">Pays</label><select id="apays"><option value="all">Tous les pays</option>${pays.map(p => `<option value="${p}"${state.apays === p ? " selected" : ""}>${esc(PAYS[p] || p)}</option>`).join("")}</select></div>
         </div>
       </div>
@@ -5790,9 +5911,33 @@ GLOSSAIRE.push(
       ${ops.filter(r => { const k = r.type + r.vers + (r.a || ""); if (r.type === "projet de fusion") { if (opsSeen.has(k)) return false; opsSeen.add(k); } return true; }).map(r => `<tr><td class="mono">${r.a || "—"}</td><td>${esc(entLabel(r.type === "projet de fusion" ? "Airbus, Thales, Leonardo" : r.de))} → ${esc(entLabel(r.vers))} <div class="note">${esc(r.type)}</div></td><td>${esc(r.txt)} <a href="${esc(r.src)}" target="_blank" rel="noopener">source ↗</a></td><td><span class="conf">${r.bc}</span></td></tr>`).join("")}
       </tbody></table></div>`;
   }
+  function actDetailHtml(a) {
+    const progs = a.pr.filter(id => byId[id]);
+    const srcs = [...new Set([a.u].concat(REL.filter(r => r.de === a.id || r.vers === a.id).map(r => r.src)).filter(Boolean))];
+    return `<article class="adet panel">
+      <div class="adet-h"><div><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><h3>${esc(a.n)}</h3>
+        <p class="note">${esc(a.v)} · ${esc(PAYS[a.p] || a.p)} ${paysBadges(a.p)} · ${esc(a.t)}${a.y ? " · fondé en " + a.y : ""}</p></div>
+        <div class="adet-act">${shareBtn("acteur/" + a.id)}<button type="button" class="share" data-reseau="A:${a.id}">Voir dans le réseau</button><button type="button" class="share" data-areset="1">Fermer</button></div></div>
+      <p>${esc(a.m)}</p>
+      ${a.k ? `<p class="act-k">${esc(a.k)} <span class="conf">${a.kb}</span></p>` : ""}
+      ${a.grp ? `<p class="note">Groupe : ${actById[a.grp] ? `<button type="button" class="lnk" data-actor="${a.grp}">${esc(actById[a.grp].n)}</button>` : esc(a.grp)}</p>` : ""}
+      <div class="adet-g">
+        <div><h4>Programmes (${progs.length})</h4>${progs.length ? `<div class="chips">${progs.map(id => { const t = REL.filter(r => r.de === a.id && r.vers === id).map(r => r.type); return t.length ? chipRole(id, t.join(", ")) : chip(id); }).join("")}</div>` : `<p class="note">Aucun programme relié dans l'atlas.</p>`}</div>
+        <div><h4>Relations</h4>${relGroupsHtml("A:" + a.id)}</div>
+      </div>
+      ${(() => { const pa = partenaires("A:" + a.id).slice(0, 10), co = concurrents("A:" + a.id).slice(0, 8);
+        return (pa.length || co.length) ? `<div class="adet-g">
+          ${pa.length ? `<div><h4>Partenaires sur les mêmes programmes</h4><ul class="ov-list">${pa.map(([o, ps]) => `<li>${nodeLink(o)} <span class="note">· ${ps.map(x => esc(nodeName(x))).join(", ")}</span></li>`).join("")}</ul></div>` : "<div></div>"}
+          ${co.length ? `<div><h4>Concurrents potentiels <span class="note">(calcul indicatif)</span></h4><p class="note">Même catégorie, mêmes domaines de programmes ; pas une concurrence documentée.</p><ul class="ov-list">${co.map(([o, ds]) => `<li>${nodeLink(o)} <span class="note">· ${ds.map(d => esc(DOMAINES[d].nom)).join(", ")}</span></li>`).join("")}</ul></div>` : ""}
+        </div>` : ""; })()}
+      <div><h4>Sources (${srcs.length})</h4>${srcs.length ? `<ul class="ov-list adet-src">${srcs.map(u => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 80))}</a></li>`).join("")}</ul>` : `<p class="note">Pas de source propre à l'acteur ; voir les fiches des programmes liés.</p>`}</div>
+    </article>`;
+  }
   function renderActeurs() {
     const g = document.getElementById("agrid");
     if (!g) return;
+    const ad = document.getElementById("adetail");
+    if (ad) ad.innerHTML = state.asel && actById[state.asel] ? actDetailHtml(actById[state.asel]) : "";
     const q = state.aq.trim().toLowerCase();
     const list = ACTEURS.filter(a => (state.acat === "all" || a.c === state.acat) && (state.apays === "all" || a.p === state.apays) &&
       (!q || [a.n, a.m, a.v, a.t, a.k, CAT_ACTEURS[a.c]].join(" ").toLowerCase().includes(q)));
@@ -5800,7 +5945,7 @@ GLOSSAIRE.push(
     g.innerHTML = list.length ? list.map(a => `
       <article class="act" id="act-${a.id}">
         <div class="act-h"><span class="ty">${esc(CAT_ACTEURS[a.c])}</span><span class="mono note">${esc(a.p)}${a.y ? " · " + a.y : ""}</span></div>
-        <h3>${esc(a.n)}</h3>
+        <h3><button type="button" class="lnk act-t" data-actor="${a.id}">${esc(a.n)}</button></h3>
         <p class="note">${esc(a.v)} · ${esc(a.t)} ${paysBadges(a.p)}</p>
         <p>${esc(a.m)}</p>
         ${a.k ? `<p class="act-k">${esc(a.k)} <span class="conf">${a.kb}</span></p>` : ""}
@@ -5830,7 +5975,7 @@ GLOSSAIRE.push(
   }
   function prosRows() {
     const q = state.pq.trim().toLowerCase();
-    return PROGRAMMES.filter(p => (p.st === "dev" || p.st === "plan" || (p.pros && p.st !== "fin" && p.st !== "ann")))
+    return PROGRAMMES.filter(p => (p.st === "dev" || p.st === "plan" || (p.pros && p.st !== "fin" && p.st !== "ann" && p.st !== "nr")))
       .map(p => ({ p, j: prochainJalon(p), libre: NON_ATTR.test(p.moe), acts: ACTEURS.filter(a => a.pr.includes(p.id)).length }))
       .filter(r => (state.pfam === "all" || famOf(r.p) === state.pfam) && (!state.pnon || r.libre) &&
         (state.phz === "all" || (r.j && r.j[0] <= +state.phz)) &&
@@ -5852,7 +5997,7 @@ GLOSSAIRE.push(
         <label class="pnon"><input type="checkbox" id="pnon"${state.pnon ? " checked" : ""}> Seulement les programmes sans maître d'œuvre attribué ou publié</label>
       </div>
       <div class="fin-kpis" id="pkpis"></div>
-      <div class="pros-tools"><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
+      <div class="pros-tools"><button type="button" class="reset" data-preset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
       <div id="plistp"></div>`;
   }
   function renderPros() {
@@ -6329,8 +6474,387 @@ GLOSSAIRE.push(
       <ol class="srcs">${Object.values(SOURCES).map(([t, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join("")}</ol>`;
   }
 
+  /* ================= OUTILS COMMUNS (phase 4) ================= */
+  const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const NATURES = {
+    capital: { nom: "Capital", long: "Capital : groupe, filiale, coentreprise, rachat", types: ["filiale", "participation", "coentreprise", "acquisition", "fusion", "projet de fusion", "essaimage"], dash: "", w: 2.4, color: "var(--f-nav)" },
+    contrat: { nom: "Contrat", long: "Contrat : maîtrise d'œuvre, sous-traitance, fourniture", types: ["maître d'œuvre", "sous-traitant", "fournisseur", "bénéficiaire", "candidat"], dash: "7 4", w: 1.8, color: "var(--f-tel)" },
+    coop: { nom: "Coopération", long: "Coopération : partenaire, financeur, consortium, client, opérateur", types: ["partenaire", "partenaire scientifique", "partenariat", "consortium", "financeur", "maître d'ouvrage", "utilisateur", "opérateur"], dash: "2 4", w: 1.8, color: "var(--f-obs)" },
+    part: { nom: "Participation", long: "Participation au programme, rôle non précisé", types: [], dash: "1 5", w: 1.2, color: "var(--faint)" }
+  };
+  const natureOf = t => Object.keys(NATURES).find(k => NATURES[k].types.includes(t)) || "coop";
+  /* Identifiants du réseau préfixés : A: acteur, P: programme, X: entité hors atlas
+     (certains acteurs et programmes partagent le même identifiant, ex. ICEYE) */
+  const raw = id => id.slice(2);
+  const sideId = (x, progRole) => progRole && byId[x] ? "P:" + x : actById[x] ? "A:" + x : byId[x] ? "P:" + x : "X:" + x;
+  const EDGES = (() => {
+    const out = [], seen = new Set();
+    REL.forEach(r => {
+      const a = sideId(r.de, false), b = sideId(r.vers, ROLES_PROG.includes(r.type) && !!byId[r.vers] && natureOf(r.type) !== "capital");
+      seen.add(a + "|" + b);
+      out.push({ a, b, nat: natureOf(r.type), type: r.type, txt: r.txt, src: r.src, bc: r.bc, an: r.a || null, part: r.part });
+    });
+    ACTEURS.forEach(a => a.pr.forEach(p => {
+      const A = "A:" + a.id, P = "P:" + p;
+      if (!byId[p] || seen.has(A + "|" + P)) return;
+      seen.add(A + "|" + P);
+      out.push({ a: A, b: P, nat: "part", type: "participation au programme", txt: "", src: null, bc: "", an: null });
+    }));
+    return out;
+  })();
+  const nodeName = id => { const r = raw(id); return id[0] === "A" && actById[r] ? actById[r].n : id[0] === "P" && byId[r] ? byId[r].n : r; };
+  const nodeKind = id => id[0] === "P" ? "prog" : id[0] === "A" ? (actById[raw(id)].c === "lab" ? "lab" : "act") : "ext";
+  const nodeLink = id => id[0] === "P" ? `<button type="button" class="lnk" data-goto="${raw(id)}">${esc(nodeName(id))}</button>` : id[0] === "A" ? `<button type="button" class="lnk" data-actor="${raw(id)}">${esc(nodeName(id))}</button>` : esc(nodeName(id));
+  function edgeYears(e) {
+    if (e.an) return [e.an, e.an];
+    const p = (e.a[0] === "P" && byId[raw(e.a)]) || (e.b[0] === "P" && byId[raw(e.b)]);
+    return p ? [p.y0, p.y1] : null;
+  }
+  function relGroupsHtml(id) {
+    const es = EDGES.filter(e => e.a === id || e.b === id);
+    if (!es.length) return `<p class="note">Aucune relation documentée dans l'atlas.</p>`;
+    return Object.entries(NATURES).map(([k, n]) => {
+      const list = es.filter(e => e.nat === k);
+      if (!list.length) return "";
+      return `<div class="relg"><h5><span class="nat-sw nat-${k}"></span>${esc(n.long)} <span class="mono note">${list.length}</span></h5><ul>${list.map(e => {
+        const o = e.a === id ? e.b : e.a;
+        const lab = nodeLink(o);
+        const sens = e.a === id ? "" : " ← ";
+        return `<li>${sens}${lab} <span class="note">· ${esc(e.type)}${e.part ? " · " + esc(e.part) : ""}${e.an ? " · " + e.an : ""}</span>${e.txt ? `<div class="note">${esc(e.txt)}</div>` : ""}${e.src ? ` <a class="src" href="${esc(e.src)}" target="_blank" rel="noopener">source <span class="conf">${e.bc}</span></a>` : ""}</li>`;
+      }).join("")}</ul></div>`;
+    }).join("");
+  }
+  function partenaires(id) {
+    const progs = EDGES.filter(e => e.a === id && e.b[0] === "P").map(e => e.b);
+    const m = {};
+    EDGES.forEach(e => { if (e.b[0] === "P" && progs.includes(e.b) && e.a !== id && e.a[0] === "A") (m[e.a] = m[e.a] || new Set()).add(e.b); });
+    return Object.entries(m).map(([a, s]) => [a, [...s]]).sort((x, y) => y[1].length - x[1].length || nodeName(x[0]).localeCompare(nodeName(y[0]), "fr"));
+  }
+  function concurrents(id) {
+    const a = id[0] === "A" && actById[raw(id)];
+    if (!a || a.c === "inst" || a.c === "lab" || a.c === "fin") return [];
+    const doms = new Set(a.pr.filter(p => byId[p]).map(p => byId[p].d));
+    const linked = new Set(EDGES.filter(e => e.nat === "capital" && (e.a === id || e.b === id)).map(e => e.a === id ? e.b : e.a));
+    return ACTEURS.filter(b => b.id !== a.id && b.c === a.c && !linked.has("A:" + b.id))
+      .map(b => ["A:" + b.id, b.pr.filter(p => byId[p] && doms.has(byId[p].d)).map(p => byId[p].d)])
+      .map(([b, ds]) => [b, [...new Set(ds)]]).filter(x => x[1].length)
+      .sort((x, y) => y[1].length - x[1].length || nodeName(x[0]).localeCompare(nodeName(y[0]), "fr")).slice(0, 10);
+  }
+  /* Lien partageable */
+  function shareUrl(h) { return location.href.split("#")[0] + "#" + h; }
+  function shareBtn(h) { return `<button type="button" class="share" data-share="${esc(h)}" title="Copier un lien direct vers cette page">Copier le lien</button>`; }
+  function toast(msg) {
+    let t = document.getElementById("toast");
+    if (!t) { t = document.createElement("div"); t.id = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add("on"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 2200);
+  }
+  function copyShare(h) {
+    const u = shareUrl(h);
+    const ok = () => toast("Lien copié : " + u);
+    try { navigator.clipboard.writeText(u).then(ok, () => fallback()); } catch (e) { fallback(); }
+    function fallback() { const i = document.createElement("textarea"); i.value = u; document.body.appendChild(i); i.select(); try { document.execCommand("copy"); ok(); } catch (e) { toast(u); } i.remove(); }
+  }
+
+  /* ================= RECHERCHE GLOBALE ================= */
+  const INDEX = [].concat(
+    PROGRAMMES.map(p => ({ k: "prog", id: p.id, t: p.n, s: `${FAMILLES[famOf(p)].court} · ${STATUTS[p.st]}`, q: norm([p.n, p.sub, p.id].join(" ")) })),
+    ACTEURS.map(a => ({ k: a.c === "lab" ? "lab" : "act", id: a.id, t: a.n, s: `${CAT_ACTEURS[a.c]} · ${PAYS[a.p] || a.p}`, q: norm([a.n, a.v, a.id].join(" ")) })),
+    Object.entries(PAYS).map(([c, n]) => ({ k: "pays", id: c, t: n, s: `${ACTEURS.filter(a => a.p === c).length} acteurs`, q: norm(n + " " + c) })),
+    GLOSSAIRE.map(([t, d]) => ({ k: "glo", id: t, t, s: "Glossaire", q: norm(t) }))
+  );
+  const KLAB = { prog: "Programme", act: "Acteur", lab: "Laboratoire", pays: "Pays", glo: "Sigle" };
+  let gsel = 0, gres = [];
+  function gsearch(v) {
+    const q = norm(v.trim());
+    const box = document.getElementById("gres");
+    if (!q) { box.hidden = true; gres = []; return; }
+    gres = INDEX.map(x => { const i = x.q.indexOf(q); return i < 0 ? null : [x, (i === 0 ? 0 : x.q.includes(" " + q) ? 1 : 2) * 10 + Math.min(9, x.t.length / 10)]; })
+      .filter(Boolean).sort((a, b) => a[1] - b[1]).slice(0, 12).map(a => a[0]);
+    gsel = 0;
+    box.innerHTML = gres.length ? gres.map((x, i) => `<button type="button" class="gr${i === gsel ? " on" : ""}" data-gi="${i}" role="option"><span class="gk gk-${x.k}">${KLAB[x.k]}</span><span class="gt">${esc(x.t)}</span><span class="gs note">${esc(x.s)}</span></button>`).join("")
+      : `<p class="note" style="padding:10px 12px">Aucun résultat pour « ${esc(v)} ».</p>`;
+    box.hidden = false;
+  }
+  function gopen(i) {
+    const x = gres[i]; if (!x) return;
+    document.getElementById("gres").hidden = true;
+    const inp = document.getElementById("gq"); inp.value = ""; inp.blur();
+    if (x.k === "prog") goto(x.id);
+    else if (x.k === "act" || x.k === "lab") gotoActor(x.id);
+    else if (x.k === "pays") { state.apays = x.id; state.acat = "all"; state.aq = ""; state.asel = null; rendered.acteurs = false; show("acteurs"); }
+    else if (x.k === "glo") { show("glossaire"); const el = [...document.querySelectorAll("#v-glossaire dt, #v-glossaire b, #v-glossaire strong")].find(e => e.textContent.trim() === x.id); if (el) el.scrollIntoView({ block: "center" }); }
+  }
+  function searchUi() {
+    const nav = document.querySelector(".tabs .wrap");
+    if (!nav || document.getElementById("gq")) return;
+    const d = document.createElement("div");
+    d.className = "gsearch";
+    d.innerHTML = `<label class="sr" for="gq">Rechercher dans l'atlas</label><input id="gq" type="search" autocomplete="off" placeholder="Rechercher un programme, un acteur, un pays… ( / )" aria-controls="gres"><div id="gres" class="gres" role="listbox" hidden></div>`;
+    nav.parentNode.insertBefore(d, nav.nextSibling);
+    nav.parentNode.classList.add("has-search");
+  }
+
+  /* ================= VUE : VUE D'ENSEMBLE ================= */
+  function vAccueil() {
+    const y = Math.floor(NOW);
+    const nb = st => PROGRAMMES.filter(p => p.st === st).length;
+    const libres = PROGRAMMES.filter(p => (p.st === "dev" || p.st === "plan") && NON_ATTR.test(p.moe));
+    const jal = [];
+    PROGRAMMES.filter(p => p.st !== "nr" && p.st !== "ann").forEach(p => p.jal.forEach(j => { if (j[0] === y + 1) jal.push([p, j]); }));
+    jal.sort((a, b) => a[0].n.localeCompare(b[0].n, "fr"));
+    const c26 = CONTRATS.filter(c => c.a >= y - 1).sort((a, b) => b.m - a.m).slice(0, 8);
+    const deg = {};
+    EDGES.forEach(e => { [e.a, e.b].forEach(x => { if (x[0] === "A") deg[x] = (deg[x] || 0) + 1; }); });
+    const top = Object.entries(deg).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    const fams = Object.entries(FAMILLES).map(([k, f]) => {
+      const ps = PROGRAMMES.filter(p => famOf(p) === k);
+      return [k, f, ps.filter(p => p.st === "op").length, ps.filter(p => p.st === "dev" || p.st === "plan").length, ps.length];
+    });
+    const maxf = Math.max(...fams.map(f => f[4]));
+    const entry = (tab, t, d) => `<button type="button" class="entry" data-tab="${tab}"><b>${t}</b><span>${d}</span></button>`;
+    return `<div class="view-head"><h2>Vue d'ensemble</h2>
+      <p>L'essentiel de l'atlas en un écran : où en sont les programmes, ce qui arrive dans l'année, qui signe les contrats et qui est au centre du réseau. Tapez « / » pour chercher un programme, un acteur ou un pays.</p></div>
+      <div class="fin-kpis ov-kpis">
+        <div class="kpi"><span>Programmes</span><b class="mono">${PROGRAMMES.length}</b><small>${nb("op")} en service · ${nb("dev")} en développement · ${nb("plan")} en projet</small></div>
+        <div class="kpi"><span>Acteurs</span><b class="mono">${ACTEURS.length}</b><small>dont ${ACTEURS.filter(a => a.c === "lab").length} laboratoires · ${Object.keys(PAYS).length - 1} pays</small></div>
+        <div class="kpi"><span>Relations documentées</span><b class="mono">${REL.length}</b><small>${EDGES.filter(e => e.nat === "capital").length} liens de capital · ${EDGES.filter(e => e.nat === "contrat").length} contrats et fournitures</small></div>
+        <div class="kpi"><span>À attribuer</span><b class="mono">${libres.length}</b><small>programmes sans maître d'œuvre publié</small></div>
+      </div>
+      <div class="entries">
+        ${entry("fiches", "Un programme", "Fiche détaillée : qui paie, qui construit, quand, combien")}
+        ${entry("acteurs", "Un acteur", "Annuaire, fiche, groupe, programmes et relations")}
+        ${entry("reseau", "Qui travaille avec qui", "Cartographie des groupes, contrats et coopérations")}
+        ${entry("prospection", "Des marchés à prendre", "Programmes en développement, prochains jalons, export CSV")}
+      </div>
+      <div class="ov-grid">
+        <div class="panel"><h3 class="ch-t">Programmes par famille</h3>
+          <div class="hb-list">${fams.map(([k, f, op, dv, n]) => `<div class="hb ov-fam"><span class="hb-l">${esc(f.court)}</span><span class="hb-t"><i style="width:${op / maxf * 100}%;background:${col(k)}"></i><i style="width:${dv / maxf * 100}%;background:${col(k)};opacity:.4"></i></span><span class="hb-v mono">${n}</span></div>`).join("")}</div>
+          <p class="note">Plein : en service · clair : en développement ou en projet.</p></div>
+        <div class="panel"><h3 class="ch-t">Jalons prévus en ${y + 1}</h3>
+          ${jal.length ? `<ul class="ov-list">${jal.slice(0, 14).map(([p, j]) => `<li><button type="button" class="lnk" data-goto="${p.id}">${esc(p.n)}</button> <span class="note">${esc(j[1])}</span></li>`).join("")}</ul>${jal.length > 14 ? `<p class="note">… et ${jal.length - 14} autres : voir la vue Prospection.</p>` : ""}` : `<p class="note">Aucun jalon publié.</p>`}</div>
+        <div class="panel"><h3 class="ch-t">Plus gros contrats depuis ${y - 1}</h3>
+          <ul class="ov-list">${c26.map(c => `<li><span class="mono">${fmtM(c.m)}</span> ${c.prog && byId[c.prog] ? `<button type="button" class="lnk" data-goto="${c.prog}">${esc(c.lib)}</button>` : esc(c.lib)} <span class="note">· ${esc(c.ent)} · ${c.a}</span> <span class="conf">${c.bc}</span></li>`).join("")}</ul></div>
+        <div class="panel"><h3 class="ch-t">Acteurs les plus connectés</h3>
+          <ul class="ov-list">${top.map(([id, n]) => `<li><button type="button" class="lnk" data-reseau="${id}">${esc(nodeName(id))}</button> <span class="note">· ${n} liens</span></li>`).join("")}</ul>
+          <p class="note">Un clic ouvre l'acteur dans la vue Réseau.</p></div>
+        <div class="panel"><h3 class="ch-t">Programmes sans maître d'œuvre publié</h3>
+          <ul class="ov-list">${libres.map(p => `<li><button type="button" class="lnk" data-goto="${p.id}">${esc(p.n)}</button> <span class="note">· ${esc(p.moa)}</span></li>`).join("")}</ul></div>
+      </div>`;
+  }
+
+  /* ================= VUE : RÉSEAU ================= */
+  const R = { focus: "A:airbus-ds", mode: "focus", depth: 1, nats: { capital: true, contrat: true, coop: true, part: true }, pays: "all", fam: "all", cats: [], y0: 1990, y1: 2040, zoom: 1, px: 0, py: 0, labels: true };
+  function vReseau() {
+    const pays = [...new Set(ACTEURS.map(a => a.p))].sort((x, y) => (PAYS[x] || x).localeCompare(PAYS[y] || y, "fr"));
+    const years = []; for (let y = 1990; y <= 2040; y += 5) years.push(y);
+    return `<div class="view-head"><h2>Réseau</h2>
+      <p>Qui fait quoi, avec qui, et dans quel cadre. Chaque trait est une relation documentée et sourcée, typée selon sa nature : capital, contrat, coopération, ou simple participation à un programme. Partez d'un acteur ou d'un programme ; un clic sur un nœud recentre la carte.</p></div>
+      <div class="net-ctl">
+        <div class="seg" role="group" aria-label="Mode">
+          ${[["focus", "Autour d'un acteur ou d'un programme"], ["capital", "Groupes et filiales"], ["all", "Réseau complet filtré"]].map(([k, l]) => `<button type="button" data-rmode="${k}" aria-pressed="${R.mode === k}">${l}</button>`).join("")}
+        </div>
+        <div class="net-f">
+          <div><label class="note" for="rfocus">Point de départ</label><input id="rfocus" list="rfocus-list" value="${esc(nodeName(R.focus))}" placeholder="Nom d'un acteur ou d'un programme"><datalist id="rfocus-list">${ACTEURS.map(a => `<option value="${esc(a.n)}">`).join("")}${PROGRAMMES.map(p => `<option value="${esc(p.n)}">`).join("")}</datalist></div>
+          <div><label class="note" for="rdepth">Profondeur</label><select id="rdepth"><option value="1"${R.depth === 1 ? " selected" : ""}>Liens directs</option><option value="2"${R.depth === 2 ? " selected" : ""}>Liens des liens</option></select></div>
+          <div><label class="note" for="rpays">Pays des acteurs</label><select id="rpays"><option value="all">Tous</option>${pays.map(p => `<option value="${p}"${R.pays === p ? " selected" : ""}>${esc(PAYS[p] || p)}</option>`).join("")}</select></div>
+          <div><label class="note" for="rfam">Domaine des programmes</label><select id="rfam"><option value="all">Tous</option>${Object.entries(FAMILLES).map(([k, f]) => `<option value="${k}"${R.fam === k ? " selected" : ""}>${esc(f.nom)}</option>`).join("")}</select></div>
+          <div><label class="note" for="ry0">Période</label><span class="net-per"><select id="ry0">${years.map(y => `<option${y === R.y0 ? " selected" : ""}>${y}</option>`).join("")}</select> à <select id="ry1">${years.map(y => `<option${y === R.y1 ? " selected" : ""}>${y}</option>`).join("")}</select></span></div>
+        </div>
+        <div class="fchips" id="rcats"><span class="note">Types d'acteurs :</span>${Object.entries(CAT_ACTEURS).map(([k, l]) => `<button class="fchip" type="button" data-rcat="${k}" aria-pressed="${R.cats.includes(k)}">${esc(l)}</button>`).join("")}</div>
+        <div class="fchips" id="rnats"><span class="note">Natures de liens :</span>${Object.entries(NATURES).map(([k, n]) => `<button class="fchip" type="button" data-rnat="${k}" aria-pressed="${R.nats[k]}"><span class="nat-sw nat-${k}"></span>${esc(n.nom)}</button>`).join("")}
+          <button type="button" class="reset" data-rreset="1">Réinitialiser</button></div>
+      </div>
+      <div class="net">
+        <div class="net-map panel">
+          <div class="net-tools"><button type="button" data-rz="1.25" aria-label="Zoomer">+</button><button type="button" data-rz="0.8" aria-label="Dézoomer">−</button><button type="button" data-rz="0" aria-label="Recadrer">Recadrer</button><label class="note"><input type="checkbox" id="rlab"${R.labels ? " checked" : ""}> Noms</label><span id="rcount" class="note"></span></div>
+          <div id="rsvg" class="net-svg"></div>
+          <div class="net-leg">${Object.entries(NATURES).map(([k, n]) => `<span><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" stroke="${n.color}" stroke-width="${n.w + .6}" stroke-dasharray="${n.dash}"></line></svg>${esc(n.long)}</span>`).join("")}
+            <span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="var(--ink)"></circle></svg>Acteur</span><span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"></circle></svg>Laboratoire</span><span><svg width="14" height="14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" rx="2" fill="var(--f-obs)"></rect></svg>Programme (couleur de sa famille)</span><span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="4" fill="var(--faint)"></circle></svg>Entité hors atlas</span></div>
+        </div>
+        <aside class="net-side panel" id="rside"></aside>
+      </div>`;
+  }
+  function netGraph() {
+    const yOk = e => { const ys = edgeYears(e); return !ys || (ys[1] >= R.y0 && ys[0] <= R.y1); };
+    const nodeOk = id => {
+      if (id[0] === "P") return R.fam === "all" || famOf(byId[raw(id)]) === R.fam;
+      if (id[0] === "A") { const a = actById[raw(id)]; return (R.pays === "all" || a.p === R.pays) && (!R.cats.length || R.cats.includes(a.c)); }
+      return true;
+    };
+    let es = EDGES.filter(e => R.nats[e.nat] && yOk(e) && nodeOk(e.a) && nodeOk(e.b));
+    if (R.mode === "capital") es = es.filter(e => e.nat === "capital");
+    let ids;
+    if (R.mode === "focus") {
+      ids = new Set([R.focus]); let front = [R.focus];
+      for (let d = 0; d < R.depth; d++) {
+        const nx = [];
+        es.forEach(e => { if (front.includes(e.a) && !ids.has(e.b)) { ids.add(e.b); nx.push(e.b); } if (front.includes(e.b) && !ids.has(e.a)) { ids.add(e.a); nx.push(e.a); } });
+        front = nx;
+        if (ids.size > 160) break;
+      }
+      es = es.filter(e => ids.has(e.a) && ids.has(e.b) && (R.depth > 1 || e.a === R.focus || e.b === R.focus || true));
+    } else {
+      ids = new Set(); es.forEach(e => { ids.add(e.a); ids.add(e.b); });
+    }
+    const nodes = [...ids].map(id => ({ id, k: nodeKind(id) }));
+    return { nodes, edges: es };
+  }
+  function netLayout(nodes, edges, W, H, pin) {
+    const n = nodes.length, idx = {}; nodes.forEach((d, i) => { idx[d.id] = i; });
+    const P = nodes.map((d, i) => { const a = i * 2.39996, r = 20 + 14 * Math.sqrt(i); return { x: W / 2 + r * Math.cos(a), y: H / 2 + r * Math.sin(a), vx: 0, vy: 0 }; });
+    const fi = pin ? idx[pin] : null;
+    if (fi != null) { P[fi].x = W / 2; P[fi].y = H / 2; }
+    const k = Math.sqrt(W * H / Math.max(1, n)) * 0.62;
+    const L = edges.map(e => [idx[e.a], idx[e.b]]).filter(l => l[0] != null && l[1] != null);
+    let t = W / 8;
+    for (let it = 0; it < 260; it++) {
+      for (let i = 0; i < n; i++) { P[i].vx = 0; P[i].vy = 0; }
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+        let dx = P[i].x - P[j].x, dy = P[i].y - P[j].y, d2 = dx * dx + dy * dy || .01; const d = Math.sqrt(d2), f = k * k / d;
+        dx /= d; dy /= d; P[i].vx += dx * f; P[i].vy += dy * f; P[j].vx -= dx * f; P[j].vy -= dy * f;
+      }
+      L.forEach(([a, b]) => { let dx = P[a].x - P[b].x, dy = P[a].y - P[b].y; const d = Math.sqrt(dx * dx + dy * dy) || .01, f = d * d / k; dx /= d; dy /= d; P[a].vx -= dx * f; P[a].vy -= dy * f; P[b].vx += dx * f; P[b].vy += dy * f; });
+      for (let i = 0; i < n; i++) {
+        P[i].vx += (W / 2 - P[i].x) * 0.02 * k / 30; P[i].vy += (H / 2 - P[i].y) * 0.02 * k / 30;
+        const v = Math.sqrt(P[i].vx * P[i].vx + P[i].vy * P[i].vy) || 1, s = Math.min(v, t) / v;
+        if (i === fi) continue;
+        P[i].x += P[i].vx * s; P[i].y += P[i].vy * s;
+      }
+      t *= 0.985;
+    }
+    /* recadrage */
+    const xs = P.map(p => p.x), ys = P.map(p => p.y);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const mx = Math.min(60, W * 0.16), my = Math.min(30, H * 0.12);
+    const sc = Math.min((W - 2 * mx) / Math.max(1, x1 - x0), (H - 2 * my) / Math.max(1, y1 - y0), 2.2);
+    return P.map(p => ({ x: mx + (p.x - x0) * sc + ((W - 2 * mx) - (x1 - x0) * sc) / 2, y: my + (p.y - y0) * sc + ((H - 2 * my) - (y1 - y0) * sc) / 2 }));
+  }
+  /* Composantes séparées, disposées en rangées : lisible pour les groupes et le réseau complet */
+  function packLayout(nodes, edges, W) {
+    const par = {}; const f = x => par[x] === x ? x : (par[x] = f(par[x]));
+    nodes.forEach(n => { par[n.id] = n.id; });
+    edges.forEach(e => { if (par[e.a] != null && par[e.b] != null) par[f(e.a)] = f(e.b); });
+    const comps = {}; nodes.forEach(n => { (comps[f(n.id)] = comps[f(n.id)] || []).push(n); });
+    const list = Object.values(comps).sort((a, b) => b.length - a.length);
+    const pos = {}; let x = 0, y = 0, rowH = 0;
+    list.forEach(c => {
+      const ids = new Set(c.map(n => n.id));
+      const side = Math.min(W, 150 + 85 * Math.sqrt(c.length)), h = c.length === 1 ? 70 : side * (c.length > 12 ? 0.8 : 0.6);
+      if (x + side > W + 1) { x = 0; y += rowH; rowH = 0; }
+      const ce = edges.filter(e => ids.has(e.a) && ids.has(e.b));
+      const p = netLayout(c, ce, side, h, null);
+      c.forEach((n, i) => { pos[n.id] = { x: x + p[i].x, y: y + p[i].y }; });
+      x += side; rowH = Math.max(rowH, h);
+    });
+    return { pos: nodes.map(n => pos[n.id]), H: Math.max(200, y + rowH) };
+  }
+  let netCache = null;
+  function renderReseau() {
+    const box = document.getElementById("rsvg");
+    if (!box) return;
+    document.querySelectorAll("[data-rmode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.rmode === R.mode));
+    document.querySelectorAll("#rnats [data-rnat]").forEach(b => b.setAttribute("aria-pressed", !!R.nats[b.dataset.rnat]));
+    document.querySelectorAll("#rcats [data-rcat]").forEach(b => b.setAttribute("aria-pressed", R.cats.includes(b.dataset.rcat)));
+    const fi = document.getElementById("rfocus"); if (fi && document.activeElement !== fi) fi.value = nodeName(R.focus);
+    const { nodes, edges } = netGraph();
+    const W = 900;
+    let H = 640, pos = [];
+    if (nodes.length) {
+      if (R.mode === "focus") pos = netLayout(nodes, edges, W, H, R.focus);
+      else { const pk = packLayout(nodes, edges, W); pos = pk.pos; H = Math.ceil(pk.H); }
+    }
+    const ix = {}; nodes.forEach((d, i) => { ix[d.id] = i; });
+    netCache = { nodes, pos, W, H };
+    const deg = {}; edges.forEach(e => { deg[e.a] = (deg[e.a] || 0) + 1; deg[e.b] = (deg[e.b] || 0) + 1; });
+    const showLab = id => R.labels && (nodes.length <= 90 || R.mode !== "all" || id === R.focus || (deg[id] || 0) >= 4);
+    const lines = edges.map(e => {
+      const a = pos[ix[e.a]], b = pos[ix[e.b]]; if (!a || !b) return "";
+      const n = NATURES[e.nat];
+      return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${n.color}" stroke-width="${n.w}" stroke-dasharray="${n.dash}" opacity=".85"><title>${esc(nodeName(e.a))} → ${esc(nodeName(e.b))} : ${esc(e.type)}${e.txt ? " — " + esc(e.txt) : ""}</title></line>`;
+    }).join("");
+    const dots = nodes.map((d, i) => {
+      const p = pos[i], f = d.id === R.focus && R.mode === "focus", r = f ? 11 : 5 + Math.min(6, Math.sqrt(deg[d.id] || 1) * 1.6);
+      let shape;
+      if (d.k === "prog") { const pr = byId[raw(d.id)]; shape = `<rect x="${(p.x - r).toFixed(1)}" y="${(p.y - r).toFixed(1)}" width="${2 * r}" height="${2 * r}" rx="2.5" fill="${col(famOf(pr))}"></rect>`; }
+      else if (d.k === "lab") shape = `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.4"></circle>`;
+      else if (d.k === "ext") shape = `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${Math.max(4, r - 2)}" fill="var(--faint)"></circle>`;
+      else shape = `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="var(--ink)"></circle>`;
+      const ring = f ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r + 5}" fill="none" stroke="var(--accent)" stroke-width="2.5"></circle>` : "";
+      const lab = showLab(d.id) ? `<text x="${(p.x + r + 4).toFixed(1)}" y="${(p.y + 4).toFixed(1)}" class="nl${f ? " nl-f" : ""}">${esc(nodeName(d.id).replace(/ \(.*\)$/, "").slice(0, 34))}</text>` : "";
+      const clickable = d.k !== "ext";
+      return `<g class="nd${clickable ? " nd-c" : ""}"${clickable ? ` data-rnode="${esc(d.id)}" tabindex="0" role="button"` : ""}>${ring}${shape}${lab}<title>${esc(nodeName(d.id))}${d.k === "prog" ? " (programme)" : d.k === "lab" ? " (laboratoire)" : d.k === "ext" ? " (hors atlas)" : ""}</title></g>`;
+    }).join("");
+    box.innerHTML = nodes.length ? `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Carte des relations : ${nodes.length} entités, ${edges.length} liens"><g id="rview" transform="translate(${R.px} ${R.py}) scale(${R.zoom})">${lines}${dots}</g></svg>`
+      : `<p class="note" style="padding:20px">Aucune relation ne correspond à ces filtres. Élargissez la période, le pays ou les natures de liens.</p>`;
+    document.getElementById("rcount").textContent = `${nodes.length} entités · ${edges.length} liens`;
+    renderSide(edges);
+    bindPan();
+  }
+  function renderSide(edges) {
+    const s = document.getElementById("rside");
+    if (!s) return;
+    if (R.mode !== "focus") {
+      const by = {}; edges.forEach(e => { by[e.nat] = (by[e.nat] || 0) + 1; });
+      s.innerHTML = `<h3>${R.mode === "capital" ? "Groupes et filiales" : "Réseau filtré"}</h3>
+        <p class="note">${Object.entries(NATURES).filter(([k]) => by[k]).map(([k, n]) => `${by[k]} ${n.nom.toLowerCase()}`).join(" · ") || "Aucun lien"}</p>
+        <p class="note">Cliquez sur un nœud pour l'explorer en détail.</p>
+        ${R.mode === "capital" ? `<ul class="ov-list">${edges.map(e => `<li>${esc(nodeName(e.a))} → ${esc(nodeName(e.b))} <span class="note">· ${esc(e.type)}${e.part ? " · " + esc(e.part) : ""}</span></li>`).join("")}</ul>` : ""}`;
+      return;
+    }
+    const id = R.focus, a = id[0] === "A" && actById[raw(id)], p = id[0] === "P" && byId[raw(id)];
+    const parts = a ? partenaires(id).slice(0, 12) : [];
+    const conc = a ? concurrents(id) : [];
+    const progActs = p ? EDGES.filter(e => e.b === id && e.a[0] === "A") : [];
+    s.innerHTML = `<div class="side-h"><h3>${esc(nodeName(id))}</h3>${shareBtn("reseau/" + id)}</div>
+      <p class="note">${a ? `${esc(CAT_ACTEURS[a.c])} · ${esc(PAYS[a.p] || a.p)} · ${esc(a.v)}` : p ? `Programme · ${esc(FAMILLES[famOf(p)].nom)} · ${STATUTS[p.st]}` : "Entité hors atlas"}</p>
+      <p>${a ? `<button type="button" class="lnk" data-actor="${a.id}">Ouvrir la fiche de l'acteur →</button>` : p ? `<button type="button" class="lnk" data-goto="${p.id}">Ouvrir la fiche du programme →</button>` : ""}</p>
+      ${relGroupsHtml(id)}
+      ${parts.length ? `<div class="relg"><h5>Partenaires sur les mêmes programmes</h5><ul>${parts.map(([o, ps]) => `<li><button type="button" class="lnk" data-rnode="${o}">${esc(nodeName(o))}</button> <span class="note">· ${ps.map(x => esc(nodeName(x))).join(", ")}</span></li>`).join("")}</ul></div>` : ""}
+      ${conc.length ? `<div class="relg"><h5>Concurrents potentiels <span class="note">(calcul indicatif)</span></h5><p class="note">Même catégorie d'acteur, présents dans les mêmes domaines de programmes. Ce n'est pas une concurrence documentée.</p><ul>${conc.map(([o, ds]) => `<li><button type="button" class="lnk" data-rnode="${o}">${esc(nodeName(o))}</button> <span class="note">· ${ds.map(d => esc(DOMAINES[d].nom)).join(", ")}</span></li>`).join("")}</ul></div>` : ""}
+      ${p && !progActs.length ? `<p class="note">Aucun acteur relié à ce programme dans l'atlas.</p>` : ""}`;
+  }
+  function bindPan() {
+    const svg = document.querySelector("#rsvg svg"); if (!svg) return;
+    let drag = null;
+    svg.addEventListener("pointerdown", e => { if (e.target.closest("[data-rnode]")) return; drag = { x: e.clientX, y: e.clientY, px: R.px, py: R.py }; svg.setPointerCapture(e.pointerId); });
+    svg.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const k = 900 / svg.getBoundingClientRect().width;
+      R.px = drag.px + (e.clientX - drag.x) * k; R.py = drag.py + (e.clientY - drag.y) * k;
+      document.getElementById("rview").setAttribute("transform", `translate(${R.px} ${R.py}) scale(${R.zoom})`);
+    });
+    svg.addEventListener("pointerup", () => { drag = null; });
+    svg.addEventListener("wheel", e => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.15 : 0.87); }, { passive: false });
+  }
+  function zoomBy(f) {
+    if (!f) { R.zoom = 1; R.px = 0; R.py = 0; }
+    else { const cy = netCache ? netCache.H / 2 : 320; const z = Math.max(0.4, Math.min(5, R.zoom * f)); R.px = 450 - (450 - R.px) * z / R.zoom; R.py = cy - (cy - R.py) * z / R.zoom; R.zoom = z; }
+    const g = document.getElementById("rview"); if (g) g.setAttribute("transform", `translate(${R.px} ${R.py}) scale(${R.zoom})`);
+  }
+  function resolveNode(id) {
+    if (!id) return null;
+    if (/^[APX]:/.test(id)) { const r = raw(id); return (id[0] === "A" && actById[r]) || (id[0] === "P" && byId[r]) ? id : null; }
+    return actById[id] ? "A:" + id : byId[id] ? "P:" + id : null;
+  }
+  function gotoReseau(id, opts) {
+    opts = opts || {};
+    const n = resolveNode(id);
+    if (n) { R.focus = n; R.mode = "focus"; }
+    R.zoom = 1; R.px = 0; R.py = 0;
+    show("reseau", { noHash: true, keepScroll: opts.keepScroll });
+    renderReseau();
+    if (!opts.noHash) setHash("reseau/" + R.focus, opts.replace);
+  }
+  function findNode(v) {
+    const q = norm(v.trim()); if (!q) return null;
+    const ea = ACTEURS.find(a => norm(a.n) === q), ep = PROGRAMMES.find(p => norm(p.n) === q);
+    if (ea) return "A:" + ea.id; if (ep) return "P:" + ep.id;
+    const sa = ACTEURS.find(a => norm(a.n).includes(q)), sp = PROGRAMMES.find(p => norm(p.n).includes(q));
+    return sa ? "A:" + sa.id : sp ? "P:" + sp.id : null;
+  }
+
   /* ================= ROUTAGE ================= */
-  const RENDER = { prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { accueil: vAccueil, reseau: vReseau, prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   /* Historique : chaque navigation ajoute une entrée, le bouton « précédent » la rejoue */
@@ -6352,6 +6876,7 @@ GLOSSAIRE.push(
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
     if (view === "prospection") renderPros();
+    if (view === "reseau") renderReseau();
     if (view === "finances") renderFin();
     if (view === "industrie") renderParc();
 
@@ -6380,15 +6905,28 @@ GLOSSAIRE.push(
     opts = opts || {};
     const a = actById[id];
     if (!a) return;
-    state.acat = "all"; state.apays = "all"; state.aq = a.n;
+    state.asel = id;
     rendered.acteurs = false;
-    show("acteurs", { noHash: true });
+    show("acteurs", { noHash: true, keepScroll: true });
     if (!opts.noHash) setHash("acteur/" + id, opts.replace);
-    const el = document.getElementById("act-" + id);
-    if (el) { el.scrollIntoView({ block: "center" }); el.classList.add("flash"); }
+    const el = document.getElementById("adetail");
+    if (el) el.scrollIntoView({ block: "start" });
   }
 
   document.addEventListener("click", e => {
+    const sh = e.target.closest("[data-share]"); if (sh) { copyShare(sh.dataset.share); return; }
+    const gi = e.target.closest("[data-gi]"); if (gi) { gopen(+gi.dataset.gi); return; }
+    const rn = e.target.closest("[data-rnode]"); if (rn) { gotoReseau(rn.dataset.rnode); return; }
+    const rs = e.target.closest("[data-reseau]"); if (rs) { gotoReseau(rs.dataset.reseau); return; }
+    const rm = e.target.closest("[data-rmode]"); if (rm) { R.mode = rm.dataset.rmode; R.zoom = 1; R.px = 0; R.py = 0; renderReseau(); return; }
+    const rnat = e.target.closest("[data-rnat]"); if (rnat) { R.nats[rnat.dataset.rnat] = !R.nats[rnat.dataset.rnat]; renderReseau(); return; }
+    const rcat = e.target.closest("[data-rcat]"); if (rcat) { const k = rcat.dataset.rcat; R.cats = R.cats.includes(k) ? R.cats.filter(x => x !== k) : R.cats.concat(k); renderReseau(); return; }
+    const rz = e.target.closest("[data-rz]"); if (rz) { zoomBy(+rz.dataset.rz); return; }
+    if (e.target.closest("[data-rreset]")) { Object.assign(R, { depth: 1, nats: { capital: true, contrat: true, coop: true, part: true }, pays: "all", fam: "all", cats: [], y0: 1990, y1: 2040, zoom: 1, px: 0, py: 0 }); rendered.reseau = false; show("reseau", { noHash: true, keepScroll: true }); return; }
+    if (e.target.closest("[data-preset]")) { Object.assign(state, { pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    if (e.target.closest("[data-fireset]")) { state.q = ""; state.fam = "all"; rendered.fiches = false; show("fiches", { noHash: true, keepScroll: true }); return; }
+    if (e.target.closest("[data-areset]")) { Object.assign(state, { acat: "all", apays: "all", aq: "", asel: null }); rendered.acteurs = false; show("acteurs", { noHash: true, keepScroll: true }); return; }
+    if (!document.getElementById("gres").hidden && !e.target.closest(".gsearch")) document.getElementById("gres").hidden = true;
     const t = e.target.closest("[data-actor],[data-tab],[data-goto],[data-sel],[data-fam],[data-ctype],[data-acat],[data-apays],[data-pfam],[data-ds],[data-ffam],[data-fent],[data-freset],[data-fsort]");
     if (!t) return;
     if (t.dataset.actor) { gotoActor(t.dataset.actor); return; }
@@ -6413,7 +6951,21 @@ GLOSSAIRE.push(
     else if (t.dataset.acat) { state.acat = t.dataset.acat; renderActeurs(); }
     else if (t.dataset.apays) { state.apays = state.apays === t.dataset.apays ? "all" : t.dataset.apays; const sel = document.getElementById("apays"); if (sel) sel.value = state.apays; renderActeurs(); }
   });
+  document.addEventListener("change", e => {
+    if (e.target.id === "rfocus") { const id = findNode(e.target.value); if (id) gotoReseau(id); else toast("Aucun acteur ni programme ne correspond."); }
+  });
   document.addEventListener("keydown", e => {
+    if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")) { e.preventDefault(); const g = document.getElementById("gq"); if (g) g.focus(); return; }
+    if (e.target.id === "gq") {
+      const box = document.getElementById("gres");
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!gres.length) return; gsel = (gsel + (e.key === "ArrowDown" ? 1 : gres.length - 1)) % gres.length; box.querySelectorAll(".gr").forEach((b, i) => b.classList.toggle("on", i === gsel)); }
+      else if (e.key === "Enter") { e.preventDefault(); gopen(gsel); }
+      else if (e.key === "Escape") { box.hidden = true; e.target.blur(); }
+      return;
+    }
+    if (e.target.id === "rfocus" && e.key === "Enter") { const id = findNode(e.target.value); if (id) gotoReseau(id); return; }
+    const nd = e.target.closest && e.target.closest("[data-rnode]");
+    if (nd && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); gotoReseau(nd.dataset.rnode); return; }
     const t = e.target.closest && e.target.closest(".tl-row");
     if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); goto(t.dataset.goto); }
   });
@@ -6421,6 +6973,13 @@ GLOSSAIRE.push(
     if (e.target.id === "q") { state.q = e.target.value; renderList(); }
     if (e.target.id === "aq") { state.aq = e.target.value; renderActeurs(); }
     if (e.target.id === "pq") { state.pq = e.target.value; renderPros(); }
+    if (e.target.id === "gq") gsearch(e.target.value);
+    if (e.target.id === "rdepth") { R.depth = +e.target.value; renderReseau(); }
+    if (e.target.id === "rpays") { R.pays = e.target.value; renderReseau(); }
+    if (e.target.id === "rfam") { R.fam = e.target.value; renderReseau(); }
+    if (e.target.id === "ry0") { R.y0 = +e.target.value; if (R.y1 < R.y0) R.y1 = R.y0; renderReseau(); }
+    if (e.target.id === "ry1") { R.y1 = +e.target.value; if (R.y0 > R.y1) R.y0 = R.y1; renderReseau(); }
+    if (e.target.id === "rlab") { R.labels = e.target.checked; renderReseau(); }
     if (e.target.id === "phz") { state.phz = e.target.value; renderPros(); }
     if (e.target.id === "psort") { state.psort = e.target.value; renderPros(); }
     if (e.target.id === "pnon") { state.pnon = e.target.checked; renderPros(); }
@@ -6440,6 +6999,7 @@ GLOSSAIRE.push(
     lastHash = location.hash;
     if (v === "fiche" && byId[id]) { if (state.view === "fiches" && rendered.fiches && !initial) { state.sel = id; renderList(); renderDetail(); } else goto(id, o); return true; }
     if (v === "acteur" && actById[id]) { gotoActor(id, o); return true; }
+    if (v === "reseau" && resolveNode(id)) { gotoReseau(id, o); return true; }
     if (RENDER[v]) { if (v !== state.view || initial) show(v, o); return true; }
     return false;
   }
@@ -6449,9 +7009,10 @@ GLOSSAIRE.push(
   document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); });
 
   header();
+  searchUi();
   if (fromHash(true)) return;
   let start = (location.hash || "").replace("#", "");
-  if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "mecanique"; } catch (e) { start = "mecanique"; } }
+  if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "accueil"; } catch (e) { start = "accueil"; } }
   show(start, { keepScroll: true, replace: true });
 })();
 

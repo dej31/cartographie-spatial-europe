@@ -4,7 +4,7 @@ const path = require("path");
 let chromium; try { ({ chromium } = require("playwright")); } catch (e) { ({ chromium } = require("/opt/npm-tools/node_modules/playwright")); }
 const out = process.argv[2];
 const url = "file://" + path.join(__dirname, "..", "index.html");
-const views = ["mecanique", "domaines", "fiches", "acteurs", "prospection", "frise", "genealogie", "convergences", "industrie", "finances", "glossaire"];
+const views = ["accueil", "mecanique", "domaines", "fiches", "acteurs", "reseau", "prospection", "frise", "genealogie", "convergences", "industrie", "finances", "glossaire"];
 (async () => {
   const browser = await chromium.launch();
   const errors = [];
@@ -23,6 +23,32 @@ const views = ["mecanique", "domaines", "fiches", "acteurs", "prospection", "fri
       if (overflow > 2) errors.push(`${label} : débordement horizontal de ${overflow}px sur ${v}`);
       if (out) await page.screenshot({ path: path.join(out, `${label}-${v}.png`), fullPage: false });
     }
+    // recherche globale
+    await page.fill("#gq", "hemeria"); await page.waitForTimeout(150);
+    const ng = await page.evaluate(() => document.querySelectorAll("#gres .gr").length);
+    await page.press("#gq", "Enter"); await page.waitForTimeout(250);
+    const det = await page.evaluate(() => { const h = document.querySelector("#adetail h3"); return h && h.textContent; });
+    if (!ng || det !== "Hemeria") errors.push(`${label} : recherche globale (${ng} résultats, fiche ${det})`);
+    if (out) await page.screenshot({ path: path.join(out, `${label}-fiche-acteur.png`) });
+    // réseau
+    await page.evaluate(() => { location.hash = "reseau/airbus-ds"; }); await page.waitForTimeout(400);
+    const nn = await page.evaluate(() => document.querySelectorAll("#rsvg [data-rnode]").length);
+    if (nn < 10) errors.push(`${label} : réseau autour d'Airbus DS (${nn} nœuds)`);
+    if (out) await page.screenshot({ path: path.join(out, `${label}-reseau.png`), fullPage: true });
+    await page.click('#rsvg [data-rnode="A:sstl"] circle, #rsvg [data-rnode="A:sstl"] rect'); await page.waitForTimeout(400);
+    const f2 = await page.evaluate(() => document.querySelector("#rside h3").textContent);
+    if (!/SSTL/.test(f2)) errors.push(`${label} : recentrage du réseau (${f2})`);
+    await page.goBack(); await page.waitForTimeout(400);
+    const f3 = await page.evaluate(() => document.querySelector("#rside h3").textContent);
+    if (!/Airbus/.test(f3)) errors.push(`${label} : précédent dans le réseau (${f3})`);
+    await page.click('[data-rmode="capital"]'); await page.waitForTimeout(400);
+    const nc = await page.evaluate(() => document.querySelectorAll("#rsvg [data-rnode]").length);
+    if (nc < 10) errors.push(`${label} : vue groupes et filiales (${nc})`);
+    if (out) await page.screenshot({ path: path.join(out, `${label}-reseau-capital.png`), fullPage: true });
+    await page.click('[data-rmode="all"]'); await page.waitForTimeout(600);
+    const na = await page.evaluate(() => document.querySelectorAll("#rsvg [data-rnode]").length);
+    await page.click('[data-rmode="focus"]'); await page.waitForTimeout(300);
+    console.log(`${label} : recherche ${ng} résultats ; réseau ${nn} nœuds autour d'Airbus DS, ${nc} en capital, ${na} au total`);
     // bouton « précédent » : onglets, fiche, acteur
     await page.click('[data-tab="domaines"]'); await page.waitForTimeout(100);
     await page.click('[data-tab="acteurs"]'); await page.waitForTimeout(100);
@@ -59,7 +85,7 @@ const views = ["mecanique", "domaines", "fiches", "acteurs", "prospection", "fri
     if (nlab2 < 30) errors.push(`${label} : filtre laboratoires → ${nlab2}`);
     if (out) await page.screenshot({ path: path.join(out, `${label}-labos.png`) });
     await page.evaluate(() => { location.hash = "acteur/kda"; }); await page.waitForTimeout(200);
-    const kda = await page.evaluate(() => document.getElementById("act-kda") && document.getElementById("act-kda").textContent);
+    const kda = await page.evaluate(() => document.getElementById("adetail") && document.getElementById("adetail").textContent);
     if (!kda || !/KSAT/.test(kda)) errors.push(`${label} : fiche KDA`);
     await page.evaluate(() => { location.hash = "prospection"; }); await page.waitForTimeout(200);
     const np = await page.evaluate(() => document.querySelectorAll("#plistp .pros").length);

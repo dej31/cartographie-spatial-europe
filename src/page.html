@@ -396,6 +396,79 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
   .circuit li { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ---- Phase 4 : recherche, vue d'ensemble, réseau, fiches acteurs ---- */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tabs.has-search { display: block; }
+.gsearch { position: relative; width: min(100% - 32px, 1240px); margin: 0 auto; padding: 0 0 8px; }
+.gsearch input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+.gres { position: absolute; left: 0; right: 0; top: calc(100% - 4px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 10px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; }
+.gr { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; width: 100%; text-align: left; border: 0; background: none; padding: 8px 12px; cursor: pointer; color: var(--ink); font: inherit; font-size: 14px; }
+.gr.on, .gr:hover { background: var(--sunk); }
+.gk { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+.gt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs { white-space: nowrap; }
+@media (max-width: 560px) { .gr { grid-template-columns: minmax(0, 1fr); gap: 0; } .gs { white-space: normal; } }
+.entries { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px; margin: 18px 0; }
+.entry { text-align: left; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); padding: 14px 16px; cursor: pointer; display: grid; gap: 4px; color: var(--ink); font: inherit; }
+.entry b { font-family: var(--font-display); font-size: 16.5px; }
+.entry span { font-size: 13.5px; color: var(--muted); }
+.entry:hover { border-color: var(--accent); }
+.ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 14px; }
+.ov-list { margin: 0; padding-left: 16px; display: grid; gap: 4px; font-size: 13.5px; }
+.ov-fam .hb-t { display: flex; }
+.ov-fam .hb-t i { display: block; height: 100%; }
+.share { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; white-space: nowrap; }
+.share:hover { border-color: var(--accent); color: var(--accent); }
+.meta-act { margin-left: auto; display: inline-flex; gap: 6px; flex-wrap: wrap; }
+#toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; font-size: 13.5px; opacity: 0; transition: opacity .2s, transform .2s; z-index: 50; max-width: calc(100% - 32px); overflow-wrap: anywhere; pointer-events: none; }
+#toast.on { opacity: 1; transform: translate(-50%, 0); }
+.st-nr { color: var(--faint); border-style: dotted; }
+.adet { margin-bottom: 20px; border-left: 4px solid var(--accent); }
+.adet-h { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+.adet h3 { font-size: 22px; font-stretch: 106%; margin: 2px 0; }
+.adet .ty { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.adet h4 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+.adet-act { display: flex; gap: 6px; flex-wrap: wrap; }
+.adet-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+.adet .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+@media (max-width: 800px) { .adet-g { grid-template-columns: minmax(0, 1fr); } }
+.act-t { color: var(--ink); font-weight: inherit; }
+.adet-src a { overflow-wrap: anywhere; }
+.relg { margin-bottom: 10px; }
+.relg h5 { margin: 0 0 4px; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.relg ul { margin: 0; padding-left: 16px; display: grid; gap: 4px; font-size: 13px; }
+.relg .src { font-size: 11.5px; color: var(--faint); }
+.nat-sw { display: inline-block; width: 18px; height: 0; border-top-width: 3px; border-top-color: var(--faint); border-top-style: dotted; vertical-align: middle; }
+.nat-capital { border-top-color: var(--f-nav); border-top-style: solid; }
+.nat-contrat { border-top-color: var(--f-tel); border-top-style: dashed; }
+.nat-coop { border-top-color: var(--f-obs); border-top-style: dotted; }
+.net-ctl { display: grid; gap: 10px; margin-bottom: 14px; }
+.net-f { display: grid; grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)); gap: 10px; }
+.net-f > div { display: grid; gap: 4px; }
+.net-f input, .net-f select { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+.net-per { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+.net-per select { min-width: 0; }
+.net { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 14px; align-items: start; }
+.net-map { padding: 10px; gap: 8px; }
+.net-tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.net-tools button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; min-width: 32px; padding: 4px 8px; cursor: pointer; font: inherit; }
+.net-tools label { display: inline-flex; gap: 4px; align-items: center; margin-left: 6px; }
+.net-tools label input { width: auto; margin: 0; }
+#rcount { margin-left: auto; }
+.net-svg { border: 1px solid var(--line); border-radius: var(--r); background: var(--sunk); overflow: hidden; touch-action: none; }
+.net-svg svg { display: block; width: 100%; height: auto; cursor: grab; }
+.nd-c { cursor: pointer; }
+.nd-c:hover circle, .nd-c:hover rect, .nd-c:focus circle, .nd-c:focus rect { stroke: var(--accent); stroke-width: 3; }
+.nl { font-family: var(--font-mono); font-size: 10.5px; fill: var(--ink); paint-order: stroke; stroke: var(--sunk); stroke-width: 3px; }
+.nl-f { font-size: 13px; font-weight: 600; }
+.net-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted); }
+.net-leg span { display: inline-flex; gap: 6px; align-items: center; }
+.net-side { max-height: 820px; overflow-y: auto; }
+.net-side h3 { margin: 0; font-size: 18px; }
+.side-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+@media (max-width: 1000px) { .net { grid-template-columns: minmax(0, 1fr); } .net-f { grid-template-columns: repeat(2, minmax(0, 1fr)); } .net-f > div:first-child { grid-column: 1 / -1; } .net-side { max-height: none; } }
+@media (max-width: 560px) { .net-f { grid-template-columns: minmax(0, 1fr); } .meta-act { margin-left: 0; } }
 </style>
 
 <header class="hero">
@@ -418,10 +491,12 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 
 <main>
   <div class="wrap">
+    <section id="v-accueil" data-view hidden></section>
     <section id="v-mecanique" data-view hidden></section>
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>
     <section id="v-acteurs" data-view hidden></section>
+    <section id="v-reseau" data-view hidden></section>
     <section id="v-prospection" data-view hidden></section>
     <section id="v-frise" data-view hidden></section>
     <section id="v-genealogie" data-view hidden></section>
@@ -449,6 +524,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 /*__DATA7__*/
 /*__DATA8__*/
 /*__DATA9__*/
+/*__DATA10__*/
 </script>
 <script>
 /*__APP__*/

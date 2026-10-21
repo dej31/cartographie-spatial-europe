@@ -4,7 +4,7 @@ Cartographie interactive de l'écosystème spatial européen : observation de la
 
 Contenu (octobre 2026) :
 
-- **153 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
+- **155 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
 - **190 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
 - **188 relations sourcées** :
   - entre organisations : groupe, filiale, coentreprise, consortium, acquisition, fusion ;
@@ -12,27 +12,32 @@ Contenu (octobre 2026) :
 - **191 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 47 convergences et 362 liens sources.
 - **49 fiches illustrées** : 32 photos libres de Wikimedia Commons, des dimensions et des masses sourcées, 30 schémas à l'échelle humaine.
 
-## Les 11 vues
+## Les 13 vues
 
 | # | Vue | Contenu |
 |---|-----|---------|
-| 0 | Mécanique | Chaîne financeur → utilisateur, cinq circuits types, grandes enveloppes, notions clés |
-| 1 | Domaines | 7 familles, 21 domaines, tous les programmes |
-| 2 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle |
-| 3 | Acteurs | Annuaire filtrable (10 catégories dont « Laboratoires & recherche »), statut UE / ESA du pays, groupe, relations sourcées, structure industrielle, acquisitions et fusions |
-| 4 | Prospection | Programmes en développement ou en projet : acheteur, attributaire, dernier et prochain jalons, budget, opportunités documentées ; filtre « sans maître d'œuvre attribué » ; export CSV |
-| 5 | Frise | 1965-2045, réalisé et prévu, jalons |
-| 6 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
-| 7 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé… |
-| 8 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
-| 9 | Finances | Contrats publics (reliés aux acteurs, avec le stade : annoncé, signé ou versé quand il est publié), levées de fonds, séries annuelles |
-| 10 | Glossaire | Sigles, indice de confiance, sources |
+| 0 | Vue d'ensemble | Indicateurs clés, jalons de l'année suivante, plus gros contrats récents, acteurs les plus connectés, programmes à attribuer, accès rapides |
+| 1 | Mécanique | Chaîne financeur → utilisateur, cinq circuits types, grandes enveloppes, notions clés |
+| 2 | Domaines | 7 familles, 21 domaines, tous les programmes |
+| 3 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle, lien partageable |
+| 4 | Acteurs | Annuaire filtrable et fiche acteur complète : groupe, programmes et rôles, relations par nature, partenaires, concurrents potentiels (calcul indicatif), sources |
+| 5 | Réseau | Cartographie interactive : autour d'un acteur ou d'un programme, groupes et filiales, réseau complet ; liens typés capital, contrat, coopération ou participation ; filtres pays, domaine, type d'acteur, période |
+| 6 | Prospection | Programmes en développement ou en projet : acheteur, attributaire, jalons, budget, opportunités documentées ; export CSV |
+| 7 | Frise | 1965-2045, réalisé et prévu, jalons |
+| 8 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
+| 9 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé, compétitions |
+| 10 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
+| 11 | Finances | Contrats publics reliés aux acteurs, levées de fonds, séries annuelles |
+| 12 | Glossaire | Sigles, indice de confiance, sources |
 
 ## Liens directs
 
-- `#domaines`, `#fiches`, `#acteurs`, `#prospection`… ouvrent une vue. Le bouton « précédent » du navigateur fonctionne.
+- **Recherche globale** sous les onglets (raccourci « / ») : programmes, acteurs, laboratoires, pays, sigles.
+- `#domaines`, `#fiches`, `#acteurs`, `#reseau`, `#prospection`… ouvrent une vue. Les boutons « précédent » et « suivant » du navigateur fonctionnent.
 - `#fiche/<identifiant>` ouvre une fiche programme, par exemple `#fiche/sterna`.
-- `#acteur/<identifiant>` ouvre un acteur, par exemple `#acteur/ohb-sweden`.
+- `#acteur/<identifiant>` ouvre la fiche d'un acteur, par exemple `#acteur/ohb-sweden`.
+- `#reseau/A:<acteur>` ou `#reseau/P:<programme>` centre la cartographie, par exemple `#reseau/A:airbus-ds`.
+- Chaque fiche a un bouton « Copier le lien ».
 
 ## Organisation des données
 
@@ -52,6 +57,7 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
   - contrats reliés aux acteurs (`act`), avec leur stade (`eng`) ;
   - corrections et sources complémentaires.
 - `src/data9.js` (phase 3) : 18 programmes et 13 acteurs orientés prospection, champ `pros` (opportunités documentées), structure industrielle d'IRIS² et contrat ALADDIN, 39 fiches illustrées supplémentaires (`VISUELS`).
+- `src/data10.js` (phase 4) : finalistes M7 non retenus (M-MATISSE, THESEUS), statut « Non retenu »
 
 ### Modèle des relations (`RELATIONS`)
 
@@ -96,4 +102,4 @@ node tools/smoke.js       # test navigateur (Playwright) : 10 vues, liens direct
 
 Les photos du pilote sont servies depuis Wikimedia Commons. Leurs licences sont libres ; le crédit et la licence figurent sur la page de chaque fichier.
 
-Données compilées en octobre 2026 à partir de sources publiques. Le détail des phases 2 et 3 est dans `audit/rapport_phase2.md` et `audit/rapport_phase3.md`.
+Données compilées en octobre 2026 à partir de sources publiques. Le détail des phases 2 à 4 est dans `audit/rapport_phase2.md`, `audit/rapport_phase3.md` et `audit/rapport_phase4.md`.
