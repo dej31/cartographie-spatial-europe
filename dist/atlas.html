@@ -6325,7 +6325,15 @@ GLOSSAIRE.push(
   const RENDER = { prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
+  /* Historique : chaque navigation ajoute une entrée, le bouton « précédent » la rejoue */
+  let lastHash = location.hash;
+  function setHash(h, replace) {
+    if (location.hash === "#" + h) { lastHash = location.hash; return; }
+    try { history[replace ? "replaceState" : "pushState"](null, "", "#" + h); } catch (e) {}
+    lastHash = location.hash;
+  }
   function show(view, opts) {
+    opts = opts || {};
     if (!RENDER[view]) view = "mecanique";
     state.view = view;
     document.querySelectorAll("[data-view]").forEach(s => { s.hidden = s.id !== "v-" + view; });
@@ -6339,31 +6347,35 @@ GLOSSAIRE.push(
     if (view === "finances") renderFin();
     if (view === "industrie") renderParc();
 
-    try { if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view); } catch (e) {}
+    if (!opts.noHash) setHash(view, opts.replace);
     try { localStorage.setItem("atlas-view", view); } catch (e) {}
-    if (!opts || !opts.keepScroll) {
+    if (!opts.keepScroll) {
       const top = document.querySelector(".tabs").getBoundingClientRect().top + window.scrollY;
       if (window.scrollY > top) window.scrollTo({ top });
     }
   }
 
-  function goto(id) {
+  function goto(id, opts) {
+    opts = opts || {};
     if (!byId[id]) return;
     state.sel = id;
     if (state.fam !== "all" && famOf(byId[id]) !== state.fam) state.fam = "all";
     if (state.q && !filtered().some(p => p.id === id)) state.q = "";
     rendered.fiches = false;
-    show("fiches");
+    show("fiches", { noHash: true, keepScroll: opts.keepScroll });
+    if (!opts.noHash) setHash("fiche/" + id, opts.replace);
     const item = document.querySelector(`.pitem[data-sel="${id}"]`);
     if (item) item.scrollIntoView({ block: "nearest" });
   }
 
-  function gotoActor(id) {
+  function gotoActor(id, opts) {
+    opts = opts || {};
     const a = actById[id];
     if (!a) return;
     state.acat = "all"; state.apays = "all"; state.aq = a.n;
     rendered.acteurs = false;
-    show("acteurs");
+    show("acteurs", { noHash: true });
+    if (!opts.noHash) setHash("acteur/" + id, opts.replace);
     const el = document.getElementById("act-" + id);
     if (el) { el.scrollIntoView({ block: "center" }); el.classList.add("flash"); }
   }
@@ -6376,7 +6388,7 @@ GLOSSAIRE.push(
     if (t.dataset.tab) show(t.dataset.tab, { keepScroll: true });
     else if (t.dataset.goto) goto(t.dataset.goto);
     else if (t.dataset.sel) {
-      state.sel = t.dataset.sel; renderList(); renderDetail();
+      state.sel = t.dataset.sel; renderList(); renderDetail(); setHash("fiche/" + state.sel);
       if (window.innerWidth <= 1000) document.getElementById("detail").scrollIntoView({ behavior: "smooth", block: "start" });
     }
     else if (t.dataset.fam) {
@@ -6413,22 +6425,26 @@ GLOSSAIRE.push(
     if (e.target.id === "fty") { state.ty = e.target.value; renderFin(); }
   });
 
-  function fromHash() {
+  function fromHash(initial) {
     const h = decodeURIComponent((location.hash || "").replace("#", ""));
     const [v, id] = h.split("/");
-    if (v === "fiche" && byId[id]) { goto(id); return true; }
-    if (v === "acteur" && actById[id]) { gotoActor(id); return true; }
-    if (RENDER[v]) { if (v !== state.view) show(v, { keepScroll: true }); return true; }
+    const o = { noHash: true, keepScroll: true };
+    lastHash = location.hash;
+    if (v === "fiche" && byId[id]) { if (state.view === "fiches" && rendered.fiches && !initial) { state.sel = id; renderList(); renderDetail(); } else goto(id, o); return true; }
+    if (v === "acteur" && actById[id]) { gotoActor(id, o); return true; }
+    if (RENDER[v]) { if (v !== state.view || initial) show(v, o); return true; }
     return false;
   }
-  window.addEventListener("hashchange", fromHash);
+  const onNav = () => { if (location.hash !== lastHash) fromHash(false); };
+  window.addEventListener("popstate", onNav);
+  window.addEventListener("hashchange", onNav);
   document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); });
 
   header();
-  if (fromHash()) return;
+  if (fromHash(true)) return;
   let start = (location.hash || "").replace("#", "");
   if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "mecanique"; } catch (e) { start = "mecanique"; } }
-  show(start, { keepScroll: true });
+  show(start, { keepScroll: true, replace: true });
 })();
 
 </script>

@@ -23,6 +23,24 @@ const views = ["mecanique", "domaines", "fiches", "acteurs", "prospection", "fri
       if (overflow > 2) errors.push(`${label} : débordement horizontal de ${overflow}px sur ${v}`);
       if (out) await page.screenshot({ path: path.join(out, `${label}-${v}.png`), fullPage: false });
     }
+    // bouton « précédent » : onglets, fiche, acteur
+    await page.click('[data-tab="domaines"]'); await page.waitForTimeout(100);
+    await page.click('[data-tab="acteurs"]'); await page.waitForTimeout(100);
+    await page.click('[data-tab="frise"]'); await page.waitForTimeout(100);
+    await page.goBack(); await page.waitForTimeout(200);
+    const b1 = await page.evaluate(() => !document.getElementById("v-acteurs").hidden);
+    await page.goBack(); await page.waitForTimeout(200);
+    const b2 = await page.evaluate(() => !document.getElementById("v-domaines").hidden);
+    await page.click('#v-domaines [data-goto="s2"]'); await page.waitForTimeout(200);
+    await page.click('#plist [data-sel="s3"]'); await page.waitForTimeout(150);
+    await page.goBack(); await page.waitForTimeout(200);
+    const b3 = await page.evaluate(() => document.querySelector("#detail h3").textContent);
+    await page.goBack(); await page.waitForTimeout(200);
+    const b4 = await page.evaluate(() => !document.getElementById("v-domaines").hidden);
+    await page.goForward(); await page.waitForTimeout(200);
+    const b5 = await page.evaluate(() => !document.getElementById("v-fiches").hidden);
+    if (!b1 || !b2 || b3 !== "Sentinel-2" || !b4 || !b5) errors.push(`${label} : bouton précédent (${b1}, ${b2}, ${b3}, ${b4}, ${b5})`);
+    else console.log(`${label} : bouton précédent et suivant OK`);
     // fiche profonde et acteur profond
     await page.evaluate(() => { location.hash = "fiche/sterna"; }); await page.waitForTimeout(200);
     const t = await page.evaluate(() => document.querySelector("#detail h3") && document.querySelector("#detail h3").textContent);
