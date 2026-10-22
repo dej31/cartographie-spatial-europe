@@ -136,7 +136,7 @@ Une date donnée par la seule année est comptée au 31 décembre de cette anné
 - **Dates de publication manquantes.** Quand elle n'est ni dans l'adresse ni dans la page lue, la date de publication est « non documentée ». La qualité est alors notée sur l'indice de confiance seul.
 - **Accessibilité gardée dans le navigateur.** Elle n'est ni partagée ni sauvegardée ailleurs. Dans une navigation privée, elle peut être perdue.
 - **Prochaines actions publiques.** Comme convenu, elles sont visibles de tous sur le site, concurrents compris.
-- **Hemeria.** Elle apparaît comme partenaire, fournisseur ou maître d'œuvre sur 4 opportunités (OneWeb, Space Inspire, REVALTO, Swing). C'est documenté, mais à lire en connaissant ta position.
+- **Hemeria.** Elle apparaît comme partenaire, fournisseur ou maître d'œuvre sur 4 opportunités (OneWeb, Space Inspire, REVALTO, Swing), au même titre que les autres acteurs cités par les sources.
 
 ## Fichiers modifiés
 
