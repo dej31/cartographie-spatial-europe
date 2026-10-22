@@ -1425,10 +1425,24 @@
 
   /* Historique : chaque navigation ajoute une entrée, le bouton « précédent » la rejoue */
   let lastHash = location.hash;
+  /* Compteur de visites : une vue comptée par adresse (#vue, #fiche/…), seulement sur le site publié */
+  let trackT = null, lastTracked = null;
+  function track() {
+    if (!/github\.io$/.test(location.hostname)) return;
+    clearTimeout(trackT);
+    trackT = setTimeout(function send(n) {
+      const path = location.pathname + (location.hash || "#accueil");
+      if (path === lastTracked) return;
+      const gc = window.goatcounter;
+      if (gc && typeof gc.count === "function") { try { gc.count({ path: path }); lastTracked = path; } catch (e) {} }
+      else if ((n || 0) < 10) trackT = setTimeout(() => send((n || 0) + 1), 800);
+    }, 500);
+  }
   function setHash(h, replace) {
-    if (location.hash === "#" + h) { lastHash = location.hash; return; }
+    if (location.hash === "#" + h) { lastHash = location.hash; track(); return; }
     try { history[replace ? "replaceState" : "pushState"](null, "", "#" + h); } catch (e) {}
     lastHash = location.hash;
+    track();
   }
   function show(view, opts) {
     opts = opts || {};
@@ -1579,14 +1593,14 @@
     if (RENDER[v]) { if (v !== state.view || initial) show(v, o); return true; }
     return false;
   }
-  const onNav = () => { if (location.hash !== lastHash) fromHash(false); };
+  const onNav = () => { if (location.hash !== lastHash) fromHash(false); track(); };
   window.addEventListener("popstate", onNav);
   window.addEventListener("hashchange", onNav);
   document.addEventListener("click", e => { if (e.target.id === "pcsv") prosCsv(); if (e.target.id === "ocsv") oppCsv(); });
 
   header();
   searchUi();
-  if (fromHash(true)) return;
+  if (fromHash(true)) { track(); return; }
   let start = (location.hash || "").replace("#", "");
   if (!RENDER[start]) { try { start = localStorage.getItem("atlas-view") || "accueil"; } catch (e) { start = "accueil"; } }
   show(start, { keepScroll: true, replace: true });

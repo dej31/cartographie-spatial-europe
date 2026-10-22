@@ -2,7 +2,7 @@
    Lit dist/atlas.html (après python3 build.py), évalue les données et vérifie les références. */
 const fs = require("fs"), vm = require("vm"), path = require("path");
 const html = fs.readFileSync(path.join(__dirname, "..", "dist", "atlas.html"), "utf8");
-const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).filter(s => s.length > 1000); // ignore le petit script du compteur
 const ctx = {}; vm.createContext(ctx);
 vm.runInContext(scripts[0] + `;this.D={PROGRAMMES,ACTEURS,CAT_ACTEURS,PAYS,PAYS_INFO,FAMILLES,DOMAINES,STATUTS,LIGNEES,CONVERGENCES,UNITES,PARC,LIENS,CONTRATS,LEVEES,RELATIONS,BUDGETS,SOURCES,SUITES,VISUELS,ORBITES,GLOSSAIRE,OPPORTUNITES,EVENEMENTS,SITES,METIERS,PHASES,OPP_STATUTS,EVT_TYPES,scoreOpp,DATE_VERIF}`, ctx);
 new vm.Script(scripts[1]); // syntaxe de app.js

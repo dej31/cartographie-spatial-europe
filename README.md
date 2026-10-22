@@ -89,6 +89,10 @@ Adéquation technique, maturité industrielle, volume, proximité de la décisio
 
 Une relation acteur → programme ajoute automatiquement le programme à la liste de l'acteur.
 
+## Compteur de visites
+
+Le site publié compte ses visites avec GoatCounter (https://atlas-spatial.goatcounter.com) : sans cookie, sans donnée personnelle. Chaque vue et chaque fiche (`#prospection`, `#fiche/sterna`…) est comptée séparément, seulement sur github.io (pas en local ni pendant les tests). Pour exclure ses propres visites, ouvrir une fois le site avec `#toggle-goatcounter` dans chaque navigateur utilisé.
+
 ## Consulter
 
 Ouvrir `index.html` dans un navigateur. La page est publiée par GitHub Pages depuis la branche `main`, dossier racine.
