@@ -6601,6 +6601,42 @@ EVENEMENTS.push(
   { d: "2026-09-23", type: "site", act: "beyond-gravity", prog: null, metiers: ["structure"], txt: "Beyond Gravity agrandit Linköping : 192 modules de déploiement par an au lieu de 96, à partir d'octobre 2026.", src: SRC12b.bgLink, bc: "A", opp: null }
 );
 
+/* ---------- Compléments sourcés, deuxième envoi (23 oct. 2026), vérifiés ---------- */
+const SRC12c = {
+  dge: S2("https://www.entreprises.gouv.fr/la-dge/actualites/sommet-international-sur-lespace-51-annonces-pour-accelerer-le-developpement-de", "DGE – Sommet international sur l'espace : 51 annonces (environ 20 Md€, dont 15,7 Md€ pour la concession IRIS²)", "2026-09-16"),
+  naja: S2("https://aviationweek.com/space/commercial-space/esa-sees-12-ariane-6-launches-doable-29-effort-needed-more", "Aviation Week – L'ESA juge 12 lancements d'Ariane 6 possibles en 2029", "2026-09-09"),
+  sir15: S2("https://www.spaceintelreport.com/esa-looking-at-what-it-would-take-to-increase-ariane-6-cadence-to-15-missions-or-more-per-year-before-2030/", "Space Intel Report – L'ESA étudie une cadence de 15 Ariane 6 par an ou plus avant 2030", "2026-06-17"),
+  agA6: S2("https://www.ariane.group/transport-spatial/ariane-6/", "ArianeGroup – Ariane 6 : système industriel dimensionné pour 11 lanceurs par an", null),
+  segula: S2("https://aeromorning.com/segula-devient-partenaire-dairbus-pour-eutelsat/", "AeroMorning – Segula Technologies, partenaire d'Airbus pour l'AIT des satellites OneWeb", "2026-04-16")
+};
+ACTEURS.push(
+  { id: "segula", n: "Segula Technologies", c: "equip", p: "FR", v: "Toulouse (site OneWeb d'Airbus)", t: "Groupe d'ingénierie", y: null,
+    m: "Ingénierie et services industriels. Titulaire de l'assemblage, de l'intégration et des essais des satellites OneWeb sur la ligne d'Airbus à Toulouse, et de la montée en cadence (contrat de fin 2025, environ 50 personnes).", k: "", kb: "", pr: ["eutelsat"], u: SRC12c.segula.u }
+);
+RELATIONS.push(
+  { de: "segula", vers: "eutelsat", type: "sous-traitant", a: 2025, txt: "AIT des satellites OneWeb de nouvelle génération sur la ligne d'Airbus à Toulouse, pour Airbus.", bc: "A", src: SRC12c.segula.u }
+);
+(function () {
+  const ir = P12("iris2");
+  if (ir) { ir.bud = "≈ 10,6 Md€ annoncés en 2024 (dont 6,5 Md€ publics) ; 15,7 Md€ pour la concession selon le gouvernement français (sept. 2026) ; contributions nationales (Pologne 656 M€, Hongrie 500 M€, Espagne 1,6 à 2 Md€)"; }
+  addLien("iris2", L("Agence", SRC12c.dge.t, SRC12c.dge.u));
+  const a6 = P12("ariane6");
+  if (a6) {
+    a6.jal.push([2029, "12 lancements par an visés par l'ESA"]);
+    a6.note = (a6.note ? a6.note + " " : "") + "Système industriel dimensionné pour 11 lanceurs par an (ArianeGroup) ; 9 à 10 lancements visés dès 2027 ; l'ESA juge 12 lancements possibles en 2029 avec un investissement gérable et étudie ce qu'il faudrait pour 15 ou plus, ce qui exigerait des décisions plus lourdes.";
+  }
+  addLien("ariane6", L("Référence", SRC12c.naja.t, SRC12c.naja.u)); addLien("ariane6", L("Industriel", SRC12c.agA6.t, SRC12c.agA6.u));
+  const o = O12("a6-cadence");
+  if (o) { o.qte = { n: 12, lib: "9 à 10 lancements par an en 2027, 12 visés en 2029 (ESA), 15 ou plus à l'étude ; outil dimensionné pour 11 lanceurs par an" }; o.sources = o.sources.concat([SRC12c.naja, SRC12c.sir15, SRC12c.agA6]); }
+  const ow = O12("ow-serie");
+  if (ow) { ow.fab.txt += " Assemblage, intégration et essais confiés à Segula Technologies sur la ligne de Toulouse (contrat de fin 2025)."; ow.four = ow.four.concat(["segula"]); ow.sources = ow.sources.concat([SRC12c.segula]); }
+})();
+EVENEMENTS.push(
+  { d: "2026-09-16", type: "tranche", act: "commission", prog: "iris2", metiers: [], txt: "Le gouvernement français chiffre à 15,7 Md€ la concession IRIS² annoncée au Sommet de Paris.", src: SRC12c.dge, bc: "A", opp: null },
+  { d: "2026-09-09", type: "cadence", act: "esa", prog: "ariane6", metiers: [], txt: "L'ESA juge 12 lancements d'Ariane 6 par an possibles en 2029.", src: SRC12c.naja, bc: "A", opp: "a6-cadence" },
+  { d: "2026-04-16", type: "fournisseur", act: "segula", prog: "eutelsat", metiers: [], txt: "Segula Technologies assure l'AIT des satellites OneWeb sur la ligne d'Airbus à Toulouse.", src: SRC12c.segula, bc: "A", opp: "ow-serie" }
+);
+
 </script>
 <script>
 (function () {

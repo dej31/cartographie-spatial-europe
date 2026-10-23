@@ -83,6 +83,18 @@ Non intégrés, car les sites sont inaccessibles depuis l'outil de vérification
 - Le Monde : budget d'IRIS² ;
 - Le Journal des Entreprises : Segula.
 
+## Compléments, deuxième envoi (23 octobre)
+
+Intégrés après vérification de la source :
+- **IRIS²** : 15,7 Md€ pour la concession, selon la DGE (16 sept. 2026). Le montant s'affiche à côté des 10,6 Md€ de 2024 annoncés par l'ESA.
+- **Ariane 6** :
+  - 12 lancements par an jugés possibles en 2029 (Géraldine Naja, citée par Aviation Week le 9 sept. 2026) ;
+  - 15 ou plus à l'étude (Space Intel Report, juin 2026) ;
+  - outil industriel dimensionné pour 11 lanceurs par an (ArianeGroup).
+- **Segula Technologies** (AeroMorning, 16 avril 2026) : assemblage, intégration et essais des satellites OneWeb sur la ligne de Toulouse.
+
+Toujours non intégrés : la cadence de 16 à 20 satellites par mois et les fournisseurs de la ligne OneWeb (STI, Sodern, Matra Electronics, équipements Airbus). Seule La Tribune les cite, et le site reste inaccessible à l'outil de vérification. La synthèse de presse du GIFAS et la page détaillée du CNES le sont aussi.
+
 ## Contrôles
 
 - `node tools/check.js` : aucune erreur. Nouveau contrôle : la part française reste dans ses bornes.
