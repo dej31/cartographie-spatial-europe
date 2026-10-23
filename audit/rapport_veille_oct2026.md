@@ -95,6 +95,19 @@ Intégrés après vérification de la source :
 
 Toujours non intégrés : la cadence de 16 à 20 satellites par mois et les fournisseurs de la ligne OneWeb (STI, Sodern, Matra Electronics, équipements Airbus). Seule La Tribune les cite, et le site reste inaccessible à l'outil de vérification. La synthèse de presse du GIFAS et la page détaillée du CNES le sont aussi.
 
+## Compléments, troisième envoi (23 octobre) : ligne OneWeb
+
+Intégrés après vérification de la source, en séparant nouvelle et première génération :
+- **Sodern** (communiqué du 18 mai 2026) : viseurs d'étoiles Auriga de toute la constellation depuis 2019, reconduits pour le lot de 340 satellites de nouvelle génération.
+- **SpaceTech, ou STI** (communiqué du 23 mars 2021) : panneaux solaires et mécanismes de déploiement. La génération n'est pas précisée.
+- **Matra Électronique** (février 2022) : sous-ensembles électroniques depuis 2018, première génération.
+- **Cadence** (Aquitaine Online, 10 sept. 2026) : environ 16 satellites par mois en croisière, cycle d'environ cinq semaines par satellite. Indice de confiance B : presse régionale.
+
+Non intégrés :
+- le maximum de 20 satellites par mois ;
+- le calculateur fourni par Airbus en Île-de-France et la distribution de puissance par Airbus en Espagne : seule La Tribune les cite ;
+- l'effectif de 150 personnes : seule La Dépêche le cite, et son site est inaccessible.
+
 ## Contrôles
 
 - `node tools/check.js` : aucune erreur. Nouveau contrôle : la part française reste dans ses bornes.

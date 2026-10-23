@@ -6645,6 +6645,40 @@ EVENEMENTS.push(
   { d: "2026-04-16", type: "fournisseur", act: "segula", prog: "eutelsat", metiers: [], txt: "Segula Technologies assure l'AIT des satellites OneWeb sur la ligne d'Airbus à Toulouse.", src: SRC12c.segula, bc: "A", opp: "ow-serie" }
 );
 
+/* ---------- Compléments sourcés, troisième envoi (23 oct. 2026) : fournisseurs et cadence OneWeb ---------- */
+const SRC12d = {
+  sti: S2("https://spacetech-i.com/news/news-details/sti-to-deliver-solar-arrays-for-airbus-oneweb-satellites", "SpaceTech (STI) – Panneaux solaires pour Airbus OneWeb Satellites", "2021-03-23"),
+  sodern: S2("https://sodern.com/fr/actualites/oneweb-une-confiance-renouvelee", "Sodern – OneWeb, une confiance renouvelée (viseurs d'étoiles Auriga)", "2026-05-18"),
+  matra: S2("https://www.matra-electronique.com/en/internet-access-everywhere-for-everyone/", "Matra Électronique – Sous-ensembles électroniques des satellites OneWeb", "2022-02-04"),
+  cadence: S2("https://www.aquitaineonline.com/actualites-en-aquitaine/occitanie/13425-airbus-oneweb-iris2-satellites-souverains-toulouse.html", "Aquitaine Online – Ligne OneWeb de Toulouse : 16 satellites par mois", "2026-09-10")
+};
+ACTEURS.push(
+  { id: "spacetech", n: "SpaceTech (STI)", c: "equip", p: "DE", v: "Allemagne (SpaceTech et CarboSpaceTech)", t: "Entreprise industrielle", y: null,
+    m: "Panneaux solaires et mécanismes de déploiement. Contrat de plusieurs millions d'euros (mars 2021) pour des centaines de panneaux solaires de la constellation OneWeb, en plus des mécanismes de déploiement déjà fournis.", k: "", kb: "", pr: ["eutelsat"], u: SRC12d.sti.u },
+  { id: "matra-electronique", n: "Matra Électronique", c: "equip", p: "FR", v: "France", t: "Entreprise industrielle", y: null,
+    m: "Fabrication électronique. Réalise depuis 2018 le circuit de trois sous-ensembles électroniques des satellites OneWeb (500e exemplaire annoncé en février 2022).", k: "", kb: "", pr: ["eutelsat"], u: SRC12d.matra.u }
+);
+addPr("sodern", "eutelsat");
+RELATIONS.push(
+  { de: "spacetech", vers: "eutelsat", type: "fournisseur", a: 2021, txt: "Panneaux solaires et mécanismes de déploiement des satellites OneWeb, pour Airbus OneWeb Satellites (génération non précisée par la source).", bc: "A", src: SRC12d.sti.u },
+  { de: "sodern", vers: "eutelsat", type: "fournisseur", a: 2026, txt: "Viseurs d'étoiles Auriga de toute la constellation depuis 2019, reconduits pour le lot de 340 satellites de nouvelle génération.", bc: "A", src: SRC12d.sodern.u },
+  { de: "matra-electronique", vers: "eutelsat", type: "fournisseur", a: 2018, txt: "Circuit de trois sous-ensembles électroniques des satellites OneWeb (première génération).", bc: "A", src: SRC12d.matra.u }
+);
+(function () {
+  const ow = O12("ow-serie");
+  if (!ow) return;
+  ow.qte = { n: 669, lib: "669 satellites commandés à Airbus (100 en 2024, 340 en janv. 2026, 229 en sept. 2026) ; environ 16 satellites par mois en croisière, cycle d'environ cinq semaines par satellite" };
+  ow.fab.txt = "Fournisseurs confirmés sur la nouvelle génération : Sodern (viseurs d'étoiles, lot de 340 satellites), Rocket Lab (panneaux solaires des 100 premiers satellites, États-Unis), Segula Technologies (assemblage, intégration et essais à Toulouse). Fournisseurs confirmés sur la première génération, sans confirmation pour la nouvelle : SpaceTech/STI (panneaux solaires et mécanismes de déploiement), Matra Électronique (sous-ensembles électroniques), Beyond Gravity (structure, MLI), Axon' Cable (harnais) ; Hemeria cite aussi des harnais OneWeb.";
+  ow.four = [...new Set(ow.four.concat(["sodern", "spacetech", "matra-electronique"]))];
+  ow.sources = ow.sources.concat([SRC12d.sodern, SRC12d.sti, SRC12d.matra, SRC12d.cadence]);
+  ow.note = "Distinguer les fournisseurs confirmés sur la nouvelle génération de ceux de la première génération : seuls les premiers sont sûrs d'être en place sur les 669 satellites.";
+})();
+EVENEMENTS.push(
+  { d: "2026-05-18", type: "fournisseur", act: "sodern", prog: "eutelsat", metiers: [], txt: "Sodern reconduit pour les viseurs d'étoiles du lot de 340 satellites OneWeb de nouvelle génération.", src: SRC12d.sodern, bc: "A", opp: "ow-serie" },
+  { d: "2026-09-10", type: "cadence", act: "airbus-ds", prog: "eutelsat", metiers: [], txt: "Ligne OneWeb de Toulouse : environ 16 satellites par mois en croisière, cycle d'environ cinq semaines par satellite.", src: SRC12d.cadence, bc: "B", opp: "ow-serie" },
+  { d: "2021-03-23", type: "fournisseur", act: "spacetech", prog: "eutelsat", metiers: ["structure"], txt: "SpaceTech (STI) fournira des centaines de panneaux solaires pour les satellites OneWeb.", src: SRC12d.sti, bc: "A", opp: "ow-serie" }
+);
+
 </script>
 <script>
 (function () {
