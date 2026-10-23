@@ -293,6 +293,48 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
 .libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
 @media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
+/* Fiche d'opportunité en grand */
+.opp[data-oppopen] { cursor: zoom-in; transition: box-shadow .15s, transform .15s; }
+.opp[data-oppopen]:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.opp-hr { display: flex; gap: 6px; align-items: center; flex: none; }
+.opp-zoom { font: inherit; font-size: 15px; line-height: 1; width: 28px; height: 26px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.opp-zoom:hover { border-color: var(--accent); color: var(--accent); }
+body.om-open { overflow: hidden; }
+.omodal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; }
+.omodal[hidden] { display: none; }
+.omodal-bg { position: absolute; inset: 0; background: rgba(8, 14, 22, .55); }
+.omodal-box { position: relative; width: min(1000px, 100%); max-height: calc(100vh - 48px); overflow: auto; background: var(--surface); color: var(--ink); border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.35); padding: 0 26px 26px; outline: none; }
+.om-head { position: sticky; top: 0; z-index: 1; background: var(--surface); padding: 20px 0 14px; border-bottom: 3px solid var(--sc); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: start; }
+.om-tags { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.om-head h3 { font-size: 23px; line-height: 1.25; margin: 0; }
+.om-btns { display: flex; gap: 6px; align-items: center; }
+.om-x { font-size: 26px; line-height: 1; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.om-top { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px; margin: 18px 0 12px; }
+.om-top .frb { padding: 12px 14px; }
+.om-top .frb b { font-size: 30px; }
+.om-score { display: grid; grid-template-columns: auto auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; gap: 2px 8px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 6px; }
+.om-score b { font-family: var(--font-display); font-size: 34px; line-height: 1; color: var(--sc); }
+.om-score .track { height: 8px; background: var(--sunk); border-radius: 4px; overflow: hidden; }
+.om-score .track i { display: block; height: 100%; background: var(--sc); }
+.om-score small { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+.om-act { font-size: 15px; padding: 10px 14px; }
+.om-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+.om-blk { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; margin-top: 12px; min-width: 0; }
+.om-grid .om-blk { margin-top: 0; }
+.om-blk h4 { margin: 0 0 8px; font-size: 13px; font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.om-blk dl { margin: 0; display: grid; grid-template-columns: minmax(100px, auto) minmax(0, 1fr); gap: 6px 12px; font-size: 14.5px; }
+.om-blk dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+.om-blk dd { margin: 0; overflow-wrap: anywhere; }
+.om-blk .sc-tab { font-size: 13.5px; }
+.om-blk .opp-src { font-size: 13.5px; }
+@media (max-width: 760px) {
+  .omodal { padding: 0; }
+  .omodal-box { width: 100%; max-height: 100vh; height: 100%; border-radius: 0; padding: 0 16px 20px; }
+  .om-head { grid-template-columns: minmax(0, 1fr); }
+  .om-head h3 { font-size: 19px; }
+  .om-top, .om-grid { grid-template-columns: minmax(0, 1fr); }
+  .om-blk dl { grid-template-columns: minmax(0, 1fr); }
+}
 /* Part de la France (ESA) */
 :root { --fr-b: #1F4FB3; --fr-r: #D0312D; --fr-bg: #EEF3FF; --fr-ink: #12306E; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fr-b: #6E95F0; --fr-r: #F06A66; --fr-bg: #18233A; --fr-ink: #CFDCFF; } }

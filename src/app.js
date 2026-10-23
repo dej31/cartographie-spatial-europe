@@ -544,8 +544,8 @@
     const p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
     const rows = SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("");
     const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
-    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}">
-      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4>${ostTag(o.statut)}</div>
+    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}" data-oppopen="${o.id}">
+      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4><div class="opp-hr">${ostTag(o.statut)}<button type="button" class="opp-zoom" data-oppopen="${o.id}" title="Ouvrir en grand" aria-label="Ouvrir la fiche en grand">⤢</button></div></div>
       <div>${mTags(o.metiers)}</div>
       ${frBadge(p)}
       <div class="score" title="Score explicable sur 18"><b>${sc.total}</b><span class="note">/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span></div>
@@ -603,6 +603,58 @@
     if (!opts.noHash) setHash("opp/" + id, opts.replace);
     const el = document.getElementById("opp-" + id);
     if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1800); }
+    openOppModal(id, { noHash: true });
+  }
+  /* Fiche d'opportunité en grand (fenêtre) */
+  let omLast = null, omId = null;
+  function oppModalHtml(o) {
+    const sc = oScore(o), p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
+    const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
+    const pays = oppPays(o).map(c => PAYS[c] || c).join(", ");
+    const evs = EVENEMENTS.filter(e => e.opp === o.id).sort((a, b) => b.d.localeCompare(a.d));
+    const blk = (t, rows) => `<section class="om-blk"><h4>${t}</h4><dl>${rows.filter(Boolean).join("")}</dl></section>`;
+    const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`;
+    return `<div class="om-head st-${o.statut}">
+        <div class="om-tags">${ostTag(o.statut)} ${mTags(o.metiers)}</div>
+        <h3 id="omodal-t">${esc(o.titre)}</h3>
+        <div class="om-btns">${p ? `<button type="button" class="reset" data-goto="${p.id}" data-oclose="1">Fiche du programme</button>` : ""}<button type="button" class="reset" data-share="opp/${o.id}">Copier le lien</button><button type="button" class="om-x" data-oclose="1" aria-label="Fermer">×</button></div>
+      </div>
+      <div class="om-top">
+        ${frBadge(p) || `<div class="frb nul"><span class="frb-flag" aria-hidden="true"></span><b>—</b><span class="frb-l">Part de la France (ESA)<small>Non applicable ou non documentée pour cette opportunité.</small></span></div>`}
+        <div class="om-score st-${o.statut}"><b>${sc.total}</b><span>/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span><small>Score explicable, détail ci-dessous</small></div>
+      </div>
+      <p class="opp-act om-act"><b>Prochaine action.</b> ${esc(o.action)}</p>
+      ${o.note ? `<p class="opp-note">${esc(o.note)}</p>` : ""}
+      <div class="om-grid">
+        ${blk("Qui achète", [p ? row("Programme", `<button type="button" class="lnk" data-goto="${p.id}" data-oclose="1">${esc(p.n)}</button>`) : "", row("Acheteur", o.acheteur.map(actLink).join(", ")), o.client && !o.acheteur.includes(o.client) ? row("Client final", actLink(o.client)) : "", row("Pays", esc(pays) || '<span class="note">Non documenté</span>'), row("Site", site ? `${esc(site.n)}<br><span class="note">${esc(site.txt)}</span>` : '<span class="note">Non documenté</span>')])}
+        ${blk("Quoi et quand", [row("Lot", esc(o.lot)), row("Phase", esc((PHASES[o.phase] || PHASES.nd).nom)), row("Échéance", o.ech ? `<span class="mono">${esc(fmtD(o.ech.d))}</span> ${esc(o.ech.lib)}${o.ech.doc ? "" : ' <span class="libre">estimation</span>'}` : '<span class="note">Non documentée</span>'), row("Quantité", esc(o.qte.lib))])}
+        ${blk("Fabrication", [row("Mode", esc({ interne: "Interne", externe: "Externe", mixte: "Mixte", inconnu: "Interne ou externe : non documenté" }[o.fab.mode])), row("Détail", esc(o.fab.txt)), (o.four || []).length ? row("Fournisseurs cités", o.four.map(actLink).join(", ")) : ""])}
+        ${blk("Évaluation", [row("Valeur", o.valeur ? esc(o.valeur) : '<span class="note">Non estimée (aucune méthode défendable)</span>'), row("Confiance", `<span class="conf">${o.bc}</span>`), row("Accessibilité", `<select class="oacc" data-oid="${o.id}" aria-label="Accessibilité du donneur d'ordre"><option value=""${acc === "" ? " selected" : ""}>non évaluée</option>${[0, 1, 2, 3].map(n => `<option value="${n}"${acc === String(n) ? " selected" : ""}>${n}</option>`).join("")}</select> <span class="note">votre appréciation, gardée dans ce navigateur</span>`)])}
+      </div>
+      <section class="om-blk"><h4>Détail du score</h4><table class="sc-tab">${SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("")}<tr><td><b>Total</b></td><td></td><td class="n"><b>${sc.total} / 18</b></td></tr></table></section>
+      ${evs.length ? `<section class="om-blk"><h4>Événements liés</h4><ul class="evt-list">${evs.map(e => `<li><span class="ed">${esc(fmtD(e.d))}</span><span class="evt-ty">${esc(EVT_TYPES[e.type])}</span>${esc(e.txt)} ${e.src ? `<a class="note" href="${esc(e.src.u)}" target="_blank" rel="noopener">source ↗</a>` : ""}</li>`).join("")}</ul></section>` : ""}
+      <section class="om-blk"><h4>Sources</h4><ul class="opp-src">${o.sources.filter(Boolean).map(s => `<li><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)} ↗</a> <span class="note">publiée : ${esc(fmtD(s.pub))} · vérifiée : ${esc(fmtD(s.verif))}</span></li>`).join("")}</ul></section>`;
+  }
+  function openOppModal(id, opts) {
+    const o = oppById[id]; if (!o) return;
+    opts = opts || {};
+    let m = document.getElementById("oppModal");
+    if (!m) { m = document.createElement("div"); m.id = "oppModal"; m.className = "omodal"; m.hidden = true; m.innerHTML = '<div class="omodal-bg" data-oclose="1"></div><div class="omodal-box" role="dialog" aria-modal="true" aria-labelledby="omodal-t" tabindex="-1"></div>'; document.body.appendChild(m); }
+    if (m.hidden) omLast = document.activeElement;
+    omId = id;
+    const box = m.querySelector(".omodal-box");
+    box.innerHTML = oppModalHtml(o);
+    m.hidden = false; document.body.classList.add("om-open");
+    if (!opts.keepScroll) box.scrollTop = 0;
+    box.focus({ preventScroll: true });
+    if (!opts.noHash) setHash("opp/" + id, opts.replace);
+  }
+  function closeOppModal() {
+    const m = document.getElementById("oppModal");
+    if (!m || m.hidden) return;
+    m.hidden = true; document.body.classList.remove("om-open"); omId = null;
+    if (/^#opp\//.test(location.hash)) setHash("prospection", true);
+    if (omLast && document.contains(omLast)) omLast.focus({ preventScroll: true });
   }
   function oppCsv() {
     const rows = oppRows();
@@ -1511,6 +1563,10 @@
 
   document.addEventListener("click", e => {
     const sh = e.target.closest("[data-share]"); if (sh) { copyShare(sh.dataset.share); return; }
+    const oc = e.target.closest("[data-oclose]");
+    if (oc) { const g = oc.dataset.goto; closeOppModal(); if (g) goto(g); return; }
+    const oo = e.target.closest("[data-oppopen]");
+    if (oo && !e.target.closest("a, select, summary, details, input, label, .lnk:not(.opp-zoom), [data-share]") && (e.target.closest(".opp-zoom") || !window.getSelection().toString())) { openOppModal(oo.dataset.oppopen); return; }
     const gi = e.target.closest("[data-gi]"); if (gi) { gopen(+gi.dataset.gi); return; }
     const rn = e.target.closest("[data-rnode]"); if (rn) { gotoReseau(rn.dataset.rnode); return; }
     const rs = e.target.closest("[data-reseau]"); if (rs) { gotoReseau(rs.dataset.reseau); return; }
@@ -1556,6 +1612,8 @@
     if (e.target.id === "rfocus") { const id = findNode(e.target.value); if (id) gotoReseau(id); else toast("Aucun acteur ni programme ne correspond."); }
   });
   document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && omId) { e.preventDefault(); closeOppModal(); return; }
+    if (e.key === "Tab" && omId) { const box = document.querySelector("#oppModal .omodal-box"); const f = [...box.querySelectorAll("button, a[href], select, [tabindex]")].filter(x => !x.disabled); if (f.length) { const first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } } }
     if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")) { e.preventDefault(); const g = document.getElementById("gq"); if (g) g.focus(); return; }
     if (e.target.id === "gq") {
       const box = document.getElementById("gres");
@@ -1577,7 +1635,7 @@
     if (e.target.id === "oq") { state.oq = e.target.value; renderOpp(); }
     const osel = { opays: "opays", oact: "oact", oprog: "oprog", ophase: "ophase", obc: "obc", osort: "osort", etype: "etype" }[e.target.id];
     if (osel) { state[osel] = e.target.value; renderOpp(); }
-    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; }
+    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); if (omId === id) openOppModal(id, { noHash: true, keepScroll: true }); else { const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; } }
     if (e.target.id === "gq") gsearch(e.target.value);
     if (e.target.id === "rdepth") { R.depth = +e.target.value; renderReseau(); }
     if (e.target.id === "rpays") { R.pays = e.target.value; renderReseau(); }
@@ -1600,6 +1658,7 @@
   });
 
   function fromHash(initial) {
+    if (omId && !/^#opp\//.test(location.hash)) { const m = document.getElementById("oppModal"); if (m) { m.hidden = true; document.body.classList.remove("om-open"); } omId = null; }
     const h = decodeURIComponent((location.hash || "").replace("#", ""));
     const [v, id] = h.split("/");
     const o = { noHash: true, keepScroll: true };

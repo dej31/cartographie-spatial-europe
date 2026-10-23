@@ -299,6 +299,48 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
 .libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
 @media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
+/* Fiche d'opportunité en grand */
+.opp[data-oppopen] { cursor: zoom-in; transition: box-shadow .15s, transform .15s; }
+.opp[data-oppopen]:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.opp-hr { display: flex; gap: 6px; align-items: center; flex: none; }
+.opp-zoom { font: inherit; font-size: 15px; line-height: 1; width: 28px; height: 26px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.opp-zoom:hover { border-color: var(--accent); color: var(--accent); }
+body.om-open { overflow: hidden; }
+.omodal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; }
+.omodal[hidden] { display: none; }
+.omodal-bg { position: absolute; inset: 0; background: rgba(8, 14, 22, .55); }
+.omodal-box { position: relative; width: min(1000px, 100%); max-height: calc(100vh - 48px); overflow: auto; background: var(--surface); color: var(--ink); border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.35); padding: 0 26px 26px; outline: none; }
+.om-head { position: sticky; top: 0; z-index: 1; background: var(--surface); padding: 20px 0 14px; border-bottom: 3px solid var(--sc); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: start; }
+.om-tags { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.om-head h3 { font-size: 23px; line-height: 1.25; margin: 0; }
+.om-btns { display: flex; gap: 6px; align-items: center; }
+.om-x { font-size: 26px; line-height: 1; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.om-top { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px; margin: 18px 0 12px; }
+.om-top .frb { padding: 12px 14px; }
+.om-top .frb b { font-size: 30px; }
+.om-score { display: grid; grid-template-columns: auto auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; gap: 2px 8px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 6px; }
+.om-score b { font-family: var(--font-display); font-size: 34px; line-height: 1; color: var(--sc); }
+.om-score .track { height: 8px; background: var(--sunk); border-radius: 4px; overflow: hidden; }
+.om-score .track i { display: block; height: 100%; background: var(--sc); }
+.om-score small { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+.om-act { font-size: 15px; padding: 10px 14px; }
+.om-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+.om-blk { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; margin-top: 12px; min-width: 0; }
+.om-grid .om-blk { margin-top: 0; }
+.om-blk h4 { margin: 0 0 8px; font-size: 13px; font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.om-blk dl { margin: 0; display: grid; grid-template-columns: minmax(100px, auto) minmax(0, 1fr); gap: 6px 12px; font-size: 14.5px; }
+.om-blk dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+.om-blk dd { margin: 0; overflow-wrap: anywhere; }
+.om-blk .sc-tab { font-size: 13.5px; }
+.om-blk .opp-src { font-size: 13.5px; }
+@media (max-width: 760px) {
+  .omodal { padding: 0; }
+  .omodal-box { width: 100%; max-height: 100vh; height: 100%; border-radius: 0; padding: 0 16px 20px; }
+  .om-head { grid-template-columns: minmax(0, 1fr); }
+  .om-head h3 { font-size: 19px; }
+  .om-top, .om-grid { grid-template-columns: minmax(0, 1fr); }
+  .om-blk dl { grid-template-columns: minmax(0, 1fr); }
+}
 /* Part de la France (ESA) */
 :root { --fr-b: #1F4FB3; --fr-r: #D0312D; --fr-bg: #EEF3FF; --fr-ink: #12306E; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fr-b: #6E95F0; --fr-r: #F06A66; --fr-bg: #18233A; --fr-ink: #CFDCFF; } }
@@ -7238,8 +7280,8 @@ EVENEMENTS.push(
     const p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
     const rows = SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("");
     const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
-    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}">
-      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4>${ostTag(o.statut)}</div>
+    return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}" data-oppopen="${o.id}">
+      <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4><div class="opp-hr">${ostTag(o.statut)}<button type="button" class="opp-zoom" data-oppopen="${o.id}" title="Ouvrir en grand" aria-label="Ouvrir la fiche en grand">⤢</button></div></div>
       <div>${mTags(o.metiers)}</div>
       ${frBadge(p)}
       <div class="score" title="Score explicable sur 18"><b>${sc.total}</b><span class="note">/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span></div>
@@ -7297,6 +7339,58 @@ EVENEMENTS.push(
     if (!opts.noHash) setHash("opp/" + id, opts.replace);
     const el = document.getElementById("opp-" + id);
     if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1800); }
+    openOppModal(id, { noHash: true });
+  }
+  /* Fiche d'opportunité en grand (fenêtre) */
+  let omLast = null, omId = null;
+  function oppModalHtml(o) {
+    const sc = oScore(o), p = byId[o.prog], site = o.site ? SITES.find(x => x.id === o.site) : null;
+    const acc = ACC[o.id] == null ? "" : String(ACC[o.id]);
+    const pays = oppPays(o).map(c => PAYS[c] || c).join(", ");
+    const evs = EVENEMENTS.filter(e => e.opp === o.id).sort((a, b) => b.d.localeCompare(a.d));
+    const blk = (t, rows) => `<section class="om-blk"><h4>${t}</h4><dl>${rows.filter(Boolean).join("")}</dl></section>`;
+    const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`;
+    return `<div class="om-head st-${o.statut}">
+        <div class="om-tags">${ostTag(o.statut)} ${mTags(o.metiers)}</div>
+        <h3 id="omodal-t">${esc(o.titre)}</h3>
+        <div class="om-btns">${p ? `<button type="button" class="reset" data-goto="${p.id}" data-oclose="1">Fiche du programme</button>` : ""}<button type="button" class="reset" data-share="opp/${o.id}">Copier le lien</button><button type="button" class="om-x" data-oclose="1" aria-label="Fermer">×</button></div>
+      </div>
+      <div class="om-top">
+        ${frBadge(p) || `<div class="frb nul"><span class="frb-flag" aria-hidden="true"></span><b>—</b><span class="frb-l">Part de la France (ESA)<small>Non applicable ou non documentée pour cette opportunité.</small></span></div>`}
+        <div class="om-score st-${o.statut}"><b>${sc.total}</b><span>/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span><small>Score explicable, détail ci-dessous</small></div>
+      </div>
+      <p class="opp-act om-act"><b>Prochaine action.</b> ${esc(o.action)}</p>
+      ${o.note ? `<p class="opp-note">${esc(o.note)}</p>` : ""}
+      <div class="om-grid">
+        ${blk("Qui achète", [p ? row("Programme", `<button type="button" class="lnk" data-goto="${p.id}" data-oclose="1">${esc(p.n)}</button>`) : "", row("Acheteur", o.acheteur.map(actLink).join(", ")), o.client && !o.acheteur.includes(o.client) ? row("Client final", actLink(o.client)) : "", row("Pays", esc(pays) || '<span class="note">Non documenté</span>'), row("Site", site ? `${esc(site.n)}<br><span class="note">${esc(site.txt)}</span>` : '<span class="note">Non documenté</span>')])}
+        ${blk("Quoi et quand", [row("Lot", esc(o.lot)), row("Phase", esc((PHASES[o.phase] || PHASES.nd).nom)), row("Échéance", o.ech ? `<span class="mono">${esc(fmtD(o.ech.d))}</span> ${esc(o.ech.lib)}${o.ech.doc ? "" : ' <span class="libre">estimation</span>'}` : '<span class="note">Non documentée</span>'), row("Quantité", esc(o.qte.lib))])}
+        ${blk("Fabrication", [row("Mode", esc({ interne: "Interne", externe: "Externe", mixte: "Mixte", inconnu: "Interne ou externe : non documenté" }[o.fab.mode])), row("Détail", esc(o.fab.txt)), (o.four || []).length ? row("Fournisseurs cités", o.four.map(actLink).join(", ")) : ""])}
+        ${blk("Évaluation", [row("Valeur", o.valeur ? esc(o.valeur) : '<span class="note">Non estimée (aucune méthode défendable)</span>'), row("Confiance", `<span class="conf">${o.bc}</span>`), row("Accessibilité", `<select class="oacc" data-oid="${o.id}" aria-label="Accessibilité du donneur d'ordre"><option value=""${acc === "" ? " selected" : ""}>non évaluée</option>${[0, 1, 2, 3].map(n => `<option value="${n}"${acc === String(n) ? " selected" : ""}>${n}</option>`).join("")}</select> <span class="note">votre appréciation, gardée dans ce navigateur</span>`)])}
+      </div>
+      <section class="om-blk"><h4>Détail du score</h4><table class="sc-tab">${SCORE_CRITERES.map(([k, l]) => `<tr><td>${esc(l)}</td><td>${esc(sc[k][1])}</td><td class="n">${sc[k][0]} / 3</td></tr>`).join("")}<tr><td><b>Total</b></td><td></td><td class="n"><b>${sc.total} / 18</b></td></tr></table></section>
+      ${evs.length ? `<section class="om-blk"><h4>Événements liés</h4><ul class="evt-list">${evs.map(e => `<li><span class="ed">${esc(fmtD(e.d))}</span><span class="evt-ty">${esc(EVT_TYPES[e.type])}</span>${esc(e.txt)} ${e.src ? `<a class="note" href="${esc(e.src.u)}" target="_blank" rel="noopener">source ↗</a>` : ""}</li>`).join("")}</ul></section>` : ""}
+      <section class="om-blk"><h4>Sources</h4><ul class="opp-src">${o.sources.filter(Boolean).map(s => `<li><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)} ↗</a> <span class="note">publiée : ${esc(fmtD(s.pub))} · vérifiée : ${esc(fmtD(s.verif))}</span></li>`).join("")}</ul></section>`;
+  }
+  function openOppModal(id, opts) {
+    const o = oppById[id]; if (!o) return;
+    opts = opts || {};
+    let m = document.getElementById("oppModal");
+    if (!m) { m = document.createElement("div"); m.id = "oppModal"; m.className = "omodal"; m.hidden = true; m.innerHTML = '<div class="omodal-bg" data-oclose="1"></div><div class="omodal-box" role="dialog" aria-modal="true" aria-labelledby="omodal-t" tabindex="-1"></div>'; document.body.appendChild(m); }
+    if (m.hidden) omLast = document.activeElement;
+    omId = id;
+    const box = m.querySelector(".omodal-box");
+    box.innerHTML = oppModalHtml(o);
+    m.hidden = false; document.body.classList.add("om-open");
+    if (!opts.keepScroll) box.scrollTop = 0;
+    box.focus({ preventScroll: true });
+    if (!opts.noHash) setHash("opp/" + id, opts.replace);
+  }
+  function closeOppModal() {
+    const m = document.getElementById("oppModal");
+    if (!m || m.hidden) return;
+    m.hidden = true; document.body.classList.remove("om-open"); omId = null;
+    if (/^#opp\//.test(location.hash)) setHash("prospection", true);
+    if (omLast && document.contains(omLast)) omLast.focus({ preventScroll: true });
   }
   function oppCsv() {
     const rows = oppRows();
@@ -8205,6 +8299,10 @@ EVENEMENTS.push(
 
   document.addEventListener("click", e => {
     const sh = e.target.closest("[data-share]"); if (sh) { copyShare(sh.dataset.share); return; }
+    const oc = e.target.closest("[data-oclose]");
+    if (oc) { const g = oc.dataset.goto; closeOppModal(); if (g) goto(g); return; }
+    const oo = e.target.closest("[data-oppopen]");
+    if (oo && !e.target.closest("a, select, summary, details, input, label, .lnk:not(.opp-zoom), [data-share]") && (e.target.closest(".opp-zoom") || !window.getSelection().toString())) { openOppModal(oo.dataset.oppopen); return; }
     const gi = e.target.closest("[data-gi]"); if (gi) { gopen(+gi.dataset.gi); return; }
     const rn = e.target.closest("[data-rnode]"); if (rn) { gotoReseau(rn.dataset.rnode); return; }
     const rs = e.target.closest("[data-reseau]"); if (rs) { gotoReseau(rs.dataset.reseau); return; }
@@ -8250,6 +8348,8 @@ EVENEMENTS.push(
     if (e.target.id === "rfocus") { const id = findNode(e.target.value); if (id) gotoReseau(id); else toast("Aucun acteur ni programme ne correspond."); }
   });
   document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && omId) { e.preventDefault(); closeOppModal(); return; }
+    if (e.key === "Tab" && omId) { const box = document.querySelector("#oppModal .omodal-box"); const f = [...box.querySelectorAll("button, a[href], select, [tabindex]")].filter(x => !x.disabled); if (f.length) { const first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } } }
     if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")) { e.preventDefault(); const g = document.getElementById("gq"); if (g) g.focus(); return; }
     if (e.target.id === "gq") {
       const box = document.getElementById("gres");
@@ -8271,7 +8371,7 @@ EVENEMENTS.push(
     if (e.target.id === "oq") { state.oq = e.target.value; renderOpp(); }
     const osel = { opays: "opays", oact: "oact", oprog: "oprog", ophase: "ophase", obc: "obc", osort: "osort", etype: "etype" }[e.target.id];
     if (osel) { state[osel] = e.target.value; renderOpp(); }
-    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; }
+    if (e.target.classList && e.target.classList.contains("oacc")) { const id = e.target.dataset.oid; if (e.target.value === "") delete ACC[id]; else ACC[id] = +e.target.value; saveAcc(); renderOpp(); if (omId === id) openOppModal(id, { noHash: true, keepScroll: true }); else { const d = document.querySelector(`#opp-${id} details`); if (d) d.open = true; } }
     if (e.target.id === "gq") gsearch(e.target.value);
     if (e.target.id === "rdepth") { R.depth = +e.target.value; renderReseau(); }
     if (e.target.id === "rpays") { R.pays = e.target.value; renderReseau(); }
@@ -8294,6 +8394,7 @@ EVENEMENTS.push(
   });
 
   function fromHash(initial) {
+    if (omId && !/^#opp\//.test(location.hash)) { const m = document.getElementById("oppModal"); if (m) { m.hidden = true; document.body.classList.remove("om-open"); } omId = null; }
     const h = decodeURIComponent((location.hash || "").replace("#", ""));
     const [v, id] = h.split("/");
     const o = { noHash: true, keepScroll: true };

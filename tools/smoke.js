@@ -124,6 +124,16 @@ const views = ["accueil", "mecanique", "domaines", "fiches", "acteurs", "reseau"
     await page.evaluate(() => { location.hash = "opp/galg2-lot2"; }); await page.waitForTimeout(250);
     const deep = await page.evaluate(() => !!document.querySelector("#opp-galg2-lot2") && location.hash);
     if (deep !== "#opp/galg2-lot2") errors.push(`${label} : lien direct vers une opportunité (${deep})`);
+    const mOpen = await page.evaluate(() => { const m = document.getElementById("oppModal"); return !!m && !m.hidden && /Galileo/.test(m.textContent); });
+    await page.keyboard.press("Escape"); await page.waitForTimeout(150);
+    const mClosed = await page.evaluate(() => document.getElementById("oppModal").hidden && location.hash);
+    await page.click("#opp-co2m .opp-t"); await page.waitForTimeout(200);
+    const mClick = await page.evaluate(() => !document.getElementById("oppModal").hidden && location.hash === "#opp/co2m" && !!document.querySelector("#oppModal .frb"));
+    const mOver = await page.evaluate(() => document.querySelector("#oppModal .omodal-box").scrollWidth <= document.querySelector("#oppModal .omodal-box").clientWidth + 1);
+    if (out) await page.screenshot({ path: path.join(out, `${label}-opp-grand.png`) });
+    await page.click("#oppModal .om-x"); await page.waitForTimeout(150);
+    const mClosed2 = await page.evaluate(() => document.getElementById("oppModal").hidden);
+    if (!mOpen || mClosed !== "#prospection" || !mClick || !mOver || !mClosed2) errors.push(`${label} : fiche en grand (${mOpen}, ${mClosed}, ${mClick}, ${mOver}, ${mClosed2})`);
     console.log(`${label} : ${no} opportunités (${nmli} MLI, ${nconf} confirmée), ${nev} événements, ${nhem} avec Hemeria ; accessibilité ${s0} → ${s1}`);
     // mode « Programmes »
     await page.click('[data-pmode="prog"]'); await page.waitForTimeout(200);
