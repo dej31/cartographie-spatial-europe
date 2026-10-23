@@ -112,6 +112,12 @@ const views = ["accueil", "mecanique", "domaines", "fiches", "acteurs", "reseau"
     const s1 = await page.evaluate(() => +document.querySelector("#opp-ow-serie .score b").textContent);
     await page.selectOption('#opp-ow-serie .oacc', ""); await page.waitForTimeout(100);
     if (s1 !== s0 + 3) errors.push(`${label} : saisie de l'accessibilité (${s0} → ${s1})`);
+    const nfrb = await page.evaluate(() => document.querySelectorAll("#olist .frb").length);
+    await page.click("#ofr"); await page.waitForTimeout(150);
+    const nfr = await page.evaluate(() => [...document.querySelectorAll("#olist .opp")].every(c => c.querySelector(".frb.fort")) && document.querySelectorAll("#olist .opp").length);
+    await page.click("#ofr"); await page.waitForTimeout(100);
+    if (!nfrb || !nfr) errors.push(`${label} : badge ou filtre « part française » (${nfrb}, ${nfr})`);
+    console.log(`${label} : ${nfrb} badges part française, ${nfr} opportunités à part française ≥ 20 %`);
     const dlo = page.waitForEvent("download", { timeout: 3000 }).catch(() => null);
     await page.click("#ocsv"); const dO = await dlo;
     if (!dO) errors.push(`${label} : export CSV des opportunités`);

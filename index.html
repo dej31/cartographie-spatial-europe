@@ -299,6 +299,17 @@ button.pbar:hover, button.pbar.on { background: var(--sunk); }
 .pros-o { background: var(--sunk); padding: 4px 8px; border-radius: 4px; }
 .libre { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; margin-right: 4px; }
 @media (max-width: 560px) { .pros-search { grid-template-columns: minmax(0, 1fr); } .pros dl { grid-template-columns: minmax(0, 1fr); } }
+/* Part de la France (ESA) */
+:root { --fr-b: #1F4FB3; --fr-r: #D0312D; --fr-bg: #EEF3FF; --fr-ink: #12306E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fr-b: #6E95F0; --fr-r: #F06A66; --fr-bg: #18233A; --fr-ink: #CFDCFF; } }
+:root[data-theme="dark"] { --fr-b: #6E95F0; --fr-r: #F06A66; --fr-bg: #18233A; --fr-ink: #CFDCFF; }
+.frb { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 6px; background: var(--fr-bg); color: var(--fr-ink); border: 1px solid color-mix(in srgb, var(--fr-b) 35%, transparent); min-width: 0; }
+.frb.fort { border: 2px solid var(--fr-b); box-shadow: inset 4px 0 0 var(--fr-r); }
+.frb.nul { opacity: .8; }
+.frb-flag { flex: none; width: 22px; height: 15px; border-radius: 2px; background: linear-gradient(90deg, var(--fr-b) 0 33.3%, #fff 33.3% 66.6%, var(--fr-r) 66.6%); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+.frb b { font-family: var(--font-display); font-size: 21px; line-height: 1; white-space: nowrap; color: var(--fr-b); }
+.frb-l { display: grid; font-size: 12.5px; font-weight: 600; line-height: 1.3; min-width: 0; }
+.frb-l small { font-weight: 400; font-size: 11.5px; opacity: .85; overflow-wrap: anywhere; }
 /* Prospection par métier */
 :root { --st-conf: #15803D; --st-prob: #B45309; --st-surv: #64748B; --m-mli: #C2410C; --m-harnais: #2563EB; --m-structure: #047857; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --st-conf: #4ADE80; --st-prob: #FBBF24; --st-surv: #94A3B8; --m-mli: #FB923C; --m-harnais: #60A5FA; --m-structure: #34D399; } }
@@ -6706,7 +6717,7 @@ EVENEMENTS.push(
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all", ofr: false, pfr: false };
 
   function chip(id) {
     const p = byId[id];
@@ -7080,11 +7091,22 @@ EVENEMENTS.push(
     const f = p.jal.filter(j => j[0] <= Math.floor(NOW)).sort((a, b) => b[0] - a[0]);
     return f.length ? f[0] : null;
   }
+  /* Part de la France dans les programmes ESA : badge et filtre */
+  const FR_SEUIL = 0.2;
+  const frOf = p => (p && p.frEsa) || null;
+  const frFort = p => { const f = frOf(p); return !!(f && f.part != null && f.part >= FR_SEUIL); };
+  function frBadge(p) {
+    const f = frOf(p);
+    if (!f || (f.part == null && !f.sci && f.bc === "C")) return "";
+    const big = f.part != null ? `${(f.part * 100).toLocaleString("fr-FR", { maximumFractionDigits: 0 })} %` : f.sci ? "Barème" : "0 %";
+    const lib = f.part != null ? "Part de la France dans l'enveloppe ESA" : f.sci ? "Programme scientifique : contribution au prorata du revenu national" : "Aucune souscription française au CM25";
+    return `<div class="frb${f.part != null && f.part >= FR_SEUIL ? " fort" : ""}${f.part == null && !f.sci ? " nul" : ""}" title="${esc(f.txt)}"><span class="frb-flag" aria-hidden="true"></span><b>${big}</b><span class="frb-l">${esc(lib)}<small>${esc(f.txt)}</small></span></div>`;
+  }
   function prosRows() {
     const q = state.pq.trim().toLowerCase();
     return PROGRAMMES.filter(p => (p.st === "dev" || p.st === "plan" || (p.pros && p.st !== "fin" && p.st !== "ann" && p.st !== "nr")))
       .map(p => ({ p, j: prochainJalon(p), libre: NON_ATTR.test(p.moe), acts: ACTEURS.filter(a => a.pr.includes(p.id)).length }))
-      .filter(r => (state.pfam === "all" || famOf(r.p) === state.pfam) && (!state.pnon || r.libre) &&
+      .filter(r => (state.pfam === "all" || famOf(r.p) === state.pfam) && (!state.pnon || r.libre) && (!state.pfr || frFort(r.p)) &&
         (state.phz === "all" || (r.j && r.j[0] <= +state.phz)) &&
         (!q || [r.p.n, r.p.sub, r.p.moe, r.p.moa, r.p.fin, r.p.pros || "", r.p.app].join(" ").toLowerCase().includes(q)))
       .sort((a, b) => state.psort === "nom" ? a.p.n.localeCompare(b.p.n, "fr") : ((a.j ? a.j[0] : 9999) - (b.j ? b.j[0] : 9999)) || a.p.n.localeCompare(b.p.n, "fr"));
@@ -7107,6 +7129,7 @@ EVENEMENTS.push(
           <div><label class="note" for="psort">Trier par</label><select id="psort"><option value="jal"${state.psort === "jal" ? " selected" : ""}>Prochain jalon</option><option value="nom"${state.psort === "nom" ? " selected" : ""}>Nom</option></select></div>
         </div>
         <label class="pnon"><input type="checkbox" id="pnon"${state.pnon ? " checked" : ""}> Seulement les programmes sans maître d'œuvre attribué ou publié</label>
+        <label class="pnon"><input type="checkbox" id="pfr"${state.pfr ? " checked" : ""}> Seulement les programmes ESA à part française d'au moins 20 %</label>
       </div>
       <div class="fin-kpis" id="pkpis"></div>
       <div class="pros-tools"><button type="button" class="reset" data-preset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="pcsv">Télécharger la liste (CSV)</button></div>
@@ -7127,6 +7150,7 @@ EVENEMENTS.push(
     el.innerHTML = rows.length ? `<div class="pros-grid">${rows.map(({ p, j, libre, acts }) => `
       <article class="pros" style="--fc:${col(famOf(p))}">
         <div class="pros-h"><button type="button" class="lnk pros-t" data-goto="${p.id}">${esc(p.n)}</button>${pill(p.st)}</div>
+        ${frBadge(p)}
         <p class="note">${esc(FAMILLES[famOf(p)].court)} · ${esc(DOMAINES[p.d].nom)}</p>
         <dl>
           <dt>Acheteur</dt><dd>${esc(p.moa)}</dd>
@@ -7169,7 +7193,7 @@ EVENEMENTS.push(
     return OPPORTUNITES.map(o => ({ o, sc: oScore(o), pays: oppPays(o) }))
       .filter(({ o, pays }) => (state.om === "all" || o.metiers.includes(state.om)) && (state.ost === "all" || o.statut === state.ost) &&
         (state.opays === "all" || pays.includes(state.opays)) && (state.oact === "all" || oppActs(o).includes(state.oact)) &&
-        (state.oprog === "all" || o.prog === state.oprog) && (state.ophase === "all" || o.phase === state.ophase) && (state.obc === "all" || o.bc === state.obc) &&
+        (state.oprog === "all" || o.prog === state.oprog) && (state.ophase === "all" || o.phase === state.ophase) && (state.obc === "all" || o.bc === state.obc) && (!state.ofr || frFort(byId[o.prog])) &&
         (!q || [o.titre, o.lot, o.fab.txt, o.action, o.note || "", byId[o.prog] ? byId[o.prog].n : "", oppActs(o).map(id => actById[id].n).join(" ")].join(" ").toLowerCase().includes(q)))
       .sort((a, b) => state.osort === "score" ? (b.sc.total - a.sc.total) || (OST_ORDER[a.o.statut] - OST_ORDER[b.o.statut])
         : ((a.o.ech ? a.o.ech.d : "9999").localeCompare(b.o.ech ? b.o.ech.d : "9999")) || (b.sc.total - a.sc.total));
@@ -7198,6 +7222,7 @@ EVENEMENTS.push(
           ${opt("obc", "Confiance", [["all", "Toutes"], ["A", "A : vérifiée"], ["B", "B : publiée"], ["C", "C : estimation"]], state.obc)}
           ${opt("osort", "Trier par", [["ech", "Échéance"], ["score", "Score"]], state.osort)}
         </div>
+        <label class="pnon"><input type="checkbox" id="ofr"${state.ofr ? " checked" : ""}> Seulement les opportunités sur un programme ESA à part française d'au moins 20 %</label>
       </div>
       <div class="fin-kpis" id="okpis"></div>
       <div class="pros-tools"><button type="button" class="reset" data-oreset="1">Réinitialiser les filtres</button><button type="button" class="reset" id="ocsv">Télécharger les opportunités (CSV)</button></div>
@@ -7216,6 +7241,7 @@ EVENEMENTS.push(
     return `<article class="opp ${o.statut} st-${o.statut}" id="opp-${o.id}">
       <div class="opp-h"><h4 class="opp-t">${esc(o.titre)}</h4>${ostTag(o.statut)}</div>
       <div>${mTags(o.metiers)}</div>
+      ${frBadge(p)}
       <div class="score" title="Score explicable sur 18"><b>${sc.total}</b><span class="note">/ 18</span><span class="track"><i style="width:${sc.total / 18 * 100}%"></i></span></div>
       <dl>
         ${p ? `<dt>Programme</dt><dd><button type="button" class="lnk" data-goto="${p.id}">${esc(p.n)}</button></dd>` : ""}
@@ -7265,7 +7291,7 @@ EVENEMENTS.push(
   function gotoOpp(id, opts) {
     opts = opts || {};
     if (!oppById[id]) return;
-    if (!oppRows().some(r => r.o.id === id)) Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "" });
+    if (!oppRows().some(r => r.o.id === id)) Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", ofr: false });
     state.pmode = "opp"; rendered.prospection = false;
     show("prospection", { noHash: true, keepScroll: true });
     if (!opts.noHash) setHash("opp/" + id, opts.replace);
@@ -7275,11 +7301,11 @@ EVENEMENTS.push(
   function oppCsv() {
     const rows = oppRows();
     const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
-    const head = ["Opportunité", "Statut", "Métiers", "Programme", "Acheteur", "Client final", "Pays", "Site", "Lot", "Phase", "Échéance", "Échéance (libellé)", "Échéance estimée", "Quantité", "Fabrication", "Fournisseurs cités", "Valeur", "Confiance", "Score /18"].concat(SCORE_CRITERES.map(c => c[1])).concat(["Prochaine action", "Remarque", "Sources (URL | publiée | vérifiée)"]);
+    const head = ["Opportunité", "Statut", "Métiers", "Programme", "Acheteur", "Client final", "Pays", "Site", "Lot", "Phase", "Échéance", "Échéance (libellé)", "Échéance estimée", "Quantité", "Fabrication", "Fournisseurs cités", "Valeur", "Confiance", "Part de la France (ESA)", "Score /18"].concat(SCORE_CRITERES.map(c => c[1])).concat(["Prochaine action", "Remarque", "Sources (URL | publiée | vérifiée)"]);
     const lines = [head.map(cell).join(";")].concat(rows.map(({ o, sc, pays }) => [o.titre, OPP_STATUTS[o.statut].nom, o.metiers.map(m => METIERS[m].court).join(", "), byId[o.prog] ? byId[o.prog].n : "",
       o.acheteur.map(id => actById[id] ? actById[id].n : id).join(", "), o.client && actById[o.client] ? actById[o.client].n : "", pays.map(p => PAYS[p] || p).join(", "),
       o.site ? SITES.find(x => x.id === o.site).n : "", o.lot, (PHASES[o.phase] || PHASES.nd).nom, o.ech ? o.ech.d : "", o.ech ? o.ech.lib : "", o.ech && !o.ech.doc ? "oui" : "non",
-      o.qte.lib, o.fab.txt, (o.four || []).map(id => actById[id].n).join(", "), o.valeur || "non estimée", o.bc, sc.total].concat(SCORE_CRITERES.map(([k]) => sc[k][0] + " – " + sc[k][1]))
+      o.qte.lib, o.fab.txt, (o.four || []).map(id => actById[id].n).join(", "), o.valeur || "non estimée", o.bc, frOf(byId[o.prog]) ? frOf(byId[o.prog]).txt : "", sc.total].concat(SCORE_CRITERES.map(([k]) => sc[k][0] + " – " + sc[k][1]))
       .concat([o.action, o.note || "", o.sources.filter(Boolean).map(s => `${s.u} | ${s.pub || "non documentée"} | ${s.verif}`).join(" ; ")]).map(cell).join(";")));
     const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -8191,8 +8217,8 @@ EVENEMENTS.push(
     const om = e.target.closest("[data-om]"); if (om) { state.om = om.dataset.om; renderOpp(); return; }
     const ost = e.target.closest("[data-ost]"); if (ost) { state.ost = ost.dataset.ost; renderOpp(); return; }
     const op = e.target.closest("[data-opp]"); if (op) { gotoOpp(op.dataset.opp); return; }
-    if (e.target.closest("[data-oreset]")) { Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
-    if (e.target.closest("[data-preset]")) { Object.assign(state, { pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal" }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    if (e.target.closest("[data-oreset]")) { Object.assign(state, { om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all", ofr: false }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    if (e.target.closest("[data-preset]")) { Object.assign(state, { pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pfr: false }); rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-fireset]")) { state.q = ""; state.fam = "all"; rendered.fiches = false; show("fiches", { noHash: true, keepScroll: true }); return; }
     if (e.target.closest("[data-areset]")) { Object.assign(state, { acat: "all", apays: "all", aq: "", asel: null }); rendered.acteurs = false; show("acteurs", { noHash: true, keepScroll: true }); return; }
     if (!document.getElementById("gres").hidden && !e.target.closest(".gsearch")) document.getElementById("gres").hidden = true;
@@ -8256,6 +8282,8 @@ EVENEMENTS.push(
     if (e.target.id === "phz") { state.phz = e.target.value; renderPros(); }
     if (e.target.id === "psort") { state.psort = e.target.value; renderPros(); }
     if (e.target.id === "pnon") { state.pnon = e.target.checked; renderPros(); }
+    if (e.target.id === "pfr") { state.pfr = e.target.checked; renderPros(); }
+    if (e.target.id === "ofr") { state.ofr = e.target.checked; renderOpp(); }
     if (e.target.id === "pcst") { state.pcst = e.target.checked; renderParc(); }
     if (e.target.id === "apays") { state.apays = e.target.value; renderActeurs(); }
     if (e.target.id === "fy0") { state.y0 = +e.target.value; if (state.y1 < state.y0) state.y1 = state.y0; renderFin(); }
