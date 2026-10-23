@@ -4,13 +4,14 @@ Cartographie interactive de l'écosystème spatial européen : observation de la
 
 Contenu (octobre 2026) :
 
-- **157 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
-- **191 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
-- **197 relations sourcées** :
+- **161 programmes**, avec pour chacun le financeur, le maître d'ouvrage, le maître d'œuvre, la plateforme, les instruments, l'application, le budget (avec un indice de confiance), le planning, l'orbite, les filiations, les convergences et les acteurs impliqués.
+- **197 acteurs**, dont 37 laboratoires et organismes de recherche, répartis dans 20 pays.
+- **205 relations sourcées** :
   - entre organisations : groupe, filiale, coentreprise, consortium, acquisition, fusion ;
   - entre un acteur et un programme : maître d'œuvre, sous-traitant, fournisseur, opérateur, utilisateur, financeur, partenaire scientifique.
-- **191 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 50 convergences et 373 liens sources.
-- **47 opportunités industrielles** (MLI, harnais, structures), **42 événements commerciaux** datés et **11 établissements** documentés, chacun avec ses sources.
+- **192 unités** (satellites et vols), 42 contrats publics, 17 levées de fonds, 37 lignées, 50 convergences et 401 liens sources.
+- **Part de la France dans les programmes de l'ESA** : souscription française au CM25 quand elle est publiée, barème du programme scientifique, sinon « non documenté ».
+- **59 opportunités industrielles** (MLI, harnais, structures), **69 événements commerciaux** datés et **11 établissements** documentés, chacun avec ses sources.
 - **49 fiches illustrées** : 32 photos libres de Wikimedia Commons, des dimensions et des masses sourcées, 30 schémas à l'échelle humaine.
 
 ## Les 13 vues
@@ -60,6 +61,7 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
   - corrections et sources complémentaires.
 - `src/data9.js` (phase 3) : 18 programmes et 13 acteurs orientés prospection, champ `pros` (opportunités documentées), structure industrielle d'IRIS² et contrat ALADDIN, 39 fiches illustrées supplémentaires (`VISUELS`).
 - `src/data10.js` (phase 4) : finalistes M7 non retenus (M-MATISSE, THESEUS), statut « Non retenu », OneSat et Space Inspire
+- `src/data12.js` (veille d'octobre 2026) : faits issus de la veille, rattachés à leurs sources publiques ; part de la France dans les programmes ESA (`frEsa`, tables `FR_ESA` et `FR_MAP`)
 - `src/data11.js` (prospection par métier) : `OPPORTUNITES`, `EVENEMENTS`, `SITES`, référentiels `METIERS`, `PHASES`, `OPP_STATUTS`, `EVT_TYPES`, fonction `scoreOpp`, acteur Axon' Cable
 
 ### Modèle des opportunités (`OPPORTUNITES`)

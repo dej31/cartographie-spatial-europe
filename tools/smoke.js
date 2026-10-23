@@ -134,6 +134,11 @@ const views = ["accueil", "mecanique", "domaines", "fiches", "acteurs", "reseau"
     await page.evaluate(() => { location.hash = "finances"; }); await page.waitForTimeout(200);
     const lnk = await page.evaluate(() => document.querySelectorAll("#finBody [data-actor]").length);
     if (!lnk) errors.push(`${label} : pas de lien acteur dans les contrats`);
+    await page.evaluate(() => { location.hash = "fiche/co2m"; }); await page.waitForTimeout(200);
+    const fr = await page.evaluate(() => document.getElementById("detail").textContent);
+    if (!/Part de la France \(ESA\)/.test(fr) || !/23 %/.test(fr)) errors.push(`${label} : part de la France absente de la fiche CO2M`);
+    await page.evaluate(() => { location.hash = "fiche/plato"; }); await page.waitForTimeout(150);
+    if (!/revenu national/.test(await page.evaluate(() => document.getElementById("detail").textContent))) errors.push(`${label} : mention du barème du programme scientifique absente`);
     // toutes les fiches s'ouvrent sans erreur
     const ids = await page.evaluate(() => PROGRAMMES.map(p => p.id));
     for (const id of ids) { await page.evaluate(id => { location.hash = "fiche/" + id; }, id); await page.waitForTimeout(15); }

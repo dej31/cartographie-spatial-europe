@@ -95,6 +95,7 @@ D.EVENEMENTS.forEach((e, i) => {
   if (e.d > D.DATE_VERIF) err.push(`${k} : date future`);
   (e.metiers || []).forEach(m => { if (!D.METIERS[m]) err.push(`${k} : métier ${m} inconnu`); });
 });
+D.PROGRAMMES.forEach(p => { if (p.frEsa) { if (!p.frEsa.txt) err.push(`${p.id} : part française sans texte`); if (p.frEsa.part != null && !(p.frEsa.part > 0 && p.frEsa.part < 1)) err.push(`${p.id} : part française hors bornes`); } });
 const stc = {}; D.OPPORTUNITES.forEach(o => stc[o.statut] = (stc[o.statut] || 0) + 1);
 const tyc = {}; D.EVENEMENTS.forEach(e => tyc[e.type] = (tyc[e.type] || 0) + 1);
 console.log(`Opportunités ${D.OPPORTUNITES.length} ${JSON.stringify(stc)} · événements ${D.EVENEMENTS.length} ${JSON.stringify(tyc)} · sites ${D.SITES.length}`);

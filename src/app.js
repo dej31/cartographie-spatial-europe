@@ -229,6 +229,7 @@
       <dl class="grid-fields" style="margin:0">
         ${field("Application", esc(p.app), true)}
         ${field("Financeur", esc(p.fin))}
+        ${p.frEsa ? field("Part de la France (ESA)", `${esc(p.frEsa.txt)} <span class="conf" title="Indice de confiance">${p.frEsa.bc}</span> <a class="note" href="${esc(p.frEsa.sci ? SRC12.esafund.u : FR_SRC.u)}" target="_blank" rel="noopener">source ↗</a>`, true) : ""}
         ${field("Maître d'ouvrage", esc(p.moa))}
         ${field("Maître d'œuvre", esc(p.moe))}
         ${field("Plateforme", esc(p.plat))}
@@ -458,8 +459,8 @@
   function prosCsv() {
     const rows = prosRows();
     const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
-    const head = ["Programme", "Famille", "Domaine", "Statut", "Acheteur", "Maître d'œuvre", "À attribuer", "Prochain jalon (année)", "Prochain jalon", "Budget", "Confiance", "Opportunités", "Acteurs impliqués", "Sources"];
-    const lines = [head.map(cell).join(";")].concat(rows.map(({ p, j, libre }) => [p.n, FAMILLES[famOf(p)].nom, DOMAINES[p.d].nom, STATUTS[p.st], p.moa, p.moe, libre ? "oui" : "non", j ? j[0] : "", j ? j[1] : "", p.bud, p.bc, p.pros || "",
+    const head = ["Programme", "Famille", "Domaine", "Statut", "Acheteur", "Maître d'œuvre", "À attribuer", "Prochain jalon (année)", "Prochain jalon", "Budget", "Confiance", "Opportunités", "Part de la France (ESA)", "Acteurs impliqués", "Sources"];
+    const lines = [head.map(cell).join(";")].concat(rows.map(({ p, j, libre }) => [p.n, FAMILLES[famOf(p)].nom, DOMAINES[p.d].nom, STATUTS[p.st], p.moa, p.moe, libre ? "oui" : "non", j ? j[0] : "", j ? j[1] : "", p.bud, p.bc, p.pros || "", p.frEsa ? p.frEsa.txt : "",
       ACTEURS.filter(a => a.pr.includes(p.id)).map(a => a.n).join(", "), (LIENS[p.id] || []).map(l => l[2]).join(" ")].map(cell).join(";")));
     const blob = new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
