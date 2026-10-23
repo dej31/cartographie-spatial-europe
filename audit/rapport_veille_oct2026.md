@@ -71,6 +71,18 @@ Nouveau champ `frEsa`, affiché sur chaque fiche (« Part de la France (ESA) »)
 - Les usines de Sirius Space Services.
 - La masse d'une tonne des satellites ReOrbit : la masse n'est pas publiée.
 
+## Compléments du 23 octobre (sources fournies par l'utilisateur)
+
+Intégrés après vérification de la source :
+- **Beyond Gravity Linköping** (communiqué officiel du 23 sept. 2026) : de 12 600 à 15 000 m², de 96 à 192 modules de déploiement par an à partir d'octobre 2026, environ 350 personnes.
+- **GALO** (présentation de la Défense belge, 20 nov. 2024) : *Global coverage All-weather Low earth orbit Observation*, microsatellites optiques, radar et radiofréquence, complémentaires d'IRIS. Le chiffre d'une dizaine de satellites vient seulement de la presse ; il est signalé comme non confirmé.
+- **TAC** (Vimotek et Osmos X) : coût total estimé d'environ 4 M€, contribution maximale de l'UE du même ordre, sept partenaires, 30 mois.
+
+Non intégrés, car les sites sont inaccessibles depuis l'outil de vérification :
+- La Tribune : ligne OneWeb, cadences d'Ariane 6 ;
+- Le Monde : budget d'IRIS² ;
+- Le Journal des Entreprises : Segula.
+
 ## Contrôles
 
 - `node tools/check.js` : aucune erreur. Nouveau contrôle : la part française reste dans ses bornes.

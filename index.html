@@ -6523,7 +6523,7 @@ EVENEMENTS.push(
   { d: "2026-06-19", type: "contrat", act: "spacebel", prog: null, metiers: [], txt: "La RDC confie à Spacebel un satellite d'observation de 250 kg.", src: SRC12.spacebel, bc: "A", opp: "spacebel-rdc" },
   { d: "2026-06-17", type: "contrat", act: "iceye", prog: "atlantic", metiers: [], txt: "Le Portugal achète deux satellites radar ICEYE de plus (quatre au total).", src: SRC12.iceyePT, bc: "A", opp: "iceye-cad" },
   { d: "2026-05-21", type: "site", act: "maiaspace", prog: "maiaspace", metiers: [], txt: "MaiaFactory de Vernon : environ 12 000 m², en service au 2e semestre 2027.", src: SRC12.maia, bc: "A", opp: "maia" },
-  { d: "2026-05-17", type: "contrat", act: "osmosx", prog: null, metiers: [], txt: "Le projet TAC d'Osmos X et Arcspace est retenu par le Fonds européen de défense.", src: SRC12.tac, bc: "B", opp: "tac" },
+  { d: "2026-05-14", type: "contrat", act: "osmosx", prog: null, metiers: [], txt: "Le projet TAC (Osmos X, ArcSpace et cinq autres partenaires, environ 4 M€) est retenu par le Fonds européen de défense.", src: SRC12.tac, bc: "A", opp: "tac" },
   { d: "2026-03-24", type: "charge", act: "esa", prog: "gateway", metiers: [], txt: "La NASA abandonne Gateway au profit d'une base de surface ; sort des modules européens non tranché.", src: SRC12.gatewayR, bc: "A", opp: null },
   { d: "2026-03-19", type: "contrat", act: "reorbit", prog: "reorbit-sli", metiers: [], txt: "ReOrbit vend deux petits satellites géostationnaires à SLI (150 M€).", src: SRC12.reorbit, bc: "A", opp: "reorbit-sli" },
   { d: "2026-02-18", type: "charge", act: "orbex", prog: "orbex", metiers: [], txt: "Orbex cesse ses activités ; administrateurs nommés.", src: SRC12.orbex, bc: "A", opp: null },
@@ -6574,6 +6574,40 @@ PROGRAMMES.forEach(p => {
     p.frEsa = { txt: "Non documenté : la part française de ce programme n'a pas été retrouvée dans les souscriptions publiées.", part: null, bc: "C" };
   }
 });
+
+/* ---------- Compléments sourcés fournis par l'utilisateur (23 oct. 2026), vérifiés ---------- */
+const SRC12b = {
+  bgLink: S2("https://www.beyondgravity.com/fr/node/641", "Beyond Gravity – Extension du site de Linköping", "2026-09-23"),
+  galoDef: S2("https://ismllw-be.org/wp-content/uploads/2024/11/CDT-Damien-LEBRUN_compressed.pdf", "Défense belge (Space Office) – Stratégie ISR spatiale, présentation GALO", "2024-11-20"),
+  galoPresse: S2("https://info.fr/belgique-investit-200-millions-euros-constellation-militaire-galo/", "info.fr – La Belgique investit 200 M€ dans GALO", "2026-07-16"),
+  tacCost: S2("https://vimotek.space/news/vimotek-selected-for-two-european-defence-fund-projects", "Vimotek – Sélection pour deux projets du Fonds européen de défense (TAC)", "2026-04-15"),
+  tacOsmos: S2("https://www.osmos-x.com/osmos-x-selected-by-the-european-defence-fund/", "Osmos X – Sélectionné par le Fonds européen de défense (TAC)", "2026-05-14")
+};
+(function () {
+  // Beyond Gravity Linköping
+  const st = SITES.find(x => x.id === "bg-linkoping");
+  if (st) { st.txt = "Systèmes de déploiement de satellites (OneWeb, Amazon Leo). Extension annoncée en septembre 2026 : de 12 600 à 15 000 m², capacité portée de 96 à 192 modules par an à partir d'octobre 2026 ; environ 350 personnes."; st.src = SRC12b.bgLink; }
+  // GALO
+  const g = P12("be-milsat");
+  if (g) Object.assign(g, {
+    n: "GALO (constellation militaire belge)", sub: "Global coverage All-weather Low earth orbit Observation",
+    instr: "Constellation de microsatellites multicapteurs : optique, radar (SAR) et écoute radiofréquence", plat: "Microsatellites (plateforme non attribuée publiquement)",
+    app: "Donner à la Belgique une capacité de renseignement spatial à forte revisite, complémentaire de la constellation française IRIS (haute résolution).",
+    note: "Présentée dès novembre 2024 par la Défense belge, qui citait alors l'absence de budget alloué comme risque. Environ 200 M€ annoncés en juillet 2026 ; une dizaine de satellites selon la presse (non confirmé par une source officielle)."
+  });
+  addLien("be-milsat", L("Agence", SRC12b.galoDef.t, SRC12b.galoDef.u)); addLien("be-milsat", L("Référence", SRC12b.galoPresse.t, SRC12b.galoPresse.u));
+  const og = O12("be-milsat");
+  if (og) { og.titre = "GALO : constellation militaire belge, environ 200 M€ d'ici 2030"; og.lot = "Microsatellites multicapteurs (optique, radar, radiofréquence)"; og.sources = og.sources.concat([SRC12b.galoDef, SRC12b.galoPresse]); }
+  // TAC
+  const t = O12("tac");
+  if (t) { t.qte = { n: null, lib: "Projet de R&D de 30 mois : coût total estimé d'environ 4 M€, contribution maximale de l'UE du même ordre ; sept partenaires dans cinq pays" };
+    t.fab = { mode: "mixte", txt: "Osmos X coordinateur ; partenaires : ArcSpace, LPGP/CNRS, Politecnico di Milano, Politechnika Poznańska, Kinetik Space, Vimotek." };
+    t.sources = t.sources.concat([SRC12b.tacCost, SRC12b.tacOsmos]); t.bc = "A"; }
+  const ox = A12("osmosx"); if (ox) ox.u = SRC12b.tacOsmos.u;
+})();
+EVENEMENTS.push(
+  { d: "2026-09-23", type: "site", act: "beyond-gravity", prog: null, metiers: ["structure"], txt: "Beyond Gravity agrandit Linköping : 192 modules de déploiement par an au lieu de 96, à partir d'octobre 2026.", src: SRC12b.bgLink, bc: "A", opp: null }
+);
 
 </script>
 <script>
