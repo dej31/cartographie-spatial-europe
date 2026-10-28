@@ -9,6 +9,7 @@
 
   const VIEWS = [
     ["accueil", "Vue d'ensemble"],
+    ["nouveautes", "Nouveautés"],
     ["mecanique", "Mécanique"],
     ["domaines", "Domaines"],
     ["fiches", "Fiches"],
@@ -23,7 +24,7 @@
     ["glossaire", "Glossaire"]
   ];
 
-  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all", ofr: false, pfr: false };
+  const state = { view: "mecanique", sel: "s1", fam: "all", q: "", convType: "all", acat: "all", apays: "all", aq: "", ds: "contrats", y0: 2014, y1: 2026, fams: [], ent: "all", finT: "all", ty: "all", sort: "m", pcst: false, asel: null, pfam: "all", pq: "", phz: "all", pnon: false, psort: "jal", pmode: "opp", om: "all", ost: "all", opays: "all", oact: "all", oprog: "all", ophase: "all", obc: "all", oq: "", osort: "ech", etype: "all", ofr: false, pfr: false, nk: "all" };
 
   function chip(id) {
     const p = byId[id];
@@ -63,7 +64,7 @@
       [REL.length, "relations"]
     ].map(([v, l]) => `<div><b>${v}</b><small>${l}</small></div>`).join("");
     document.getElementById("tabs").innerHTML = VIEWS.map(([k, l], i) =>
-      `<button class="tab" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
+      `<button class="tab${k === "nouveautes" && majNew() ? " has-new" : ""}" role="tab" id="t-${k}" aria-controls="v-${k}" data-tab="${k}" type="button"><span class="k">${i}</span>${l}</button>`).join("");
   }
 
   /* ================= VUE 0 : MÉCANIQUE ================= */
@@ -1229,6 +1230,67 @@
   }
 
   /* ================= VUE : VUE D'ENSEMBLE ================= */
+  /* ================= NOUVEAUTÉS ================= */
+  /* Repère « nouveau » : date de la dernière mise à jour consultée, gardée dans ce navigateur seulement */
+  const MAJ_LAST = MISES_A_JOUR.length ? MISES_A_JOUR[0].d : null;
+  let majSeen = null;
+  try { majSeen = localStorage.getItem("atlas-maj-vue"); } catch (e) { majSeen = null; }
+  const majNew = () => !!MAJ_LAST && (!majSeen || majSeen < MAJ_LAST);
+  function majMarkSeen() {
+    majSeen = MAJ_LAST;
+    try { localStorage.setItem("atlas-maj-vue", MAJ_LAST); } catch (e) {}
+    const t = document.getElementById("t-nouveautes"); if (t) t.classList.remove("has-new");
+  }
+  function majItem(it) {
+    const p = it.prog && byId[it.prog], o = it.opp && oppById[it.opp], a = it.act && actById[it.act];
+    const links = [
+      o ? `<button type="button" class="reset maj-go" data-opp="${o.id}">Fiche prospection →</button>` : "",
+      p ? `<button type="button" class="reset maj-go" data-goto="${p.id}">Fiche programme : ${esc(p.n)} →</button>` : "",
+      a ? `<button type="button" class="reset maj-go" data-actor="${a.id}">${esc(a.n)} →</button>` : "",
+      it.k === "atlas" ? `<button type="button" class="reset maj-go" data-tab="prospection">Voir la prospection →</button>` : ""
+    ].filter(Boolean).join("");
+    const src = it.src.filter(Boolean);
+    return `<li class="maj-it k-${it.k}">
+      <div class="maj-h"><span class="maj-k">${esc(MAJ_TYPES[it.k])}</span><span class="conf" title="Indice de confiance">${it.bc}</span></div>
+      <h4>${esc(it.titre)}</h4>
+      <p>${esc(it.txt)}</p>
+      ${links ? `<div class="maj-links">${links}</div>` : ""}
+      ${src.length ? `<ul class="maj-src">${src.map(x => `<li><a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t)} ↗</a> <span class="note">publiée : ${esc(fmtD(x.pub))} · vérifiée : ${esc(fmtD(x.verif))}</span></li>`).join("")}</ul>` : ""}
+    </li>`;
+  }
+  function renderMaj() {
+    const el = document.getElementById("majList"); if (!el) return;
+    document.querySelectorAll("#majChips [data-nk]").forEach(b => b.setAttribute("aria-pressed", b.dataset.nk === state.nk));
+    el.innerHTML = MISES_A_JOUR.map((m, i) => {
+      const its = m.items.filter(it => state.nk === "all" || it.k === state.nk);
+      if (!its.length) return "";
+      const isNew = i === 0 && majNew();
+      return `<section class="maj-wave${i === 0 ? " last" : ""}">
+        <div class="maj-wh"><h3>${esc(m.titre)}${isNew ? ' <span class="maj-new">nouveau</span>' : ""}</h3><span class="note mono">${esc(fmtD(m.d))} · ${its.length} élément${its.length > 1 ? "s" : ""}</span></div>
+        <p class="note">${esc(m.txt)}</p>
+        <ul class="maj-items">${its.map(majItem).join("")}</ul></section>`;
+    }).join("") || `<p class="note">Aucun élément pour ce filtre.</p>`;
+  }
+  function vNouveautes() {
+    const cnt = {}; MISES_A_JOUR.forEach(m => m.items.forEach(it => { cnt[it.k] = (cnt[it.k] || 0) + 1; }));
+    const last = MISES_A_JOUR[0];
+    const nOpp = last ? last.items.filter(it => it.opp).length : 0;
+    return `<div class="view-head"><h2>Nouveautés</h2>
+      <p>Ce qui a changé dans l'atlas à chaque mise à jour : faits nouveaux, avec leur source, et liens directs vers les fiches programmes et prospection. Les éléments les plus récents sont en haut.</p></div>
+      ${last ? `<div class="fin-kpis ov-kpis">
+        <div class="kpi"><span>Dernière mise à jour</span><b class="mono">${esc(fmtD(last.d))}</b><small>${last.items.length} éléments</small></div>
+        <div class="kpi"><span>Liés à la prospection</span><b class="mono">${nOpp}</b><small>avec un lien vers une fiche d'opportunité</small></div>
+        <div class="kpi"><span>Contrats</span><b class="mono">${last.items.filter(it => it.k === "contrat").length}</b><small>attributions dans la dernière vague</small></div>
+        <div class="kpi"><span>Nouvelles opportunités</span><b class="mono">${last.items.filter(it => it.k === "opp").length}</b><small>pistes ajoutées à la prospection</small></div>
+      </div>` : ""}
+      <div class="fchips" id="majChips" role="group" aria-label="Filtrer par type">
+        <button type="button" class="fchip" data-nk="all" aria-pressed="true">Tout</button>
+        ${Object.entries(MAJ_TYPES).filter(([k]) => cnt[k]).map(([k, l]) => `<button type="button" class="fchip" data-nk="${k}" aria-pressed="false">${esc(l)} <span class="note">${cnt[k]}</span></button>`).join("")}
+      </div>
+      <div id="majList"></div>
+      <p class="note">Chaque fait est rattaché à une source publique vérifiée à la date indiquée. Indice de confiance : A (source officielle), B (presse spécialisée ou source unique), C (estimation). Une nouvelle opportunité n'est pas un besoin d'achat confirmé : son statut est précisé sur la fiche.</p>`;
+  }
+
   function vAccueil() {
     const y = Math.floor(NOW);
     const nb = st => PROGRAMMES.filter(p => p.st === st).length;
@@ -1254,6 +1316,7 @@
         <div class="kpi"><span>Relations documentées</span><b class="mono">${REL.length}</b><small>${EDGES.filter(e => e.nat === "capital").length} liens de capital · ${EDGES.filter(e => e.nat === "contrat").length} contrats et fournitures</small></div>
         <div class="kpi"><span>À attribuer</span><b class="mono">${libres.length}</b><small>programmes sans maître d'œuvre publié</small></div>
       </div>
+      ${MAJ_LAST ? `<button type="button" class="maj-banner" data-tab="nouveautes"><span class="maj-k">Mise à jour du ${esc(fmtD(MAJ_LAST))}</span><b>${esc(MISES_A_JOUR[0].items.slice(0, 3).map(it => it.titre).join(" · "))}</b><span class="note">${MISES_A_JOUR[0].items.length} nouveautés, avec sources et liens vers la prospection →</span></button>` : ""}
       <div class="entries">
         ${entry("fiches", "Un programme", "Fiche détaillée : qui paie, qui construit, quand, combien")}
         ${entry("acteurs", "Un acteur", "Annuaire, fiche, groupe, programmes et relations")}
@@ -1488,7 +1551,7 @@
   }
 
   /* ================= ROUTAGE ================= */
-  const RENDER = { accueil: vAccueil, reseau: vReseau, prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
+  const RENDER = { accueil: vAccueil, nouveautes: vNouveautes, reseau: vReseau, prospection: vProspection, mecanique: vMecanique, domaines: vDomaines, fiches: vFiches, acteurs: vActeurs, finances: vFinances, frise: vFrise, genealogie: vGenealogie, convergences: vConvergences, industrie: vIndustrie, glossaire: vGlossaire };
   const rendered = {};
 
   /* Historique : chaque navigation ajoute une entrée, le bouton « précédent » la rejoue */
@@ -1524,6 +1587,7 @@
     if (view === "convergences") renderConv();
     if (view === "acteurs") renderActeurs();
     if (view === "prospection") renderPros();
+    if (view === "nouveautes") { renderMaj(); majMarkSeen(); }
     if (view === "reseau") renderReseau();
     if (view === "finances") renderFin();
     if (view === "industrie") renderParc();
@@ -1576,6 +1640,7 @@
     const rz = e.target.closest("[data-rz]"); if (rz) { zoomBy(+rz.dataset.rz); return; }
     if (e.target.closest("[data-rreset]")) { Object.assign(R, { depth: 1, nats: { capital: true, contrat: true, coop: true, part: true }, pays: "all", fam: "all", cats: [], y0: 1990, y1: 2040, zoom: 1, px: 0, py: 0 }); rendered.reseau = false; show("reseau", { noHash: true, keepScroll: true }); return; }
     const pm = e.target.closest("[data-pmode]"); if (pm) { state.pmode = pm.dataset.pmode; rendered.prospection = false; show("prospection", { noHash: true, keepScroll: true }); return; }
+    const nk = e.target.closest("[data-nk]"); if (nk) { state.nk = nk.dataset.nk; renderMaj(); return; }
     const om = e.target.closest("[data-om]"); if (om) { state.om = om.dataset.om; renderOpp(); return; }
     const ost = e.target.closest("[data-ost]"); if (ost) { state.ost = ost.dataset.ost; renderOpp(); return; }
     const op = e.target.closest("[data-opp]"); if (op) { gotoOpp(op.dataset.opp); return; }

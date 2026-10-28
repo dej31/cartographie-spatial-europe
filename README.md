@@ -19,18 +19,19 @@ Contenu (octobre 2026) :
 | # | Vue | Contenu |
 |---|-----|---------|
 | 0 | Vue d'ensemble | Indicateurs clés, jalons de l'année suivante, plus gros contrats récents, acteurs les plus connectés, programmes à attribuer, accès rapides |
-| 1 | Mécanique | Chaîne financeur → utilisateur, cinq circuits types, grandes enveloppes, notions clés |
-| 2 | Domaines | 7 familles, 21 domaines, tous les programmes |
-| 3 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle, lien partageable |
-| 4 | Acteurs | Annuaire filtrable et fiche acteur complète : groupe, programmes et rôles, relations par nature, partenaires, concurrents potentiels (calcul indicatif), sources |
-| 5 | Réseau | Cartographie interactive : autour d'un acteur ou d'un programme, groupes et filiales, réseau complet ; liens typés capital, contrat, coopération ou participation ; filtres pays, domaine, type d'acteur, période |
-| 6 | Prospection | Deux modes. **Opportunités métiers** (par défaut) : MLI, harnais et structures, statut confirmée / probable / à surveiller, score explicable sur 18, filtres (métier, statut, pays, acteur, programme, phase, confiance), tri par échéance ou par score, prochaines actions, journal des événements, export CSV. **Programmes** : programmes en développement ou en projet, acheteur, attributaire, jalons, budget ; export CSV. Un clic sur une opportunité l’ouvre en grand (lien direct `#opp/…`, touche Échap pour fermer). Dans les deux modes : badge « Part de la France (ESA) » et filtre « part française d'au moins 20 % » |
-| 7 | Frise | 1965-2045, réalisé et prévu, jalons |
-| 8 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
-| 9 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé, compétitions |
-| 10 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
-| 11 | Finances | Contrats publics reliés aux acteurs, levées de fonds, séries annuelles |
-| 12 | Glossaire | Sigles, indice de confiance, sources |
+| 1 | Nouveautés | Journal des mises à jour, de la plus récente à la plus ancienne : faits nouveaux avec leur source, type (contrat, nouvelle opportunité, calendrier, budget, signal marché), indice de confiance et liens directs vers la fiche prospection, la fiche programme et l'acteur. Filtre par type. Repère sur l'onglet tant que la dernière mise à jour n'a pas été consultée (gardé dans le navigateur) ; bandeau sur la vue d'ensemble |
+| 2 | Mécanique | Chaîne financeur → utilisateur, cinq circuits types, grandes enveloppes, notions clés |
+| 3 | Domaines | 7 familles, 21 domaines, tous les programmes |
+| 4 | Fiches | Fiche standardisée par programme, recherche et filtres, acteurs impliqués avec leur rôle, lien partageable |
+| 5 | Acteurs | Annuaire filtrable et fiche acteur complète : groupe, programmes et rôles, relations par nature, partenaires, concurrents potentiels (calcul indicatif), sources |
+| 6 | Réseau | Cartographie interactive : autour d'un acteur ou d'un programme, groupes et filiales, réseau complet ; liens typés capital, contrat, coopération ou participation ; filtres pays, domaine, type d'acteur, période |
+| 7 | Prospection | Deux modes. **Opportunités métiers** (par défaut) : MLI, harnais et structures, statut confirmée / probable / à surveiller, score explicable sur 18, filtres (métier, statut, pays, acteur, programme, phase, confiance), tri par échéance ou par score, prochaines actions, journal des événements, export CSV. **Programmes** : programmes en développement ou en projet, acheteur, attributaire, jalons, budget ; export CSV. Un clic sur une opportunité l’ouvre en grand (lien direct `#opp/…`, touche Échap pour fermer). Dans les deux modes : badge « Part de la France (ESA) » et filtre « part française d'au moins 20 % » |
+| 8 | Frise | 1965-2045, réalisé et prévu, jalons |
+| 9 | Généalogie | Filiations de missions et de plateformes, suites commerciales |
+| 10 | Convergences | Charges hébergées, troc, échanges d'images, partenariats public-privé, compétitions |
+| 11 | Industrie | Parc de satellites (par taille et famille), maîtrises d'œuvre, sites, tendances |
+| 12 | Finances | Contrats publics reliés aux acteurs, levées de fonds, séries annuelles |
+| 13 | Glossaire | Sigles, indice de confiance, sources |
 
 ## Liens directs
 
@@ -63,6 +64,10 @@ Les fichiers sont chargés dans cet ordre. Chacun complète ou corrige les préc
 - `src/data10.js` (phase 4) : finalistes M7 non retenus (M-MATISSE, THESEUS), statut « Non retenu », OneSat et Space Inspire
 - `src/data12.js` (veille d'octobre 2026) : faits issus de la veille, rattachés à leurs sources publiques ; part de la France dans les programmes ESA (`frEsa`, tables `FR_ESA` et `FR_MAP`)
 - `src/data11.js` (prospection par métier) : `OPPORTUNITES`, `EVENEMENTS`, `SITES`, référentiels `METIERS`, `PHASES`, `OPP_STATUTS`, `EVT_TYPES`, fonction `scoreOpp`, acteur Axon' Cable
+
+### Journal des mises à jour (`MISES_A_JOUR`, fin de `src/data12.js`)
+
+`{ d, titre, txt, items[{ k, titre, txt, prog, opp, act, src[], bc }] }`, la plus récente en premier. `k` est l'une des clés de `MAJ_TYPES`. À chaque vague de veille, ajouter une entrée en tête de liste : l'onglet, le repère et le bandeau se mettent à jour seuls. `tools/check.js` vérifie l'ordre, les références et les sources.
 
 ### Modèle des opportunités (`OPPORTUNITES`)
 

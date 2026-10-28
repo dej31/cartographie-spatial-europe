@@ -84,6 +84,19 @@ const views = ["accueil", "mecanique", "domaines", "fiches", "acteurs", "reseau"
     const nlab2 = await page.evaluate(() => document.querySelectorAll("#agrid .act").length);
     if (nlab2 < 30) errors.push(`${label} : filtre laboratoires → ${nlab2}`);
     if (out) await page.screenshot({ path: path.join(out, `${label}-labos.png`) });
+    // onglet « Nouveautés » : journal, filtre, lien vers une fiche de prospection
+    const hadNew = await page.evaluate(() => document.getElementById("t-nouveautes").classList.contains("has-new"));
+    await page.evaluate(() => { location.hash = "nouveautes"; }); await page.waitForTimeout(250);
+    const nmaj = await page.evaluate(() => document.querySelectorAll("#majList .maj-it").length);
+    const seen = await page.evaluate(() => !document.getElementById("t-nouveautes").classList.contains("has-new"));
+    if (out) await page.screenshot({ path: path.join(out, `${label}-nouveautes.png`), fullPage: false });
+    await page.click('#majChips [data-nk="contrat"]'); await page.waitForTimeout(150);
+    const ncon = await page.evaluate(() => [...document.querySelectorAll("#majList .maj-it")].every(x => x.classList.contains("k-contrat")) && document.querySelectorAll("#majList .maj-it").length);
+    await page.click('#majList [data-opp]'); await page.waitForTimeout(300);
+    const mopen = await page.evaluate(() => { const m = document.getElementById("oppModal"); return !!m && !m.hidden && /^#opp\//.test(location.hash); });
+    await page.keyboard.press("Escape"); await page.waitForTimeout(150);
+    if (!hadNew || nmaj < 15 || !seen || !ncon || !mopen) errors.push(`${label} : nouveautés (repère ${hadNew}/${seen}, ${nmaj} éléments, ${ncon} contrats, fiche ${mopen})`);
+    await page.click('#majChips [data-nk="all"]').catch(() => {});
     await page.evaluate(() => { location.hash = "acteur/kda"; }); await page.waitForTimeout(200);
     const kda = await page.evaluate(() => document.getElementById("adetail") && document.getElementById("adetail").textContent);
     if (!kda || !/KSAT/.test(kda)) errors.push(`${label} : fiche KDA`);

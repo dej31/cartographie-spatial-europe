@@ -438,3 +438,213 @@ EVENEMENTS.push(
   { d: "2026-09-10", type: "cadence", act: "airbus-ds", prog: "eutelsat", metiers: [], txt: "Ligne OneWeb de Toulouse : environ 16 satellites par mois en croisière, cycle d'environ cinq semaines par satellite.", src: SRC12d.cadence, bc: "B", opp: "ow-serie" },
   { d: "2021-03-23", type: "fournisseur", act: "spacetech", prog: "eutelsat", metiers: ["structure"], txt: "SpaceTech (STI) fournira des centaines de panneaux solaires pour les satellites OneWeb.", src: SRC12d.sti, bc: "A", opp: "ow-serie" }
 );
+
+/* ---------- Veille du 28 octobre 2026 (lot 1 Perplexity, sources vérifiées) ---------- */
+const SRC13 = {
+  iceyeUA: S("https://www.nokia.com/newsroom/iceye-and-nokia-partner-with-the-ministry-of-defence-of-ukraine-to-develop-sovereign-satcom-capability/", "Nokia – ICEYE et Nokia s'associent au ministère ukrainien de la Défense (lettre d'intention)", "2026-10-22", "2026-10-28"),
+  iceyeUA2: S("https://breakingdefense.com/2026/10/kyiv-eyes-purchase-of-planned-iceye-nokia-sovereign-communication-sats/", "Breaking Defense – Kyiv envisage les futurs satellites de communication ICEYE-Nokia", "2026-10-23", "2026-10-28")
+};
+EVENEMENTS.push(
+  { d: "2026-10-22", type: "charge", act: "iceye", prog: "iceye", metiers: [], txt: "Lettre d'intention ICEYE, Nokia et ministère ukrainien de la Défense pour étudier des télécoms souveraines en orbite basse (plateforme ICEYE, réseau Nokia). Aucune commande selon ICEYE ; premier satellite visé en 2028 ; nombre et montant non documentés.", src: SRC13.iceyeUA, bc: "A", opp: null }
+);
+addLien("iceye", L("Référence", SRC13.iceyeUA.t, SRC13.iceyeUA.u));
+addLien("iceye", L("Référence", SRC13.iceyeUA2.t, SRC13.iceyeUA2.u));
+
+SRC13.s3ngt = S("https://aviationweek.com/space/satellites/airbus-secures-esa-sentinel-3-next-generation-topography-contract", "Aviation Week – Airbus remporte le contrat ESA Sentinel-3 NG Topographie (accès payant)", "2026-10-06", "2026-10-28");
+(function () {
+  const p = P12("sng");
+  if (p) {
+    p.moe = "Sentinel-1NG : Thales Alenia Space Italie, radars Airbus DS Allemagne (contrat de juin 2026) ; 2NG : phase A/B confiée à deux industriels en parallèle, dont OHB System (janv. 2024, 6 M€ chacun), réalisation non attribuée ; 3NG Topographie : Airbus, contrat ESA de 550 M€ pour un satellite (oct. 2026), un second possible ; 3NG Optique : non attribué publiquement";
+    if (p.g && p.g.indexOf("airbus-ds") < 0) p.g.push("airbus-ds");
+  }
+  addLien("sng", L("Référence", SRC13.s3ngt.t, SRC13.s3ngt.u));
+  const o = O12("s2ng3ng");
+  if (o) {
+    o.titre = "Sentinel-2 NG et 3 NG : 3NG Topographie attribué à Airbus, le reste non attribué";
+    o.acheteur = ["esa", "airbus-ds"];
+    o.fab = { mode: "inconnu", txt: "3NG Topographie : Airbus maître d'œuvre (550 M€, un satellite, un second possible, lancement visé en 2034) ; sous-traitants non documentés. 2NG : phase A/B confiée à deux industriels en parallèle, dont OHB System. 3NG Optique : non attribué publiquement." };
+    o.sources = o.sources.concat([SRC13.s3ngt]);
+    o.action = "Approcher Airbus pour les lots de 3NG Topographie ; suivre les attributions de 2NG et de 3NG Optique.";
+  }
+})();
+EVENEMENTS.push(
+  { d: "2026-10-06", type: "contrat", act: "airbus-ds", prog: "sng", metiers: [], txt: "Airbus remporte le contrat ESA de 550 M€ pour un satellite Sentinel-3 NG Topographie (un second possible), lancement visé en 2034.", src: SRC13.s3ngt, bc: "B", opp: "s2ng3ng" }
+);
+
+/* ---------- Veille du 28 octobre 2026 (lot 2 Perplexity, sources vérifiées) ---------- */
+SRC13.galg2plus = S("https://www.esa.int/Applications/Satellite_navigation/Galileo/ESA_procures_four_new_Galileo_Second_Generation_satellites", "ESA – L'ESA commande quatre nouveaux satellites Galileo 2e génération", "2026-10-27", "2026-10-28");
+SRC13.spng3pret = S("https://www.elespanol.com/observatorio-defensa/20261027/gobierno-modifica-limites-gasto-financiar-satelites-paz-spainsat-ng-iii-hisdesat/1003744437285_0.html", "El Español (Europa Press) – Le gouvernement modifie les plafonds de dépense pour PAZ 2 et SpainSat NG III", "2026-10-27", "2026-10-28");
+(function () {
+  const g = P12("galg2");
+  if (g) {
+    g.sub = "16 satellites commandés à deux industriels";
+    g.moe = "Airbus DS Allemagne et Thales Alenia Space Italie : deux lots de 6 (2021), puis 2 satellites de plus chacun (octobre 2026)";
+    g.jal = (g.jal || []).concat([[2031, "Livraison des 4 satellites supplémentaires, lancement dans la foulée"]]);
+  }
+  addLien("galg2", L("Agence", SRC13.galg2plus.t, SRC13.galg2plus.u));
+  const l1 = O12("galg2-lot1");
+  if (l1) { l1.titre = "Galileo 2e génération : 12 satellites initiaux en réalisation"; }
+  const l2 = O12("galg2-lot2");
+  if (l2) {
+    l2.note = l2.note + " En octobre 2026, l'ESA a commandé 4 satellites supplémentaires aux deux titulaires du lot 1 (voir la fiche dédiée) ; le lien entre cette commande et la consultation annoncée n'est pas précisé par l'ESA.";
+    l2.sources = l2.sources.concat([SRC13.galg2plus]);
+  }
+  OPPORTUNITES.push({ id: "galg2-plus", titre: "Galileo 2e génération : 4 satellites supplémentaires commandés à Airbus et Thales Alenia Space", prog: "galg2", acheteur: ["airbus-ds", "tas"], client: "esa", site: null,
+    lot: "Satellites complets (sous-ensembles non détaillés publiquement)", metiers: ["structure", "harnais", "mli"], phase: "cd",
+    ech: { d: "2031", doc: true, lib: "Livraison des 4 satellites prévue en 2031, lancement juste après" },
+    qte: { n: 4, lib: "2 satellites chez Airbus (Ottobrunn), 2 chez Thales Alenia Space (Rome) ; flotte G2 portée à 16" },
+    fab: { mode: "inconnu", txt: "Contrats signés le 23 octobre (Thales Alenia Space, Rome) et le 26 octobre 2026 (Airbus, Ottobrunn). Montants et sous-traitants non publiés." },
+    four: [], valeur: null, statut: "probable", lotDoc: false, vol: true, bc: "A",
+    note: "Commande ferme de satellites ; le besoin en sous-ensembles (MLI, harnais, structures) n'est pas publié.",
+    sources: [SRC13.galg2plus],
+    action: "Contacter les achats d'Airbus Ottobrunn et de Thales Alenia Space Rome pour les 4 satellites supplémentaires, livrables en 2031." });
+  const sp = O12("spainsat-ng3");
+  if (sp) {
+    sp.sources = sp.sources.concat([SRC13.spng3pret]);
+    sp.fab = Object.assign({}, sp.fab, { txt: sp.fab.txt + " Financement : prêt de l'État espagnol de 492,2 M€ à Hisdesat, étalé de 2026 à 2030 (conseil des ministres du 27 octobre 2026)." });
+  }
+})();
+EVENEMENTS.push(
+  { d: "2026-10-23", type: "tranche", act: "tas", prog: "galg2", metiers: [], txt: "Galileo 2e génération : Thales Alenia Space reçoit 2 satellites de plus (signature à Rome) ; livraison en 2031.", src: SRC13.galg2plus, bc: "A", opp: "galg2-plus" },
+  { d: "2026-10-26", type: "tranche", act: "airbus-ds", prog: "galg2", metiers: [], txt: "Galileo 2e génération : Airbus reçoit 2 satellites de plus (signature à Ottobrunn) ; la flotte G2 passe à 16.", src: SRC13.galg2plus, bc: "A", opp: "galg2-plus" }
+);
+
+/* ---------- Veille du 28 octobre 2026 (lot 3 Perplexity, sources vérifiées) ---------- */
+SRC13.a6oct = S("https://actualidadaeroespacial.com/la-esa-preve-seis-lanzamientos-de-ariane-6-en-2026-y-hasta-10-en-2027/", "Actualidad Aeroespacial – L'ESA prévoit 6 lancements d'Ariane 6 en 2026 et jusqu'à 10 en 2027", "2026-10-22", "2026-10-28");
+SRC13.themis = S("https://europeanspaceflight.com/esa-director-not-sure-themis-will-make-its-first-flight-in-2026/", "European Spaceflight – L'ESA n'est pas sûre que Themis vole en 2026", "2026-10-23", "2026-10-28");
+SRC13.srider = S("https://europeanspaceflight.com/esa-provides-new-details-on-failed-space-rider-drop-test/", "European Spaceflight – Détails de l'ESA sur l'échec de l'essai de largage de Space Rider", "2026-10-22", "2026-10-28");
+SRC13.crew = S("https://www.euronews.com/2026/10/26/europe-weighs-10bn-plan-to-launch-its-own-astronauts-ahead-of-rome-space-summit", "Euronews – L'Europe étudie un plan de 10 Md€ pour lancer ses propres astronautes", "2026-10-26", "2026-10-28");
+(function () {
+  const a6 = O12("a6-cadence");
+  if (a6) {
+    a6.note = (a6.note || "") + " Conférence de presse ESA du 22 octobre 2026 : 6 lancements en 2026, 9 à 10 en 2027 surtout en Ariane 64 ; la production de boosters est le principal frein ; un second pas de tir ne serait nécessaire qu'autour de 15 lancements par an, pas avant 2031-2032.";
+    a6.sources = a6.sources.concat([SRC13.a6oct]);
+  }
+  addLien("ariane6", L("Référence", SRC13.a6oct.t, SRC13.a6oct.u));
+  const th = P12("themis");
+  if (th) th.note = "Premier saut toujours attendu : ArianeGroup et SSC Space décident fin novembre 2026 de tenter ou non un vol avant l'arrêt hivernal d'Esrange ; l'ESA exige au moins un saut avant juin 2027 (oct. 2026).";
+  addLien("themis", L("Référence", SRC13.themis.t, SRC13.themis.u));
+  const sr = P12("spacerider");
+  if (sr) {
+    sr.jal = sr.jal.map(j => j[0] === 2028 ? [2028, "Vol inaugural visé au 1er semestre (Vega-C)"] : j);
+    sr.note = (sr.note || "") + " Perte d'une maquette lors d'un essai de largage le 6 octobre 2026 (parafoil séparé) ; selon l'ESA, pas de retard attendu, enquête en cours.";
+  }
+  addLien("spacerider", L("Référence", SRC13.srider.t, SRC13.srider.u));
+  const cg = P12("cargo");
+  if (cg) cg.note = (cg.note || "") + " Proposition du DG de l'ESA (oct. 2026) : environ 10 Md€ sur 10 ans pour un transport européen d'astronautes, contre environ 5 Md€ pour acheter des services étrangers ; décision des États membres attendue à Rome le 15 décembre 2026 (proposition, pas de financement acquis).";
+  addLien("cargo", L("Référence", SRC13.crew.t, SRC13.crew.u));
+})();
+EVENEMENTS.push(
+  { d: "2026-10-22", type: "cadence", act: "esa", prog: "ariane6", metiers: [], txt: "L'ESA annonce 6 lancements d'Ariane 6 en 2026 et 9 à 10 en 2027, surtout en Ariane 64 ; les boosters limitent la cadence.", src: SRC13.a6oct, bc: "B", opp: "a6-cadence" }
+);
+
+/* ---------- Veille du 28 octobre 2026 (nouvelles pistes Perplexity, sources vérifiées) ---------- */
+SRC13.meridian = S("https://www.geoconnexion.com/news/meridian-space-and-kongsberg-nanoavionics-confirm-activation-of-first-reflectarray-communications-payload-in-orbit", "GeoConnexion – Meridian Space et Kongsberg NanoAvionics : première charge utile activée en orbite", "2026-10-06", "2026-10-28");
+SRC13.n3x = S("https://www.naval-technology.com/news/kongsberg-add-three-more-n3x-satellites-to-norways-maritime-picture/", "Naval Technology – Kongsberg ajoute trois satellites N3X", "2026-08-24", "2026-10-28");
+SRC13.planetB = S("https://www.satellitetoday.com/manufacturing/2026/09/22/planet-opens-new-berlin-manufacturing-facility-for-pelican-build-out/", "Via Satellite – Planet ouvre son usine de Berlin pour les satellites Pelican", "2026-09-22", "2026-10-28");
+SRC13.enduro = S("https://www.endurosat.com/news/endurosat-raises-205m-to-scale-next-generation-space-fleets/", "EnduroSat – Levée de 205 M$ pour passer à la production en série", "2026-09-16", "2026-10-28");
+SRC13.sawa = S("https://www.intellinews.com/creotech-signs-13-9mn-esa-contract-for-polish-space-weather-satellite-465486/", "bne IntelliNews – Creotech signe un contrat ESA de 13,9 M€ pour SAWA", "2026-09-03", "2026-10-28");
+SRC13.creoH1 = S("https://creotech.pl/news/creotech-instruments-posts-nearly-34-revenue-growth-from-continuing-operations-in-the-first-half-of-2026/", "Creotech – Résultats du premier semestre 2026", "2026-09-28", "2026-10-28");
+SRC13.reflex = S("https://www.reflexaerospace.com/press-releases/reflex-aerospace-scales-european-satellite-production-backed-by-planned-nvidia-investment", "Reflex Aerospace – Extension de la production en Bavière, investissement prévu de NVIDIA", "2026-10-19", "2026-10-28");
+SRC13.argotec = S("https://www.rheinmetall.com/en/media/news-watch/news/2026/10/2026-10-02-rheinmetall-and-argotec-launch-their-first-satellite-into-space-with-spacex", "Rheinmetall – Premier satellite Rheinmetall Italia et Argotec lancé", "2026-10-02", "2026-10-28");
+SRC13.activeS = S("https://econews.pt/2026/08/20/active-space-wins-e3m-satellite-order-targets-middle-east/", "ECO News – Active Space remporte une commande de 3 M€ (340 satellites)", "2026-08-20", "2026-10-28");
+
+Object.assign(PAYS, { LT: "Lituanie" });
+PAYS_INFO.LT = { ue: true, esa: "à vérifier" };
+ACTEURS.push(
+  { id: "nanoavionics", n: "Kongsberg NanoAvionics", c: "nsdat", p: "LT", v: "Vilnius", t: "Filiale du groupe Kongsberg", y: null,
+    m: "Constructeur de micro-satellites (plateforme MP42) et intégrateur de missions. Contrat de 122,5 M€ pour 280 satellites ; plateformes des satellites N3X de Kongsberg.", k: "280 satellites, 122,5 M€", kb: "A", pr: [], u: SRC13.meridian.u },
+  { id: "active-space", n: "Active Space Technologies", c: "equip", p: "PT", v: "Coimbra", t: "PME", y: null,
+    m: "Fournisseur de composants structurels et de sous-systèmes. Commande de 2,5 à 3 M€ pour six composants structurels par satellite sur 340 satellites d'une constellation européenne (client non divulgué), livraison avant juin 2028.", k: "340 satellites (commande de 3 M€ au plus)", kb: "A", pr: [], u: SRC13.activeS.u }
+);
+
+OPPORTUNITES.push(
+  { id: "nanoav-280", titre: "Kongsberg NanoAvionics : 280 micro-satellites en série (constellation Meridian Space)", prog: null, acheteur: ["nanoavionics"], client: null, site: null,
+    lot: "Plateformes MP42 en série", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: { d: "2026-10", doc: true, lib: "Premier satellite lancé le 1er octobre 2026, charge utile activée ; calendrier de la série non publié" },
+    qte: { n: 280, lib: "280 satellites (contrat de 122,5 M€) ; 3 satellites N3X de plus pour Kongsberg début 2027" },
+    fab: { mode: "inconnu", txt: "Plateforme et intégration chez NanoAvionics ; lieu de fabrication et sous-traitants non documentés." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: true, bc: "B", sources: [SRC13.meridian, SRC13.n3x],
+    note: "Hypothèse : une série de 280 micro-satellites peut justifier des achats récurrents de harnais et de pièces de structure ; aucun besoin publié.",
+    action: "Identifier le responsable achats de NanoAvionics et vérifier ce qui est fait en interne." },
+  { id: "planet-berlin", titre: "Planet : usine de satellites Pelican à Berlin (5 700 m²)", prog: null, acheteur: ["planet"], client: null, site: null,
+    lot: "Satellites Pelican d'observation", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: { d: "2027", doc: true, lib: "Production à l'automne 2026 ; premier Pelican construit en Allemagne lancé début 2027 (Isar Aerospace, Andøya)" },
+    qte: { n: null, lib: "Capacité annuelle non documentée dans la source lue ; 70 recrutements prévus" },
+    fab: { mode: "inconnu", txt: "Intégration par Planet à Berlin ; clients cités : BKG (cartographie fédérale), et soutien envisagé à SPOCK 2 de la Bundeswehr. Fournisseurs locaux non documentés." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: true, bc: "B", sources: [SRC13.planetB],
+    note: "Hypothèse : une ligne européenne peut chercher à localiser une partie de ses achats ; rien n'est publié.",
+    action: "Vérifier si le site de Berlin achète localement (structures, harnais) ou reçoit ses kits des États-Unis." },
+  { id: "endurosat-serie", titre: "EnduroSat : 205 M$ pour passer en série (satellites de 200 kg à 5 t)", prog: null, acheteur: ["endurosat"], client: null, site: null,
+    lot: "Plateformes FRAME S (200 kg), FRAME L (500 kg), FRAME MAX (1 à 5 t)", metiers: ["structure", "harnais", "mli"], phase: "serie",
+    ech: null, qte: { n: null, lib: "103 satellites lancés, plus de 200 livrés ; capacité des usines non documentée" },
+    fab: { mode: "inconnu", txt: "Production en série standardisée, nouvelle usine aux États-Unis et pôle espace et défense dans l'UE annoncés ; sous-traitance non documentée." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: true, bc: "A", sources: [SRC13.enduro],
+    note: "Hypothèse : le passage à des satellites de 500 kg et plus augmente le besoin en MLI et en harnais ; aucun lot publié.",
+    action: "Prendre contact avec EnduroSat (Sofia) sur ses achats de harnais et d'isolation pour les FRAME L et MAX." },
+  { id: "creotech-hypersat", titre: "Creotech : SAWA (ESA) et extension des capacités de production", prog: null, acheteur: ["creotech"], client: "esa", site: null,
+    lot: "Plateforme HyperSat", metiers: ["structure", "harnais", "mli"], phase: "devb",
+    ech: { d: "2029", doc: true, lib: "Lancement de SAWA début 2029" },
+    qte: { n: 1, lib: "1 satellite SAWA (phases B à E, 13,9 M€) ; autres programmes : MikroGlob, CAMILA" },
+    fab: { mode: "inconnu", txt: "Creotech maître d'œuvre sur sa plateforme HyperSat ; 481 M PLN levés en juillet 2026 notamment pour étendre la production. Sous-traitance non documentée." },
+    four: [], valeur: null, statut: "surveiller", lotDoc: false, vol: true, bc: "A", sources: [SRC13.sawa, SRC13.creoH1],
+    note: "Hypothèse : un maître d'œuvre polonais en croissance peut sourcer des sous-ensembles en Europe ; aucun besoin publié.",
+    action: "Approcher Creotech (Piaseczno) sur les besoins de la plateforme HyperSat." }
+);
+
+EVENEMENTS.push(
+  { d: "2026-10-01", type: "constellation", act: "nanoavionics", prog: null, metiers: [], txt: "Premier satellite de la constellation Meridian Space (plateforme NanoAvionics MP42) lancé ; charge utile activée.", src: SRC13.meridian, bc: "B", opp: "nanoav-280" },
+  { d: "2026-08-24", type: "tranche", act: "kda", prog: null, metiers: [], txt: "Kongsberg commande 3 satellites N3X de plus (plateformes NanoAvionics), soit 6 au total, lancement début 2027.", src: SRC13.n3x, bc: "B", opp: "nanoav-280" },
+  { d: "2026-09-22", type: "site", act: "planet", prog: null, metiers: [], txt: "Planet ouvre à Berlin une usine de 5 700 m² pour ses satellites Pelican.", src: SRC13.planetB, bc: "B", opp: "planet-berlin" },
+  { d: "2026-09-16", type: "cadence", act: "endurosat", prog: null, metiers: [], txt: "EnduroSat lève 205 M$ pour produire en série des satellites de 200 kg à 5 t.", src: SRC13.enduro, bc: "A", opp: "endurosat-serie" },
+  { d: "2026-09-02", type: "contrat", act: "creotech", prog: null, metiers: [], txt: "L'ESA confie à Creotech la mission SAWA (13,9 M€, phases B à E), lancement début 2029.", src: SRC13.sawa, bc: "B", opp: "creotech-hypersat" },
+  { d: "2026-10-19", type: "site", act: "reflex-aerospace", prog: null, metiers: [], txt: "Reflex Aerospace annonce l'extension de sa production en Bavière, avec un investissement prévu de NVIDIA (capacité non publiée).", src: SRC13.reflex, bc: "A", opp: null },
+  { d: "2026-10-01", type: "constellation", act: "argotec", prog: null, metiers: [], txt: "Premier satellite de surveillance de défense aérienne de Rheinmetall Italia et Argotec lancé ; un deuxième prévu en 2028, constellation non chiffrée.", src: SRC13.argotec, bc: "A", opp: null },
+  { d: "2026-08-20", type: "fournisseur", act: "active-space", prog: null, metiers: ["structure"], txt: "Active Space (Portugal) livrera six composants structurels par satellite pour 340 satellites d'une constellation européenne non nommée, avant juin 2028.", src: SRC13.activeS, bc: "B", opp: null }
+);
+
+/* ---------- Journal des mises à jour (onglet « Nouveautés ») ----------
+   Une entrée par vague de veille, la plus récente en premier. Chaque élément renvoie
+   vers sa source et, quand elles existent, vers la fiche programme, l'opportunité ou l'acteur. */
+const MAJ_TYPES = {
+  opp: "Nouvelle opportunité",
+  contrat: "Contrat",
+  calendrier: "Calendrier",
+  budget: "Budget",
+  marche: "Signal marché",
+  atlas: "Nouveauté de l'atlas"
+};
+const MISES_A_JOUR = [
+  { d: "2026-10-28", titre: "Veille du 28 octobre 2026",
+    txt: "Actualités publiées du 23 au 28 octobre, et nouvelles pistes repérées depuis juillet. Chaque fait a été vérifié sur sa source ; les rumeurs et les contenus sponsorisés sont écartés.",
+    items: [
+      { k: "contrat", titre: "Galileo 2e génération : 4 satellites de plus pour Airbus et Thales Alenia Space", txt: "Deux satellites chacun (signatures les 23 et 26 octobre), flotte G2 portée à 16, livraison en 2031. Montants et sous-traitants non publiés.", prog: "galg2", opp: "galg2-plus", act: null, src: [SRC13.galg2plus], bc: "A" },
+      { k: "contrat", titre: "Sentinel-3 NG Topographie attribué à Airbus (550 M€)", txt: "Un satellite, un second possible, lancement visé en 2034. Sous-traitants non publiés.", prog: "sng", opp: "s2ng3ng", act: "airbus-ds", src: [SRC13.s3ngt], bc: "B" },
+      { k: "budget", titre: "SpainSat NG III : prêt de l'État de 492,2 M€ à Hisdesat", txt: "Échelonné de 2026 à 2030, pour le satellite de remplacement construit par Airbus Espagne avec Thales Alenia Space.", prog: "spainsat", opp: "spainsat-ng3", act: "hisdesat", src: [SRC13.spng3pret], bc: "A" },
+      { k: "calendrier", titre: "Ariane 6 : 6 lancements en 2026, 9 à 10 en 2027, surtout en Ariane 64", txt: "Les boosters sont le principal frein ; un second pas de tir ne serait utile qu'autour de 15 lancements par an, pas avant 2031-2032.", prog: "ariane6", opp: "a6-cadence", act: "esa", src: [SRC13.a6oct], bc: "B" },
+      { k: "opp", titre: "Kongsberg NanoAvionics : 280 micro-satellites en série", txt: "Premier satellite de la constellation Meridian Space lancé le 1er octobre ; 3 satellites N3X de plus pour Kongsberg début 2027.", prog: null, opp: "nanoav-280", act: "nanoavionics", src: [SRC13.meridian, SRC13.n3x], bc: "B" },
+      { k: "opp", titre: "Planet ouvre une usine de satellites à Berlin", txt: "5 700 m², production à l'automne 2026, premier Pelican construit en Allemagne lancé début 2027 (Isar Aerospace).", prog: null, opp: "planet-berlin", act: "planet", src: [SRC13.planetB], bc: "B" },
+      { k: "opp", titre: "EnduroSat lève 205 M$ pour passer en série", txt: "Satellites de 200 kg, 500 kg et 1 à 5 t ; nouvelle usine aux États-Unis et pôle espace et défense dans l'UE.", prog: null, opp: "endurosat-serie", act: "endurosat", src: [SRC13.enduro], bc: "A" },
+      { k: "opp", titre: "Creotech : mission ESA SAWA et extension de la production", txt: "13,9 M€ pour SAWA (lancement début 2029) ; 481 M PLN levés notamment pour augmenter les capacités.", prog: null, opp: "creotech-hypersat", act: "creotech", src: [SRC13.sawa, SRC13.creoH1], bc: "A" },
+      { k: "marche", titre: "Active Space (Portugal) : structures pour 340 satellites", txt: "Six composants structurels par satellite pour une constellation européenne non nommée, avant juin 2028. Concurrent direct sur les structures.", prog: null, opp: null, act: "active-space", src: [SRC13.activeS], bc: "B" },
+      { k: "marche", titre: "ICEYE et Nokia : lettre d'intention avec l'Ukraine pour des télécoms en orbite basse", txt: "Exploration seulement, aucune commande ; premier satellite visé en 2028.", prog: "iceye", opp: null, act: "iceye", src: [SRC13.iceyeUA, SRC13.iceyeUA2], bc: "A" },
+      { k: "marche", titre: "Reflex Aerospace étend sa production en Bavière", txt: "Investissement prévu de NVIDIA ; capacité non publiée.", prog: null, opp: null, act: "reflex-aerospace", src: [SRC13.reflex], bc: "A" },
+      { k: "marche", titre: "Rheinmetall Italia et Argotec lancent leur premier satellite militaire", txt: "Premier jalon d'une constellation de surveillance non chiffrée ; deuxième satellite prévu en 2028.", prog: null, opp: null, act: "argotec", src: [SRC13.argotec], bc: "A" },
+      { k: "calendrier", titre: "Themis : premier saut incertain en 2026", txt: "Décision fin novembre avant l'hiver d'Esrange ; l'ESA veut un saut avant juin 2027.", prog: "themis", opp: null, act: "arianegroup", src: [SRC13.themis], bc: "B" },
+      { k: "calendrier", titre: "Space Rider : maquette perdue lors d'un essai, vol inaugural maintenu en 2028", txt: "Parafoil séparé lors d'un largage le 6 octobre ; l'ESA ne prévoit pas de retard.", prog: "spacerider", opp: null, act: null, src: [SRC13.srider], bc: "B" },
+      { k: "budget", titre: "Transport européen d'astronautes : proposition de 10 Md€ sur 10 ans", txt: "Proposition du DG de l'ESA, décision des États membres à Rome le 15 décembre 2026. Aucun financement acquis.", prog: "cargo", opp: null, act: "esa", src: [SRC13.crew], bc: "B" }
+    ] },
+  { d: "2026-10-23", titre: "Veille du 23 octobre 2026 (retours du commerce)",
+    txt: "Première vague intégrée à la suite des retours du commerce : nouveaux acteurs et programmes, corrections, part de la France dans les programmes ESA.",
+    items: [
+      { k: "atlas", titre: "Part de la France dans les programmes ESA", txt: "Badge tricolore sur les fiches programmes et prospection, calculé à partir des souscriptions de la conférence ministérielle 2025 ; filtre « part française forte ».", prog: null, opp: null, act: null, src: [SRC12.cm25], bc: "A" },
+      { k: "atlas", titre: "Fiches de prospection en grand", txt: "Un clic sur une fiche l'ouvre en plein écran, avec un lien à copier pour la partager.", prog: null, opp: null, act: null, src: [], bc: "A" },
+      { k: "opp", titre: "ReOrbit : deux petits satellites géostationnaires pour SLI (150 M€)", txt: "Nouvel acteur finlandais et nouveau programme.", prog: "reorbit-sli", opp: "reorbit-sli", act: "reorbit", src: [SRC12.reorbit], bc: "A" },
+      { k: "contrat", titre: "IRIS² : 18 satellites MEO confiés à OHB (≈ 1 Md€)", txt: "Plateformes MEO attribuées à OHB par SES.", prog: "iris2", opp: "iris2-meo", act: null, src: [SRC12.ohbmeo], bc: "A" },
+      { k: "contrat", titre: "CASSIOPÉE : Airbus et Unseenlabs pour le renseignement électromagnétique", txt: "Successeur de CERES, plateforme Airbus.", prog: "ceres", opp: "cassiopee", act: "airbus-ds", src: [SRC12.cassiopee], bc: "A" },
+      { k: "contrat", titre: "SpainSat NG III commandé à Airbus Espagne", txt: "Remplacement de SpainSat NG II, lancement au 3e trimestre 2030.", prog: "spainsat", opp: "spainsat-ng3", act: "airbus-ds", src: [SRC12.spng3], bc: "A" },
+      { k: "opp", titre: "GALO : constellation militaire belge, environ 200 M€ d'ici 2030", txt: "Nouveau programme ; nombre de satellites non confirmé officiellement.", prog: "be-milsat", opp: "be-milsat", act: "defense-belge", src: [SRC12b.galoDef, SRC12b.galoPresse], bc: "B" },
+      { k: "opp", titre: "OneWeb nouvelle génération : fournisseurs et cadence de la ligne de Toulouse", txt: "Environ 16 satellites par mois en croisière ; Segula, Sodern, STI et Matra Électronique cités.", prog: "eutelsat", opp: "ow-serie", act: "airbus-ds", src: [SRC12d.cadence, SRC12c.segula], bc: "B" },
+      { k: "calendrier", titre: "Ariane 6 : anomalie de turbopompe, six vols au plus en 2026", txt: "Une dizaine de lancements d'Ariane 64 commandés au Sommet de Paris.", prog: "ariane6", opp: "a6-cadence", act: "arianegroup", src: [SRC12.a6anom, SRC12.a6contrats], bc: "A" }
+    ] }
+];

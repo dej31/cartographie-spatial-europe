@@ -574,12 +574,34 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 .side-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 @media (max-width: 1000px) { .net { grid-template-columns: minmax(0, 1fr); } .net-f { grid-template-columns: repeat(2, minmax(0, 1fr)); } .net-f > div:first-child { grid-column: 1 / -1; } .net-side { max-height: none; } }
 @media (max-width: 560px) { .net-f { grid-template-columns: minmax(0, 1fr); } .meta-act { margin-left: 0; } }
+
+/* Nouveautés */
+.tab.has-new::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-left: 6px; vertical-align: middle; }
+.maj-banner { display: grid; gap: 4px; width: 100%; text-align: left; margin: 0 0 18px; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 6px; background: var(--surface); color: inherit; font: inherit; cursor: pointer; }
+.maj-banner:hover { border-color: var(--accent); }
+.maj-banner b { font-size: 15px; line-height: 1.35; }
+.maj-k { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+#majChips { margin: 6px 0 16px; }
+.maj-wave { margin: 0 0 26px; }
+.maj-wh { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 6px; }
+.maj-wh h3 { margin: 0; font-size: 18px; }
+.maj-new { font-family: var(--font-mono); font-size: 11px; color: var(--paper); background: var(--accent); border-radius: 3px; padding: 1px 6px; vertical-align: middle; }
+.maj-items { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.maj-it { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; background: var(--surface); }
+.maj-it.k-contrat, .maj-it.k-opp { border-left: 3px solid var(--accent); }
+.maj-h { display: flex; justify-content: space-between; align-items: center; }
+.maj-it h4 { margin: 0; font-size: 15px; line-height: 1.35; }
+.maj-it p { margin: 0; font-size: 14px; }
+.maj-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.maj-go { font-size: 12px; }
+.maj-src { list-style: none; padding: 0; margin: 2px 0 0; font-size: 12px; display: grid; gap: 3px; }
+@media (max-width: 600px) { .maj-items { grid-template-columns: 1fr; } }
 </style>
 
 <header class="hero">
   <div class="wrap">
     <div>
-      <div class="eyebrow">Marché spatial européen · état au 20 octobre 2026</div>
+      <div class="eyebrow">Marché spatial européen · état au 28 octobre 2026</div>
       <h1>Atlas du spatial européen</h1>
       <p class="lead">Satellites, science, exploration, lanceurs : qui finance, qui commande, qui construit, à quoi ça sert, combien ça coûte, quand ça vole. Et comment les programmes s'engendrent et se croisent les uns les autres.</p>
     </div>
@@ -597,6 +619,7 @@ table.u-table { width: 100%; border-collapse: collapse; font-size: 13px; min-wid
 <main>
   <div class="wrap">
     <section id="v-accueil" data-view hidden></section>
+    <section id="v-nouveautes" data-view hidden></section>
     <section id="v-mecanique" data-view hidden></section>
     <section id="v-domaines" data-view hidden></section>
     <section id="v-fiches" data-view hidden></section>

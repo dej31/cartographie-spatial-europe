@@ -4,7 +4,7 @@ const fs = require("fs"), vm = require("vm"), path = require("path");
 const html = fs.readFileSync(path.join(__dirname, "..", "dist", "atlas.html"), "utf8");
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).filter(s => s.length > 1000); // ignore le petit script du compteur
 const ctx = {}; vm.createContext(ctx);
-vm.runInContext(scripts[0] + `;this.D={PROGRAMMES,ACTEURS,CAT_ACTEURS,PAYS,PAYS_INFO,FAMILLES,DOMAINES,STATUTS,LIGNEES,CONVERGENCES,UNITES,PARC,LIENS,CONTRATS,LEVEES,RELATIONS,BUDGETS,SOURCES,SUITES,VISUELS,ORBITES,GLOSSAIRE,OPPORTUNITES,EVENEMENTS,SITES,METIERS,PHASES,OPP_STATUTS,EVT_TYPES,scoreOpp,DATE_VERIF}`, ctx);
+vm.runInContext(scripts[0] + `;this.D={PROGRAMMES,ACTEURS,CAT_ACTEURS,PAYS,PAYS_INFO,FAMILLES,DOMAINES,STATUTS,LIGNEES,CONVERGENCES,UNITES,PARC,LIENS,CONTRATS,LEVEES,RELATIONS,BUDGETS,SOURCES,SUITES,VISUELS,ORBITES,GLOSSAIRE,OPPORTUNITES,EVENEMENTS,SITES,METIERS,PHASES,OPP_STATUTS,EVT_TYPES,scoreOpp,DATE_VERIF,MISES_A_JOUR,MAJ_TYPES}`, ctx);
 new vm.Script(scripts[1]); // syntaxe de app.js
 const D = ctx.D, err = [], warn = [];
 const P = new Set(D.PROGRAMMES.map(p => p.id)), A = new Set(D.ACTEURS.map(a => a.id));
@@ -92,8 +92,25 @@ D.EVENEMENTS.forEach((e, i) => {
   if (e.prog && !P.has(e.prog)) err.push(`${k} : programme ${e.prog} inexistant`);
   if (e.opp && !O.has(e.opp)) err.push(`${k} : opportunité ${e.opp} inexistante`);
   if (!okSrc(e.src)) err.push(`${k} : source manquante ou invalide`);
-  if (e.d > D.DATE_VERIF) err.push(`${k} : date future`);
+  if (e.d > new Date().toISOString().slice(0, 10)) err.push(`${k} : date future`);
   (e.metiers || []).forEach(m => { if (!D.METIERS[m]) err.push(`${k} : métier ${m} inconnu`); });
+});
+/* Journal des mises à jour (onglet « Nouveautés ») */
+const today = new Date().toISOString().slice(0, 10);
+D.MISES_A_JOUR.forEach((m, i) => {
+  const k = `Mise à jour ${m.d}`;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(m.d) || m.d > today) err.push(`${k} : date invalide ou future`);
+  if (i && m.d >= D.MISES_A_JOUR[i - 1].d) err.push(`${k} : les mises à jour doivent aller de la plus récente à la plus ancienne`);
+  if (!m.titre || !m.items.length) err.push(`${k} : titre ou éléments manquants`);
+  m.items.forEach((it, j) => {
+    const kk = `${k}, élément ${j + 1}`;
+    if (!D.MAJ_TYPES[it.k]) err.push(`${kk} : type inconnu ${it.k}`);
+    if (it.prog && !P.has(it.prog)) err.push(`${kk} : programme ${it.prog} inexistant`);
+    if (it.opp && !O.has(it.opp)) err.push(`${kk} : opportunité ${it.opp} inexistante`);
+    if (it.act && !A.has(it.act)) err.push(`${kk} : acteur ${it.act} inexistant`);
+    if (!"ABC".includes(it.bc) || !it.bc) err.push(`${kk} : confiance invalide`);
+    if (it.k !== "atlas" && (!it.src.length || it.src.some(s => !okSrc(s)))) err.push(`${kk} : source manquante ou invalide`);
+  });
 });
 D.PROGRAMMES.forEach(p => { if (p.frEsa) { if (!p.frEsa.txt) err.push(`${p.id} : part française sans texte`); if (p.frEsa.part != null && !(p.frEsa.part > 0 && p.frEsa.part < 1)) err.push(`${p.id} : part française hors bornes`); } });
 const stc = {}; D.OPPORTUNITES.forEach(o => stc[o.statut] = (stc[o.statut] || 0) + 1);
